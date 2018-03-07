@@ -46,7 +46,7 @@ class WelcomeScreen extends Component {
           <WhiteLogo scale={0.9} />
         </View>
         <ButtonWithChevron text="Login" color={styles.$orange} onPress={this.handleLoginPress} />
-        <ButtonWithChevron text="Signup" color={styles.$yellow} onPress={this.handleSignupPress} />
+        <ButtonWithChevron text="Sign Up" color={styles.$yellow} onPress={this.handleSignupPress} />
         <LogoTorch scale={0.18} />
       </Container>
     );

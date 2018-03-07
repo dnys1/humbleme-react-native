@@ -1,6 +1,6 @@
 import { StackNavigator } from 'react-navigation';
 
-import { WelcomeScreen, LoginScreen, SignupScreen } from '../screens/WelcomeStack';
+import { WelcomeScreen, LoginScreen, SignupScreen, TFAScreen } from '../screens/WelcomeStack';
 
 const WelcomeStack = StackNavigator(
   {
@@ -12,6 +12,9 @@ const WelcomeStack = StackNavigator(
     },
     Signup: {
       screen: SignupScreen,
+    },
+    TFA: {
+      screen: TFAScreen,
     },
   },
   {
