@@ -1,12 +1,34 @@
 import React, { Component } from 'react';
-import { Text, Button } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 import { Container } from '../../components/Container';
+import { WhiteLogo, LogoTorch } from '../../components/Logo';
+import { ButtonWithChevron } from '../../components/Button';
+
+const styles = EStyleSheet.create({
+  $teal: '$primaryTeal',
+  $orange: '$primaryOrange',
+  $yellow: '$primaryYellow',
+});
 
 class WelcomeScreen extends Component {
   static propTypes = {
     navigation: PropTypes.object,
+  };
+
+  /* Interesting method for incorporating stylesheet vars into header */
+  /* see https://github.com/vitalets/react-native-extended-stylesheet/issues/50 */
+  // static navigationOptions = {
+  //   headerTitle: <WhiteLogo percentScale="50%" />,
+  //   headerStyle: EStyleSheet.create({
+  //     backgroundColor: () => EStyleSheet.value('$primaryTeal'),
+  //   }),
+  // };
+
+  static navigationOptions = {
+    header: null /* hide the header */,
   };
 
   handleLoginPress = () => {
@@ -19,10 +41,13 @@ class WelcomeScreen extends Component {
 
   render() {
     return (
-      <Container>
-        <Text>Welcome!</Text>
-        <Button title="Login" onPress={this.handleLoginPress} />
-        <Button title="Signup" onPress={this.handleSignupPress} />
+      <Container backgroundColor={styles.$teal}>
+        <View style={{ paddingBottom: 70 }}>
+          <WhiteLogo scale={0.95} />
+        </View>
+        <ButtonWithChevron text="Login" color={styles.$orange} onPress={this.handleLoginPress} />
+        <ButtonWithChevron text="Signup" color={styles.$yellow} onPress={this.handleSignupPress} />
+        <LogoTorch />
       </Container>
     );
   }

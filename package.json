@@ -31,6 +31,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo/vector-icons": "^6.3.1",
     "aws-amplify": "^0.2.9",
     "aws-amplify-react-native": "^0.2.5",
     "expo": "^25.0.0",
@@ -41,6 +42,7 @@
     "react-navigation": "^1.4.0",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0"
   }
 }
