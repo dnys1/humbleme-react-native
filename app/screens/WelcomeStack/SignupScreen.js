@@ -8,10 +8,10 @@ import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
 import {
-  updateTempName,
-  updateTempUserName,
-  updateTempPassword,
-  updateTempPhoneNumber,
+  updateTempSignupName,
+  updateTempSignupUserName,
+  updateTempSignupPassword,
+  updateTempSignupPhoneNumber,
 } from '../../actions/welcome';
 
 const styles = EStyleSheet.create({
@@ -36,20 +36,24 @@ class SignupScreen extends Component {
     },
   };
 
-  handleUpdateTempName = (name) => {
-    console.log(updateTempName(name));
+  handleUpdateName = (name) => {
+    /* TODO: Integrate Redux */
+    console.log(updateTempSignupName(name));
   };
 
-  handleUpdateTempUserName = (userName) => {
-    console.log(updateTempUserName(userName));
+  handleUpdateUserName = (userName) => {
+    /* TODO: Integrate Redux */
+    console.log(updateTempSignupUserName(userName));
   };
 
-  handleUpdateTempPassword = (password) => {
-    console.log(updateTempPassword(password));
+  handleUpdatePassword = (password) => {
+    /* TODO: Integrate Redux */
+    console.log(updateTempSignupPassword(password));
   };
 
-  handleUpdateTempPhoneNumber = (phoneNumber) => {
-    console.log(updateTempPhoneNumber(phoneNumber));
+  handleUpdatePhoneNumber = (phoneNumber) => {
+    /* TODO: Integrate Redux */
+    console.log(updateTempSignupPhoneNumber(phoneNumber));
   };
 
   handleUserSignup = () => {
@@ -65,25 +69,25 @@ class SignupScreen extends Component {
       <KeyboardAvoidingView behavior="padding" style={containerStyles}>
         <InputNoBorder
           placeholder="Name"
-          onChangeText={name => this.handleUpdateTempName(name)}
+          onChangeText={name => this.handleUpdateName(name)}
           autoCapitalize="words"
           autoCorrect /* Because their name might be weird */
         />
         <InputNoBorder
           placeholder="Email"
-          onChangeText={userName => this.handleUpdateTempUserName(userName)}
+          onChangeText={userName => this.handleUpdateUserName(userName)}
           autoCapitalize="none"
           keyboardType="email-address"
         />
         <InputNoBorder
           placeholder="Password"
-          onChangeText={password => this.handleUpdateTempPassword(password)}
+          onChangeText={password => this.handleUpdatePassword(password)}
           autoCapitalize="none"
           secureTextEntry
         />
         <InputNoBorder
           placeholder="Phone Number"
-          onChangeText={phoneNumber => this.handleUpdateTempPhoneNumber(phoneNumber)}
+          onChangeText={phoneNumber => this.handleUpdatePhoneNumber(phoneNumber)}
           autoCapitalize="none"
           keyboardType="phone-pad"
         />

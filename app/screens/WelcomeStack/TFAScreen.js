@@ -32,6 +32,7 @@ class TFAScreen extends Component {
   };
 
   handleUpdateTempAuthCode = (authCode) => {
+    /* TODO: Check Cognito AuthCode */
     console.log(updateTempAuthCode(authCode));
   };
 

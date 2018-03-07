@@ -7,7 +7,7 @@ import { styles as ContainerStyles } from '../../components/Container';
 import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
-import { updateTempUserName, updateTempPassword } from '../../actions/welcome';
+import { updateTempLoginUserName, updateTempLoginPassword } from '../../actions/welcome';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
@@ -31,12 +31,12 @@ class LoginScreen extends Component {
     },
   };
 
-  handleUpdateTempUserName = (userName) => {
-    console.log(updateTempUserName(userName));
+  handleUpdateUserName = (userName) => {
+    console.log(updateTempLoginUserName(userName));
   };
 
-  handleUpdateTempPassword = (password) => {
-    console.log(updateTempPassword(password));
+  handleUpdatePassword = (password) => {
+    console.log(updateTempLoginPassword(password));
   };
 
   handleLoginRequest = () => {
@@ -50,12 +50,12 @@ class LoginScreen extends Component {
       <KeyboardAvoidingView style={containerStyles} behavior="padding">
         <InputNoBorder
           placeholder="Username"
-          onChangeText={userName => this.handleUpdateTempUserName(userName)}
+          onChangeText={userName => this.handleUpdateUserName(userName)}
           autoCapitalize="none"
         />
         <InputNoBorder
           placeholder="Password"
-          onChangeText={password => this.handleUpdateTempPassword(password)}
+          onChangeText={password => this.handleUpdatePassword(password)}
           autoCapitalize="none"
           secureTextEntry
         />

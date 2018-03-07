@@ -1,30 +1,42 @@
-const UPDATE_TEMP_TFA_CODE = 'UPDATE_TEMP_TFA_CODE';
-const UPDATE_TEMP_USERNAME = 'UPDATE_TEMP_USERNAME';
-const UPDATE_TEMP_PASSWORD = 'UPDATE_TEMP_PASSWORD';
-const UPDATE_TEMP_NAME = 'UPDATE_TEMP_NAME';
-const UPDATE_TEMP_PHONE_NUMBER = 'UPDATE_TEMP_PHONE_NUMBER';
+export const UPDATE_TEMP_LOGIN_USERNAME = 'UPDATE_TEMP_LOGIN_USERNAME';
+export const UPDATE_TEMP_LOGIN_PASSWORD = 'UPDATE_TEMP_LOGIN_PASSWORD';
+export const UPDATE_TEMP_SINGUP_USERNAME = 'UPDATE_TEMP_SINGUP_USERNAME';
+export const UPDATE_TEMP_SIGNUP_PASSWORD = 'UPDATE_TEMP_SIGNUP_PASSWORD';
+export const UPDATE_TEMP_SIGNUP_NAME = 'UPDATE_TEMP_SIGNUP_NAME';
+export const UPDATE_TEMP_SIGNUP_PHONE_NUMBER = 'UPDATE_TEMP_SIGNUP_PHONE_NUMBER';
+export const UPDATE_TEMP_SIGNUP_TFA_CODE = 'UPDATE_TEMP_SIGNUP_TFA_CODE';
 
-export const updateTempName = name => ({
-  type: UPDATE_TEMP_NAME,
-  name,
+export const updateTempLoginUserName = tempLoginUserName => ({
+  type: UPDATE_TEMP_LOGIN_USERNAME,
+  tempLoginUserName,
 });
 
-export const updateTempUserName = userName => ({
-  type: UPDATE_TEMP_USERNAME,
-  userName,
+export const updateTempLoginPassword = tempLoginPassword => ({
+  type: UPDATE_TEMP_LOGIN_PASSWORD,
+  tempLoginPassword,
 });
 
-export const updateTempPassword = password => ({
-  type: UPDATE_TEMP_PASSWORD,
-  password,
+export const updateTempSignupName = tempSignupName => ({
+  type: UPDATE_TEMP_SIGNUP_NAME,
+  tempSignupName,
 });
 
-export const updateTempPhoneNumber = phoneNumber => ({
-  type: UPDATE_TEMP_PHONE_NUMBER,
-  phoneNumber,
+export const updateTempSignupUserName = tempSignupUserName => ({
+  type: UPDATE_TEMP_SINGUP_USERNAME,
+  tempSignupUserName,
 });
 
-export const updateTempTFACode = TFACode => ({
-  type: UPDATE_TEMP_TFA_CODE,
-  TFACode,
+export const updateTempSignupPassword = tempSignupPassword => ({
+  type: UPDATE_TEMP_SIGNUP_PASSWORD,
+  tempSignupPassword,
+});
+
+export const updateTempSignupPhoneNumber = tempSignupPhoneNumber => ({
+  type: UPDATE_TEMP_SIGNUP_PHONE_NUMBER,
+  tempSignupPhoneNumber,
+});
+
+export const updateTempTFACode = tempSignupTFACode => ({
+  type: UPDATE_TEMP_SIGNUP_TFA_CODE,
+  tempSignupTFACode,
 });
