@@ -42,8 +42,13 @@ class WelcomeScreen extends Component {
   render() {
     return (
       <Container backgroundColor={styles.$teal}>
+<<<<<<< HEAD
         <View style={{ paddingBottom: 50 }}>
           <WhiteLogo scale={0.9} />
+=======
+        <View style={{ paddingBottom: 70 }}>
+          <WhiteLogo scale={0.95} />
+>>>>>>> 998e0b9cd01acf5d2531ec777f0c64ba0707951a
         </View>
         <ButtonWithChevron text="Login" color={styles.$orange} onPress={this.handleLoginPress} />
         <ButtonWithChevron text="Signup" color={styles.$yellow} onPress={this.handleSignupPress} />
