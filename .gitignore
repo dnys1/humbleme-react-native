@@ -15,3 +15,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+.DS_Store
+
+#awsmobilejs
+aws-info.json
+project-info.json
+aws-exports.js
+awsmobilejs/.awsmobile/backend-build
+awsmobilejs/\#current-backend-info
+~awsmobilejs-*/
