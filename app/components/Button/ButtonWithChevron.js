@@ -5,10 +5,26 @@ import { Ionicons } from '@expo/vector-icons';
 
 import styles from './styles';
 
-const ButtonWithChevron = ({ text, color, onPress }) => {
+const ButtonWithChevron = ({
+  text, color, borderColor, onPress, size = 'large',
+}) => {
   const containerStyles = [styles.container];
   if (color) {
     containerStyles.push({ backgroundColor: color });
+  }
+  if (borderColor) {
+    containerStyles.push({ borderColor });
+  }
+  if (size === 'large') {
+    containerStyles.push({
+      width: '50%',
+      height: 50,
+    });
+  } else if (size === 'small') {
+    containerStyles.push({
+      width: '35%',
+      height: 40,
+    });
   }
 
   return (
@@ -24,7 +40,9 @@ const ButtonWithChevron = ({ text, color, onPress }) => {
 ButtonWithChevron.propTypes = {
   text: PropTypes.string,
   color: PropTypes.string,
+  borderColor: PropTypes.string,
   onPress: PropTypes.func,
+  size: PropTypes.oneOf(['small', 'large']),
 };
 
 export default ButtonWithChevron;

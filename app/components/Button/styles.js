@@ -5,8 +5,6 @@ const BORDER_RADIUS = 4;
 export default EStyleSheet.create({
   container: {
     alignItems: 'center',
-    width: '50%',
-    height: 50,
     marginVertical: 11,
     borderRadius: BORDER_RADIUS,
   },
