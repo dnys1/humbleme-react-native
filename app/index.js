@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { Text, View, Button } from 'react-native';
-import { TabNavigator, TabBarBottom } from 'react-navigation';
+import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
+
+class DetailsScreen extends Component {
+  render() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Details!</Text>
+      </View>
+    );
+  }
+}
 
 class HomeScreen extends Component {
   render() {
@@ -9,6 +19,7 @@ class HomeScreen extends Component {
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Home!</Text>
         <Button title="Go to Settings" onPress={() => this.props.navigation.navigate('Settings')} />
+        <Button title="Go to Details" onPress={() => this.props.navigation.navigate('Details')} />
       </View>
     );
   }
@@ -20,15 +31,26 @@ class SettingsScreen extends Component {
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Settings!</Text>
         <Button title="Go to Home" onPress={() => this.props.navigation.navigate('Home')} />
+        <Button title="Go to Details" onPress={() => this.props.navigation.navigate('Details')} />
       </View>
     );
   }
 }
 
+const HomeStack = StackNavigator({
+  Home: { screen: HomeScreen },
+  Details: { screen: DetailsScreen },
+});
+
+const SettingsStack = StackNavigator({
+  Settings: { screen: SettingsScreen },
+  Details: { screen: DetailsScreen },
+});
+
 export default TabNavigator(
   {
-    Home: { screen: HomeScreen },
-    Settings: { screen: SettingsScreen },
+    Home: { screen: HomeStack },
+    Settings: { screen: SettingsStack },
   },
   {
     navigationOptions: ({ navigation }) => ({
