@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { KeyboardAvoidingView } from 'react-native';
+import { KeyboardAvoidingView, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { connect } from 'react-redux';
@@ -73,10 +73,8 @@ class SignupScreen extends Component {
   };
 
   handleUserSignup = () => {
-    console.log('signup button pressed!');
-
     if (this.props.password !== this.props.passwordRetype) {
-      alert('Passwords do not match.');
+      setTimeout(() => Alert.alert('Error', 'Passwords do not match.'), 50);
       return;
     }
 
@@ -96,9 +94,23 @@ class SignupScreen extends Component {
       })
       .catch((err) => {
         if (err.code === 'InvalidPasswordException') {
-          alert('Password must be 8 characters long and contain:\n- uppercase letters\n- lowercase letters\n- special characters\n- numbers');
+          setTimeout(
+            () =>
+              Alert.alert(
+                'Password error',
+                'Password must be 8 characters long and contain:\n- uppercase letters\n- lowercase letters\n- special characters\n- numbers',
+              ),
+            50,
+          );
         } else if (err.code === 'UsernameExistsException') {
-          alert("Username already exists. If you've already signed up, please use the Login page.");
+          setTimeout(
+            () =>
+              Alert.alert(
+                'Signup error',
+                "Username already exists. If you've already signed up, please use the Login page.",
+              ),
+            50,
+          );
         }
         console.log('error signing up: ', err);
       });

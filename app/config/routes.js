@@ -1,5 +1,4 @@
 import { StackNavigator } from 'react-navigation';
-import { Keyboard } from 'react-native';
 
 import {
   WelcomeScreen,
@@ -29,7 +28,6 @@ const WelcomeStack = StackNavigator(
   },
   {
     headerMode: 'screen',
-    onTransitionStart: () => Keyboard.dismiss(),
   },
 );
 

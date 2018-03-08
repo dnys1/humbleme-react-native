@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { KeyboardAvoidingView } from 'react-native';
+import { KeyboardAvoidingView, Alert } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -64,7 +64,7 @@ class LoginScreen extends Component {
         if (err.code === 'UserNotConfirmedException') {
           this.resendSignUp();
         } else if (err.code === 'UserNotFoundException') {
-          alert('Username not found.');
+          setTimeout(() => Alert.alert('Error', 'Username not found.'), 50);
         }
       });
   };

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { KeyboardAvoidingView, Text } from 'react-native';
+import { KeyboardAvoidingView, Text, Alert } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import PropTypes from 'prop-types';
 import { Auth } from 'aws-amplify';
@@ -48,11 +48,23 @@ class TFAScreen extends Component {
   confirmSignUp = () => {
     Auth.confirmSignUp(this.props.username, this.props.TFACode)
       .then((res) => {
-        alert("You've been successfully verified!");
+        setTimeout(
+          () =>
+            Alert.alert(
+              'Success!',
+              'Your account has been created! Please login to complete registration.',
+            ),
+          50,
+        );
+        this.props.navigation.navigate('Login');
         console.log('successful confirmation: ', res);
       })
       .catch((err) => {
-        alert('There was an error in verifying your number.');
+        setTimeout(
+          () =>
+            Alert.alert('Error', 'There was an error in verifying your number. Please try again.'),
+          50,
+        );
         console.log('error confirming user: ', err);
       });
   };
@@ -60,11 +72,11 @@ class TFAScreen extends Component {
   confirmSignIn = () => {
     Auth.confirmSignIn(this.props.user, this.props.TFACode)
       .then(() => {
-        alert("You're logged in!");
+        setTimeout(() => Alert.alert('Success', "You're logged in!"), 50);
         this.props.navigation.navigate('LoggedIn');
       })
       .catch((err) => {
-        alert('Please try entering the number again.');
+        setTimeout(() => Alert.alert('Error', 'Please try entering the number again.'), 50);
         console.log('error confirming sign in: ', err);
       });
   };
