@@ -1,0 +1,6 @@
+{
+	"SourceDir": "app",
+	"DistributionDir": "/",
+	"BuildCommand": "yarn run ios",
+	"StartCommand": "yarn start"
+}

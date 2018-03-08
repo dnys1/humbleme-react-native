@@ -1,19 +1,29 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import { Provider } from 'react-redux';
+import Amplify from 'aws-amplify';
 
-const styles = StyleSheet.create({
-  container: {
+import config from './aws-exports';
+import Store from './config/store';
+import { WelcomeStack } from './config/routes';
+
+Amplify.configure(config);
+
+EStyleSheet.build({
+  $white: '#ffffff',
+  $primaryTeal: '#38CECA',
+  $primaryOrange: '#f15a24',
+  $primaryYellow: '#efb402',
+  $keyboardAvoidingView: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
 });
 
 export default () => (
-  <View style={styles.container}>
-    <Text>Open up App.js to start working on your app!</Text>
-    <Text>Changes you make will automatically reload.</Text>
-    <Text>Shake your phone to open the developer menu.</Text>
-  </View>
+  <Provider store={Store}>
+    <WelcomeStack />
+  </Provider>
 );
