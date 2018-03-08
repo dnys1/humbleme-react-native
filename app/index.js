@@ -1,7 +1,10 @@
 import React from 'react';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Amplify from 'aws-amplify';
+import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
+import { addNavigationHelpers } from 'react-navigation';
 
 import config from './aws-exports';
 import Store from './config/store';
@@ -22,8 +25,31 @@ EStyleSheet.build({
   },
 });
 
+const addListener = createReduxBoundAddListener('root');
+
+const App = ({ dispatch, nav }) => (
+  <WelcomeStack
+    navigation={addNavigationHelpers({
+      dispatch,
+      state: nav,
+      addListener,
+    })}
+  />
+);
+
+App.propTypes = {
+  dispatch: PropTypes.func,
+  nav: PropTypes.object,
+};
+
+const mapStateToProps = state => ({
+  nav: state.nav,
+});
+
+const AppWithNavigation = connect(mapStateToProps)(App);
+
 export default () => (
   <Provider store={Store}>
-    <WelcomeStack />
+    <AppWithNavigation />
   </Provider>
 );
