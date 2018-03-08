@@ -2,26 +2,36 @@ import React, { Component } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import { connect } from 'react-redux';
+import { Auth } from 'aws-amplify';
 
-import { styles as ContainerStyles } from '../../components/Container';
+import { Container } from '../../components/Container';
 import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
 import {
-  updateTempSignupName,
+  updateTempSignupEmail,
   updateTempSignupUserName,
   updateTempSignupPassword,
+  updateTempSignupPasswordRetype,
   updateTempSignupPhoneNumber,
 } from '../../actions/welcome';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
   $yellow: '$primaryYellow',
+  $view: '$keyboardAvoidingView',
 });
 
 class SignupScreen extends Component {
   static propTypes = {
     navigation: PropTypes.object,
+    dispatch: PropTypes.func,
+    username: PropTypes.string,
+    email: PropTypes.string,
+    password: PropTypes.string,
+    passwordRetype: PropTypes.string,
+    phone_number: PropTypes.string,
   };
 
   static navigationOptions = {
@@ -36,70 +46,127 @@ class SignupScreen extends Component {
     },
   };
 
-  handleUpdateName = (name) => {
-    /* TODO: Integrate Redux */
-    console.log(updateTempSignupName(name));
+  // handleUpdateName = (name) => {
+  //   this.props.dispatch(updateTempSignupName(name));
+  // };
+
+  handleUpdateEmail = (email) => {
+    this.props.dispatch(updateTempSignupEmail(email));
   };
 
-  handleUpdateUserName = (userName) => {
-    /* TODO: Integrate Redux */
-    console.log(updateTempSignupUserName(userName));
+  handleUpdateUserName = (username) => {
+    this.props.dispatch(updateTempSignupUserName(username));
   };
 
   handleUpdatePassword = (password) => {
-    /* TODO: Integrate Redux */
-    console.log(updateTempSignupPassword(password));
+    this.props.dispatch(updateTempSignupPassword(password));
   };
 
-  handleUpdatePhoneNumber = (phoneNumber) => {
-    /* TODO: Integrate Redux */
-    console.log(updateTempSignupPhoneNumber(phoneNumber));
+  handleUpdatePasswordRetype = (passwordRetype) => {
+    this.props.dispatch(updateTempSignupPasswordRetype(passwordRetype));
+  };
+
+  handleUpdatePhoneNumber = (phone_number) => {
+    /* TODO: Fix country code issue */
+    const numberWithCallingCode = `+1${phone_number}`;
+    this.props.dispatch(updateTempSignupPhoneNumber(numberWithCallingCode));
   };
 
   handleUserSignup = () => {
     console.log('signup button pressed!');
-    /* TODO: User signup logic */
-    this.props.navigation.navigate('TFA');
+
+    if (this.props.password !== this.props.passwordRetype) {
+      alert('Passwords do not match.');
+      return;
+    }
+
+    Auth.signUp({
+      username: this.props.username,
+      password: this.props.password,
+      attributes: {
+        phone_number: this.props.phone_number,
+        email: this.props.email,
+      },
+    })
+      .then((res) => {
+        console.log('successful signup!: ', res);
+        this.props.navigation.navigate('TFA', {
+          signup: true,
+        });
+      })
+      .catch((err) => {
+        if (err.code === 'InvalidPasswordException') {
+          alert('Password must be 8 characters long and contain:\n- uppercase letters\n- lowercase letters\n- special characters\n- numbers');
+        } else if (err.code === 'UsernameExistsException') {
+          alert("Username already exists. If you've already signed up, please use the Login page.");
+        }
+        console.log('error signing up: ', err);
+      });
   };
 
   render() {
-    const containerStyles = [ContainerStyles.container, { backgroundColor: styles.$teal }];
-
     return (
-      <KeyboardAvoidingView behavior="padding" style={containerStyles}>
-        <InputNoBorder
-          placeholder="Name"
-          onChangeText={name => this.handleUpdateName(name)}
-          autoCapitalize="words"
-          autoCorrect /* Because their name might be weird */
-        />
-        <InputNoBorder
-          placeholder="Email"
-          onChangeText={userName => this.handleUpdateUserName(userName)}
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
-        <InputNoBorder
-          placeholder="Password"
-          onChangeText={password => this.handleUpdatePassword(password)}
-          autoCapitalize="none"
-          secureTextEntry
-        />
-        <InputNoBorder
-          placeholder="Phone Number"
-          onChangeText={phoneNumber => this.handleUpdatePhoneNumber(phoneNumber)}
-          autoCapitalize="none"
-          keyboardType="phone-pad"
-        />
-        <ButtonWithChevron
-          text="Sign Up"
-          color={styles.$yellow}
-          onPress={this.handleUserSignup}
-          size="small"
-        />
-      </KeyboardAvoidingView>
+      <Container backgroundColor={styles.$teal}>
+        <KeyboardAvoidingView style={styles.$view} behavior="padding">
+          <InputNoBorder
+            placeholder="Pick a username"
+            onChangeText={username => this.handleUpdateUserName(username)}
+            autoCapitalize="none"
+          />
+          <InputNoBorder
+            placeholder="Email"
+            onChangeText={email => this.handleUpdateEmail(email)}
+            autoCapitalize="none"
+            keyboardType="email-address"
+          />
+          <InputNoBorder
+            placeholder="Password"
+            onChangeText={password => this.handleUpdatePassword(password)}
+            autoCapitalize="none"
+            secureTextEntry
+          />
+          <InputNoBorder
+            placeholder="Re-type Password"
+            onChangeText={passwordRetype => this.handleUpdatePasswordRetype(passwordRetype)}
+            autoCapitalize="none"
+            secureTextEntry
+          />
+          <InputNoBorder
+            placeholder="Phone Number"
+            onChangeText={phone_number => this.handleUpdatePhoneNumber(phone_number)}
+            autoCapitalize="none"
+            keyboardType="phone-pad"
+          />
+          <ButtonWithChevron
+            text="Sign Up"
+            color={styles.$yellow}
+            onPress={this.handleUserSignup}
+            size="small"
+          />
+        </KeyboardAvoidingView>
+      </Container>
     );
   }
 }
 
-export default SignupScreen;
+const mapStateToProps = (state) => {
+  const {
+    name,
+    username,
+    email,
+    password,
+    passwordRetype,
+    phone_number,
+  } = state.welcome.tempSignup;
+
+  return {
+    name,
+    username,
+    email,
+    password,
+    passwordRetype,
+    phone_number,
+  };
+};
+
+export default connect(mapStateToProps)(SignupScreen);

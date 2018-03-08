@@ -6,8 +6,8 @@ const BORDER_RADIUS = 4;
 
 export default EStyleSheet.create({
   container: {
-    justifyContent: 'center',
     backgroundColor: Color('#333').alpha(0.5),
+    justifyContent: 'center',
     width: '80%',
     height: INPUT_HEIGHT,
     marginVertical: 11,

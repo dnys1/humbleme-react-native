@@ -1,6 +1,13 @@
 import { StackNavigator } from 'react-navigation';
+import { Keyboard } from 'react-native';
 
-import { WelcomeScreen, LoginScreen, SignupScreen, TFAScreen } from '../screens/WelcomeStack';
+import {
+  WelcomeScreen,
+  LoginScreen,
+  SignupScreen,
+  TFAScreen,
+  LoggedInScreen,
+} from '../screens/WelcomeStack';
 
 const WelcomeStack = StackNavigator(
   {
@@ -16,9 +23,13 @@ const WelcomeStack = StackNavigator(
     TFA: {
       screen: TFAScreen,
     },
+    LoggedIn: {
+      screen: LoggedInScreen,
+    },
   },
   {
     headerMode: 'screen',
+    onTransitionStart: () => Keyboard.dismiss(),
   },
 );
 

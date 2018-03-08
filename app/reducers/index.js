@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
-import WelcomeReducer from './welcome';
+import welcome from './welcome';
 
 export default combineReducers({
-  WelcomeReducer,
+  welcome,
 });

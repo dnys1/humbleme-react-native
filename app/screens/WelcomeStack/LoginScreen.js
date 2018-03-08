@@ -1,23 +1,33 @@
 import React, { Component } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Auth } from 'aws-amplify';
 
-import { styles as ContainerStyles } from '../../components/Container';
+import { Container } from '../../components/Container';
 import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
-import { updateTempLoginUserName, updateTempLoginPassword } from '../../actions/welcome';
+import {
+  updateTempLoginUserName,
+  updateTempLoginPassword,
+  loginUserSuccess,
+} from '../../actions/welcome';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
   $orange: '$primaryOrange',
+  $view: '$keyboardAvoidingView',
 });
 
 class LoginScreen extends Component {
-  // static propTypes = {
-  //   navigation: PropTypes.object,
-  // };
+  static propTypes = {
+    dispatch: PropTypes.func,
+    navigation: PropTypes.object,
+    username: PropTypes.string,
+    password: PropTypes.string,
+  };
 
   static navigationOptions = {
     title: 'Login',
@@ -32,42 +42,80 @@ class LoginScreen extends Component {
   };
 
   handleUpdateUserName = (userName) => {
-    console.log(updateTempLoginUserName(userName));
+    this.props.dispatch(updateTempLoginUserName(userName));
   };
 
   handleUpdatePassword = (password) => {
-    console.log(updateTempLoginPassword(password));
+    this.props.dispatch(updateTempLoginPassword(password));
   };
 
   handleLoginRequest = () => {
-    console.log('login request');
+    console.log('login attempt');
+    Auth.signIn(this.props.username, this.props.password)
+      .then((user) => {
+        this.props.dispatch(loginUserSuccess(user));
+        console.log(user);
+        this.props.navigation.navigate('TFA', {
+          signup: false,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.code === 'UserNotConfirmedException') {
+          this.resendSignUp();
+        } else if (err.code === 'UserNotFoundException') {
+          alert('Username not found.');
+        }
+      });
+  };
+
+  resendSignUp = () => {
+    Auth.resendSignUp(this.props.username)
+      .then((res) => {
+        console.log(res);
+        this.props.navigation.navigate('TFA', {
+          signup: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   render() {
-    const containerStyles = [ContainerStyles.container, { backgroundColor: styles.$teal }];
-
     return (
-      <KeyboardAvoidingView style={containerStyles} behavior="padding">
-        <InputNoBorder
-          placeholder="Username"
-          onChangeText={userName => this.handleUpdateUserName(userName)}
-          autoCapitalize="none"
-        />
-        <InputNoBorder
-          placeholder="Password"
-          onChangeText={password => this.handleUpdatePassword(password)}
-          autoCapitalize="none"
-          secureTextEntry
-        />
-        <ButtonWithChevron
-          text="Login"
-          color={styles.$orange}
-          onPress={this.handleLoginRequest}
-          size="small"
-        />
-      </KeyboardAvoidingView>
+      <Container backgroundColor={styles.$teal}>
+        <KeyboardAvoidingView style={styles.$view} behavior="padding">
+          <InputNoBorder
+            placeholder="Username"
+            onChangeText={userName => this.handleUpdateUserName(userName)}
+            autoCapitalize="none"
+          />
+          <InputNoBorder
+            placeholder="Password"
+            onChangeText={password => this.handleUpdatePassword(password)}
+            autoCapitalize="none"
+            secureTextEntry
+          />
+          <ButtonWithChevron
+            text="Login"
+            color={styles.$orange}
+            onPress={this.handleLoginRequest}
+            size="small"
+          />
+        </KeyboardAvoidingView>
+      </Container>
     );
   }
 }
 
-export default LoginScreen;
+const mapStateToProps = (state) => {
+  const { username, password } = state.welcome.tempLogin;
+
+  return {
+    username,
+    password,
+  };
+};
+
+export default connect(mapStateToProps)(LoginScreen);
