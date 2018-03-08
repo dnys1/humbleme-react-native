@@ -6,6 +6,7 @@ import { Auth } from 'aws-amplify';
 import { connect } from 'react-redux';
 
 import { Container } from '../../components/Container';
+import { Subheading } from '../../components/Text';
 import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
@@ -14,7 +15,7 @@ import { updateTempTFACode } from '../../actions/welcome';
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
   $yellow: '$primaryYellow',
-  $view: '$keyboardAvoidingView',
+  $viewStyles: '$keyboardAvoidingView',
 });
 
 class TFAScreen extends Component {
@@ -82,11 +83,14 @@ class TFAScreen extends Component {
   };
 
   render() {
+    const { signup } = this.props.navigation.state.params;
     return (
       <Container backgroundColor={styles.$teal}>
-        <KeyboardAvoidingView behavior="padding" style={styles.$view}>
-          <Text style={{ color: 'white', width: '80%', paddingBottom: 20 }}>
-            Please enter the 6-digit verification code sent your your phone number.
+        <KeyboardAvoidingView behavior="padding" style={styles.$viewStyles}>
+          <Subheading color="white" text={signup ? 'Complete Signup' : 'Complete Login'} />
+          <Text style={{ color: 'white', width: '80%', marginBottom: 10 }}>
+            Please enter the 6-digit verification code sent to your phone number in order to
+            continue.
           </Text>
           <InputNoBorder
             placeholder="Authentication Code"
@@ -96,9 +100,7 @@ class TFAScreen extends Component {
           <ButtonWithChevron
             text="Verify"
             color={styles.$yellow}
-            onPress={
-              this.props.navigation.state.params.signup ? this.confirmSignUp : this.confirmSignIn
-            }
+            onPress={signup ? this.confirmSignUp : this.confirmSignIn}
             size="small"
           />
         </KeyboardAvoidingView>

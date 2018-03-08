@@ -20,7 +20,7 @@ import {
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
   $yellow: '$primaryYellow',
-  $view: '$keyboardAvoidingView',
+  $viewStyles: '$keyboardAvoidingView',
 });
 
 class SignupScreen extends Component {
@@ -119,7 +119,7 @@ class SignupScreen extends Component {
   render() {
     return (
       <Container backgroundColor={styles.$teal}>
-        <KeyboardAvoidingView style={styles.$view} behavior="padding">
+        <KeyboardAvoidingView style={styles.$viewStyles} behavior="padding">
           <InputNoBorder
             placeholder="Pick a username"
             onChangeText={username => this.handleUpdateUserName(username)}
