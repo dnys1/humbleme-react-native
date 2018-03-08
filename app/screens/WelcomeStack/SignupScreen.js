@@ -3,7 +3,6 @@ import { KeyboardAvoidingView, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { connect } from 'react-redux';
-import { Auth } from 'aws-amplify';
 
 import { Container } from '../../components/Container';
 import { InputNoBorder } from '../../components/TextInput';
@@ -15,6 +14,7 @@ import {
   updateTempSignupPassword,
   updateTempSignupPasswordRetype,
   updateTempSignupPhoneNumber,
+  handleSignUp,
 } from '../../actions/welcome';
 
 const styles = EStyleSheet.create({
@@ -25,7 +25,6 @@ const styles = EStyleSheet.create({
 
 class SignupScreen extends Component {
   static propTypes = {
-    navigation: PropTypes.object,
     dispatch: PropTypes.func,
     username: PropTypes.string,
     email: PropTypes.string,
@@ -73,47 +72,16 @@ class SignupScreen extends Component {
   };
 
   handleUserSignup = () => {
-    if (this.props.password !== this.props.passwordRetype) {
+    const {
+      username, email, password, passwordRetype, phone_number,
+    } = this.props;
+
+    if (password !== passwordRetype) {
       setTimeout(() => Alert.alert('Error', 'Passwords do not match.'), 50);
       return;
     }
 
-    Auth.signUp({
-      username: this.props.username,
-      password: this.props.password,
-      attributes: {
-        phone_number: this.props.phone_number,
-        email: this.props.email,
-      },
-    })
-      .then((res) => {
-        console.log('successful signup!: ', res);
-        this.props.navigation.navigate('TFA', {
-          signup: true,
-        });
-      })
-      .catch((err) => {
-        if (err.code === 'InvalidPasswordException') {
-          setTimeout(
-            () =>
-              Alert.alert(
-                'Password error',
-                'Password must be 8 characters long and contain:\n- uppercase letters\n- lowercase letters\n- special characters\n- numbers',
-              ),
-            50,
-          );
-        } else if (err.code === 'UsernameExistsException') {
-          setTimeout(
-            () =>
-              Alert.alert(
-                'Signup error',
-                "Username already exists. If you've already signed up, please use the Login page.",
-              ),
-            50,
-          );
-        }
-        console.log('error signing up: ', err);
-      });
+    this.props.dispatch(handleSignUp(username, email, password, phone_number));
   };
 
   render() {
@@ -163,13 +131,8 @@ class SignupScreen extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    name,
-    username,
-    email,
-    password,
-    passwordRetype,
-    phone_number,
-  } = state.welcome.tempSignup;
+    name, username, email, password, passwordRetype, phone_number,
+  } = state.welcome.signup;
 
   return {
     name,
