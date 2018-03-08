@@ -1,4 +1,5 @@
-import ButtonWithChevron from './ButtonWithChevron';
 import styles from './styles';
+import ButtonWithChevron from './ButtonWithChevron';
+import ButtonWithDispatch from './ButtonWithDispatch';
 
-export { styles, ButtonWithChevron };
+export { styles, ButtonWithChevron, ButtonWithDispatch };
