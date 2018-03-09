@@ -17,13 +17,13 @@ import {
   CONFIRM_SIGNUP,
   CONFIRM_SIGNUP_SUCCESS,
   CONFIRM_SIGNUP_FAILURE,
-  SHOW_SIGNUP_CONFIRMATION_MODAL,
-  SHOW_LOGIN_SCREEN,
+  NAV_SIGNUP_CONFIRMATION_MODAL,
+  NAV_LOGIN_SCREEN,
   CONFIRM_LOGIN_SUCCESS,
-  SHOW_LOGGED_IN_SCREEN,
+  NAV_LOGGED_IN_SCREEN,
   CONFIRM_LOGIN_FAILURE,
   CONFIRM_LOGIN,
-  SHOW_LOGIN_CONFIRMATION_MODAL,
+  NAV_LOGIN_CONFIRMATION_MODAL,
 } from '../actions/constants';
 
 function* logIn({ username, password }) {
@@ -46,7 +46,7 @@ function* confirmLogin({ user, TFACode }) {
   try {
     yield Auth.confirmSignIn(user, TFACode);
     yield put({ type: CONFIRM_LOGIN_SUCCESS });
-    yield put({ type: SHOW_LOGGED_IN_SCREEN });
+    yield put({ type: NAV_LOGGED_IN_SCREEN });
   } catch (err) {
     yield put({ type: CONFIRM_LOGIN_FAILURE });
     console.log('Confirm login err: ', err);
@@ -57,7 +57,7 @@ function* resendSignUp({ username }) {
   try {
     yield Auth.resendSignUp(username);
     yield put({ type: RESEND_SIGNUP_SUCCESS });
-    yield put({ type: SHOW_SIGNUP_CONFIRMATION_MODAL, resend: true });
+    yield put({ type: NAV_SIGNUP_CONFIRMATION_MODAL, resend: true });
   } catch (err) {
     yield put({ type: RESEND_SIGNUP_FAILURE });
     console.log('Resend signup error: ', err);
@@ -70,7 +70,7 @@ function* signUp({
   try {
     yield Auth.signUp({ username, password, attributes: { phone_number, email } });
     yield put({ type: SIGN_UP_SUCCESS });
-    yield put({ type: SHOW_SIGNUP_CONFIRMATION_MODAL, resend: false });
+    yield put({ type: NAV_SIGNUP_CONFIRMATION_MODAL, resend: false });
   } catch (err) {
     if (err.code === 'InvalidPasswordException') {
       // TODO: Alert password rules
@@ -91,7 +91,7 @@ function* confirmSignup({
     if (resend) {
       yield put({ type: LOG_IN, username, password });
     } else {
-      yield put({ type: SHOW_LOGIN_SCREEN });
+      yield put({ type: NAV_LOGIN_SCREEN });
     }
   } catch (err) {
     yield put({ type: CONFIRM_SIGNUP_FAILURE, err });
@@ -118,7 +118,7 @@ function* watchLogin() {
 
     if (user) {
       yield put({ type: LOG_IN_SUCCESS, user });
-      yield put({ type: SHOW_LOGIN_CONFIRMATION_MODAL });
+      yield put({ type: NAV_LOGIN_CONFIRMATION_MODAL });
     } else {
       // yield put({ type: LOG_OUT });
     }
@@ -156,7 +156,10 @@ function* watchConfirmSignup() {
       },
     } = yield take(CONFIRM_SIGNUP);
     yield call(confirmSignup, {
-      username, password, TFACode, resend,
+      username,
+      password,
+      TFACode,
+      resend,
     });
   }
 }
