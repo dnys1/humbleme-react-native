@@ -8,7 +8,7 @@ const initialState = WelcomeStack.router.getStateForAction(NavigationActions.ini
 export default (state = initialState, action) => {
   let nextState;
   switch (action.type) {
-    case actions.SHOW_LOGIN_CONFIRMATION_MODAL:
+    case actions.NAV_LOGIN_CONFIRMATION_MODAL:
       nextState = WelcomeStack.router.getStateForAction(
         NavigationActions.navigate({
           routeName: 'TFA',
@@ -20,7 +20,7 @@ export default (state = initialState, action) => {
         state,
       );
       break;
-    case actions.SHOW_SIGNUP_CONFIRMATION_MODAL:
+    case actions.NAV_SIGNUP_CONFIRMATION_MODAL:
       nextState = WelcomeStack.router.getStateForAction(
         NavigationActions.navigate({
           routeName: 'TFA',
@@ -32,7 +32,7 @@ export default (state = initialState, action) => {
         state,
       );
       break;
-    case actions.SHOW_LOGIN_SCREEN:
+    case actions.NAV_LOGIN_SCREEN:
       nextState = WelcomeStack.router.getStateForAction(
         NavigationActions.reset({
           index: 1,
@@ -44,7 +44,7 @@ export default (state = initialState, action) => {
         state,
       );
       break;
-    case actions.SHOW_LOGGED_IN_SCREEN:
+    case actions.NAV_LOGGED_IN_SCREEN:
       nextState = WelcomeStack.router.getStateForAction(
         NavigationActions.navigate({ routeName: 'LoggedIn' }),
         state,

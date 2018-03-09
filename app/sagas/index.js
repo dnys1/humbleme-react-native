@@ -17,16 +17,16 @@ import {
   CONFIRM_SIGNUP,
   CONFIRM_SIGNUP_SUCCESS,
   CONFIRM_SIGNUP_FAILURE,
-  SHOW_SIGNUP_CONFIRMATION_MODAL,
-  SHOW_LOGIN_SCREEN,
+  NAV_SIGNUP_CONFIRMATION_MODAL,
+  NAV_LOGIN_SCREEN,
   CONFIRM_LOGIN_SUCCESS,
-  SHOW_LOGGED_IN_SCREEN,
+  NAV_LOGGED_IN_SCREEN,
   CONFIRM_LOGIN_FAILURE,
   CONFIRM_LOGIN,
-  SHOW_LOGIN_CONFIRMATION_MODAL,
+  NAV_LOGIN_CONFIRMATION_MODAL,
 } from '../actions/constants';
 
-function* logIn(username, password) {
+function* logIn({ username, password }) {
   try {
     const user = yield Auth.signIn(username, password);
     return user;
@@ -42,33 +42,35 @@ function* logIn(username, password) {
   }
 }
 
-function* confirmLogin(user, TFACode) {
+function* confirmLogin({ user, TFACode }) {
   try {
     yield Auth.confirmSignIn(user, TFACode);
     yield put({ type: CONFIRM_LOGIN_SUCCESS });
-    yield put({ type: SHOW_LOGGED_IN_SCREEN });
+    yield put({ type: NAV_LOGGED_IN_SCREEN });
   } catch (err) {
     yield put({ type: CONFIRM_LOGIN_FAILURE });
     console.log('Confirm login err: ', err);
   }
 }
 
-function* resendSignUp(username) {
+function* resendSignUp({ username }) {
   try {
     yield Auth.resendSignUp(username);
     yield put({ type: RESEND_SIGNUP_SUCCESS });
-    yield put({ type: SHOW_SIGNUP_CONFIRMATION_MODAL, resend: true });
+    yield put({ type: NAV_SIGNUP_CONFIRMATION_MODAL, resend: true });
   } catch (err) {
     yield put({ type: RESEND_SIGNUP_FAILURE });
     console.log('Resend signup error: ', err);
   }
 }
 
-function* signUp(username, email, password, phone_number) {
+function* signUp({
+  username, password, email, phone_number,
+}) {
   try {
     yield Auth.signUp({ username, password, attributes: { phone_number, email } });
     yield put({ type: SIGN_UP_SUCCESS });
-    yield put({ type: SHOW_SIGNUP_CONFIRMATION_MODAL, resend: false });
+    yield put({ type: NAV_SIGNUP_CONFIRMATION_MODAL, resend: false });
   } catch (err) {
     if (err.code === 'InvalidPasswordException') {
       // TODO: Alert password rules
@@ -80,14 +82,16 @@ function* signUp(username, email, password, phone_number) {
   }
 }
 
-function* confirmSignup(username, password, TFACode, resend) {
+function* confirmSignup({
+  username, password, TFACode, resend,
+}) {
   try {
     yield Auth.confirmSignUp(username, TFACode);
     yield put({ type: CONFIRM_SIGNUP_SUCCESS });
     if (resend) {
       yield put({ type: LOG_IN, username, password });
     } else {
-      yield put({ type: SHOW_LOGIN_SCREEN });
+      yield put({ type: NAV_LOGIN_SCREEN });
     }
   } catch (err) {
     yield put({ type: CONFIRM_SIGNUP_FAILURE, err });
@@ -109,12 +113,12 @@ function* logOut() {
 
 function* watchLogin() {
   while (true) {
-    const { username, password } = yield take(LOG_IN);
-    const user = yield call(logIn, username, password);
+    const { payload: { username, password } } = yield take(LOG_IN);
+    const user = yield call(logIn, { username, password });
 
     if (user) {
       yield put({ type: LOG_IN_SUCCESS, user });
-      yield put({ type: SHOW_LOGIN_CONFIRMATION_MODAL });
+      yield put({ type: NAV_LOGIN_CONFIRMATION_MODAL });
     } else {
       // yield put({ type: LOG_OUT });
     }
@@ -123,33 +127,47 @@ function* watchLogin() {
 
 function* watchConfirmLogin() {
   while (true) {
-    const { user, TFACode } = yield take(CONFIRM_LOGIN);
-    yield call(confirmLogin, user, TFACode);
+    const { payload: { user, TFACode } } = yield take(CONFIRM_LOGIN);
+    yield call(confirmLogin, { user, TFACode });
   }
 }
 
 function* watchSignup() {
   while (true) {
     const {
-      username, password, email, phone_number,
+      payload: {
+        username, password, email, phone_number,
+      },
     } = yield take(SIGN_UP);
-    yield call(signUp, username, password, email, phone_number);
+    yield call(signUp, {
+      username,
+      password,
+      email,
+      phone_number,
+    });
   }
 }
 
 function* watchConfirmSignup() {
   while (true) {
     const {
-      username, password, TFACode, resend,
+      payload: {
+        username, password, TFACode, resend,
+      },
     } = yield take(CONFIRM_SIGNUP);
-    yield call(confirmSignup, username, password, TFACode, resend);
+    yield call(confirmSignup, {
+      username,
+      password,
+      TFACode,
+      resend,
+    });
   }
 }
 
 function* watchResendSignup() {
   while (true) {
-    const { username } = yield take(RESEND_SIGNUP);
-    yield call(resendSignUp, username);
+    const { payload: { username } } = yield take(RESEND_SIGNUP);
+    yield call(resendSignUp, { username });
   }
 }
 

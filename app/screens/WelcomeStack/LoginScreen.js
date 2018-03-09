@@ -8,7 +8,7 @@ import { Container } from '../../components/Container';
 import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
-import { updateTempLoginUserName, updateTempLoginPassword, logIn } from '../../actions/welcome';
+import { updateLoginPassword, updateLoginUsername, logIn } from '../../actions/welcome';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
@@ -20,9 +20,9 @@ class LoginScreen extends Component {
   static propTypes = {
     username: PropTypes.string,
     password: PropTypes.string,
-    handleLogin: PropTypes.func,
     updateUsername: PropTypes.func,
     updatePassword: PropTypes.func,
+    logIn: PropTypes.func,
   };
 
   static navigationOptions = {
@@ -38,27 +38,26 @@ class LoginScreen extends Component {
   };
 
   render() {
-    const {
-      username, password, updateUsername, updatePassword, handleLogin,
-    } = this.props;
     return (
       <Container backgroundColor={styles.$teal}>
         <KeyboardAvoidingView style={styles.$viewStyles} behavior="padding">
           <InputNoBorder
             placeholder="Username"
-            onChangeText={val => updateUsername(val)}
+            onChangeText={username => this.props.updateUsername(username)}
             autoCapitalize="none"
           />
           <InputNoBorder
             placeholder="Password"
-            onChangeText={val => updatePassword(val)}
+            onChangeText={password => this.props.updatePassword(password)}
             autoCapitalize="none"
             secureTextEntry
           />
           <ButtonWithChevron
             text="Login"
             color={styles.$orange}
-            onPress={() => handleLogin(username, password)}
+            onPress={() =>
+              this.props.logIn({ username: this.props.username, password: this.props.password })
+            }
             size="small"
           />
         </KeyboardAvoidingView>
@@ -77,9 +76,9 @@ const mapState = (state) => {
 };
 
 const mapDispatch = {
-  updatePassword: updateTempLoginPassword,
-  updateUsername: updateTempLoginUserName,
-  handleLogin: logIn,
+  updatePassword: updateLoginPassword,
+  updateUsername: updateLoginUsername,
+  logIn,
 };
 
 export default connect(mapState, mapDispatch)(LoginScreen);

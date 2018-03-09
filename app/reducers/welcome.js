@@ -12,18 +12,18 @@ const initialSignup = {
   password: '',
   passwordRetype: '',
   phone_number: '',
-  TFACode: '',
 };
 
 const initialState = {
   login: initialLogin,
   signup: initialSignup,
   user: {},
+  TFACode: '',
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actions.UPDATE_TEMP_LOGIN_USERNAME:
+    case actions.UPDATE_LOGIN_USERNAME:
       return {
         ...state,
         login: {
@@ -31,7 +31,7 @@ const reducer = (state = initialState, action) => {
           username: action.username,
         },
       };
-    case actions.UPDATE_TEMP_LOGIN_PASSWORD:
+    case actions.UPDATE_LOGIN_PASSWORD:
       return {
         ...state,
         login: {
@@ -39,7 +39,7 @@ const reducer = (state = initialState, action) => {
           password: action.password,
         },
       };
-    case actions.UPDATE_TEMP_SIGNUP_EMAIL:
+    case actions.UPDATE_SIGNUP_EMAIL:
       return {
         ...state,
         signup: {
@@ -47,7 +47,7 @@ const reducer = (state = initialState, action) => {
           email: action.email,
         },
       };
-    case actions.UPDATE_TEMP_SIGNUP_USERNAME:
+    case actions.UPDATE_SIGNUP_USERNAME:
       return {
         ...state,
         signup: {
@@ -55,7 +55,7 @@ const reducer = (state = initialState, action) => {
           username: action.username,
         },
       };
-    case actions.UPDATE_TEMP_SIGNUP_PASSWORD:
+    case actions.UPDATE_SIGNUP_PASSWORD:
       return {
         ...state,
         signup: {
@@ -63,7 +63,7 @@ const reducer = (state = initialState, action) => {
           password: action.password,
         },
       };
-    case actions.UPDATE_TEMP_SIGNUP_PASSWORD_RETYPE:
+    case actions.UPDATE_SIGNUP_PASSWORD_RETYPE:
       return {
         ...state,
         signup: {
@@ -71,7 +71,7 @@ const reducer = (state = initialState, action) => {
           passwordRetype: action.passwordRetype,
         },
       };
-    case actions.UPDATE_TEMP_SIGNUP_NAME:
+    case actions.UPDATE_SIGNUP_NAME:
       return {
         ...state,
         signup: {
@@ -79,7 +79,7 @@ const reducer = (state = initialState, action) => {
           name: action.name,
         },
       };
-    case actions.UPDATE_TEMP_SIGNUP_PHONE_NUMBER:
+    case actions.UPDATE_SIGNUP_PHONE_NUMBER:
       return {
         ...state,
         signup: {
@@ -87,13 +87,10 @@ const reducer = (state = initialState, action) => {
           phone_number: action.phone_number,
         },
       };
-    case actions.UPDATE_TEMP_SIGNUP_TFA_CODE:
+    case actions.UPDATE_TFA_CODE:
       return {
         ...state,
-        signup: {
-          ...state.signup,
-          TFACode: action.TFACode,
-        },
+        TFACode: action.TFACode,
       };
     case actions.LOG_IN_SUCCESS:
       return {

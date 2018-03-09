@@ -1,47 +1,47 @@
 import * as actions from './constants';
 
-export const updateTempLoginUserName = username => ({
-  type: actions.UPDATE_TEMP_LOGIN_USERNAME,
+export const updateLoginUsername = username => ({
+  type: actions.UPDATE_LOGIN_USERNAME,
   username,
 });
 
-export const updateTempLoginPassword = password => ({
-  type: actions.UPDATE_TEMP_LOGIN_PASSWORD,
+export const updateLoginPassword = password => ({
+  type: actions.UPDATE_LOGIN_PASSWORD,
   password,
 });
 
-export const updateTempSignupName = name => ({
-  type: actions.UPDATE_TEMP_SIGNUP_NAME,
+export const updateSignupName = name => ({
+  type: actions.UPDATE_SIGNUP_NAME,
   name,
 });
 
-export const updateTempSignupUserName = username => ({
-  type: actions.UPDATE_TEMP_SIGNUP_USERNAME,
+export const updateSignupUsername = username => ({
+  type: actions.UPDATE_SIGNUP_USERNAME,
   username,
 });
 
-export const updateTempSignupEmail = email => ({
-  type: actions.UPDATE_TEMP_SIGNUP_EMAIL,
+export const updateSignupEmail = email => ({
+  type: actions.UPDATE_SIGNUP_EMAIL,
   email,
 });
 
-export const updateTempSignupPassword = password => ({
-  type: actions.UPDATE_TEMP_SIGNUP_PASSWORD,
+export const updateSignupPassword = password => ({
+  type: actions.UPDATE_SIGNUP_PASSWORD,
   password,
 });
 
-export const updateTempSignupPasswordRetype = passwordRetype => ({
-  type: actions.UPDATE_TEMP_SIGNUP_PASSWORD_RETYPE,
+export const updateSignupPasswordRetype = passwordRetype => ({
+  type: actions.UPDATE_SIGNUP_PASSWORD_RETYPE,
   passwordRetype,
 });
 
-export const updateTempSignupPhoneNumber = phone_number => ({
-  type: actions.UPDATE_TEMP_SIGNUP_PHONE_NUMBER,
+export const updateSignupPhoneNumber = phone_number => ({
+  type: actions.UPDATE_SIGNUP_PHONE_NUMBER,
   phone_number,
 });
 
-export const updateTempTFACode = TFACode => ({
-  type: actions.UPDATE_TEMP_SIGNUP_TFA_CODE,
+export const updateTFACode = TFACode => ({
+  type: actions.UPDATE_TFA_CODE,
   TFACode,
 });
 
@@ -50,34 +50,26 @@ export const resendSignUp = username => ({
   username,
 });
 
-export const logIn = (username, password) => ({
+export const logIn = payload => ({
   type: actions.LOG_IN,
-  username,
-  password,
+  payload,
 });
 
 export const logOut = () => ({
   type: actions.LOG_OUT,
 });
 
-export const signUp = (username, password, email, phone_number) => ({
+export const signUp = payload => ({
   type: actions.SIGN_UP,
-  username,
-  password,
-  email,
-  phone_number,
+  payload,
 });
 
-export const confirmSignup = (username, password, TFACode, resend) => ({
+export const confirmSignup = payload => ({
   type: actions.CONFIRM_SIGNUP,
-  username,
-  password,
-  TFACode,
-  resend,
+  payload,
 });
 
-export const confirmLogin = (user, TFACode) => ({
+export const confirmLogin = payload => ({
   type: actions.CONFIRM_LOGIN,
-  user,
-  TFACode,
+  payload,
 });
