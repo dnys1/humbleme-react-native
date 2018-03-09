@@ -43,8 +43,4 @@ const mapState = state => ({
   user: state.welcome.user,
 });
 
-const mapDispatch = {
-  logOut,
-};
-
-export default connect(mapState, mapDispatch)(LoggedInScreen);
+export default connect(mapState)(LoggedInScreen);

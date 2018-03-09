@@ -9,11 +9,11 @@ import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
 import {
-  updateTempSignupEmail,
-  updateTempSignupUserName,
-  updateTempSignupPassword,
-  updateTempSignupPasswordRetype,
-  updateTempSignupPhoneNumber,
+  updateSignupEmail,
+  updateSignupUsername,
+  updateSignupPassword,
+  updateSignupPasswordRetype,
+  updateSignupPhoneNumber,
   signUp,
 } from '../../actions/welcome';
 
@@ -35,7 +35,7 @@ class SignupScreen extends Component {
     updatePassword: PropTypes.func,
     updatePasswordRetype: PropTypes.func,
     updatePhoneNumber: PropTypes.func,
-    handleSignUp: PropTypes.func,
+    signUp: PropTypes.func,
   };
 
   static navigationOptions = {
@@ -51,50 +51,40 @@ class SignupScreen extends Component {
   };
 
   render() {
-    const {
-      username,
-      email,
-      password,
-      passwordRetype,
-      phone_number,
-      updateUsername,
-      updateEmail,
-      updatePassword,
-      updatePasswordRetype,
-      updatePhoneNumber,
-      handleSignUp,
-    } = this.props;
+    /* Would like to use const { props } = this; but eslint does not support */
+    /* and throws a no-unused-props error. See git issue here: */
+    /* https://github.com/yannickcr/eslint-plugin-react/issues/1393 */
     return (
       <Container backgroundColor={styles.$teal}>
         <KeyboardAvoidingView style={styles.$viewStyles} behavior="padding">
           <InputNoBorder
             placeholder="Pick a username"
-            onChangeText={val => updateUsername(val)}
+            onChangeText={username => this.props.updateUsername(username)}
             autoCapitalize="none"
           />
           <InputNoBorder
             placeholder="Email"
-            onChangeText={val => updateEmail(val)}
+            onChangeText={email => this.props.updateEmail(email)}
             autoCapitalize="none"
             keyboardType="email-address"
           />
           <InputNoBorder
             placeholder="Password"
-            onChangeText={val => updatePassword(val)}
+            onChangeText={password => this.props.updatePassword(password)}
             autoCapitalize="none"
             secureTextEntry
           />
           <InputNoBorder
             placeholder="Re-type Password"
-            onChangeText={val => updatePasswordRetype(val)}
+            onChangeText={passwordRetype => this.props.updatePasswordRetype(passwordRetype)}
             autoCapitalize="none"
             secureTextEntry
           />
           <InputNoBorder
             placeholder="Phone Number"
-            onChangeText={(val) => {
-              if (val.substring(0, 2) === '+1') updatePhoneNumber(val);
-              else updatePhoneNumber(`+1${val}`);
+            onChangeText={(phone_number) => {
+              if (phone_number.substring(0, 2) === '+1') this.props.updatePhoneNumber(phone_number);
+              else this.props.updatePhoneNumber(`+1${phone_number}`);
             }}
             autoCapitalize="none"
             keyboardType="phone-pad"
@@ -103,8 +93,13 @@ class SignupScreen extends Component {
             text="Sign Up"
             color={styles.$yellow}
             onPress={() => {
-              if (password === passwordRetype) {
-                handleSignUp(username, email, password, phone_number);
+              if (this.props.password === this.props.passwordRetype) {
+                this.props.signUp(
+                  this.props.username,
+                  this.props.email,
+                  this.props.password,
+                  this.props.phone_number,
+                );
               } else console.log("Error: passwords don't match");
             }}
             size="small"
@@ -131,11 +126,11 @@ const mapState = (state) => {
 };
 
 const mapDispatch = {
-  updateEmail: updateTempSignupEmail,
-  updateUsername: updateTempSignupUserName,
-  updatePassword: updateTempSignupPassword,
-  updatePasswordRetype: updateTempSignupPasswordRetype,
-  updatePhoneNumber: updateTempSignupPhoneNumber,
+  updateEmail: updateSignupEmail,
+  updateUsername: updateSignupUsername,
+  updatePassword: updateSignupPassword,
+  updatePasswordRetype: updateSignupPasswordRetype,
+  updatePhoneNumber: updateSignupPhoneNumber,
   handleSignUp: signUp,
 };
 
