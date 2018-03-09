@@ -1,11 +1,14 @@
 import { createStore, applyMiddleware } from 'redux';
 import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';
 import logger from 'redux-logger';
+import createSagaMiddleware from 'redux-saga';
 import thunk from 'redux-thunk';
 
 import reducers from '../reducers';
+import rootSaga from './sagas';
 
-const middleware = [];
+const sagaMiddleware = createSagaMiddleware();
+const middleware = [sagaMiddleware];
 
 // Must be run before createReduxBoundAddListener
 middleware.push(createReactNavigationReduxMiddleware('root', state => state.nav));
@@ -15,4 +18,8 @@ if (process.env.NODE_ENV === 'development') {
   middleware.push(logger);
 }
 
-export default createStore(reducers, applyMiddleware(...middleware));
+const store = createStore(reducers, applyMiddleware(...middleware));
+
+sagaMiddleware.run(rootSaga);
+
+export default store;
