@@ -8,11 +8,7 @@ import { Container } from '../../components/Container';
 import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
-import {
-  updateTempLoginUserName,
-  updateTempLoginPassword,
-  handleLogIn,
-} from '../../actions/welcome';
+import { updateTempLoginUserName, updateTempLoginPassword, logIn } from '../../actions/welcome';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
@@ -22,9 +18,11 @@ const styles = EStyleSheet.create({
 
 class LoginScreen extends Component {
   static propTypes = {
-    dispatch: PropTypes.func,
     username: PropTypes.string,
     password: PropTypes.string,
+    handleLogin: PropTypes.func,
+    updateUsername: PropTypes.func,
+    updatePassword: PropTypes.func,
   };
 
   static navigationOptions = {
@@ -39,38 +37,28 @@ class LoginScreen extends Component {
     },
   };
 
-  handleUpdateUserName = (userName) => {
-    this.props.dispatch(updateTempLoginUserName(userName));
-  };
-
-  handleUpdatePassword = (password) => {
-    this.props.dispatch(updateTempLoginPassword(password));
-  };
-
-  handleLoginRequest = () => {
-    const { username, password } = this.props;
-    this.props.dispatch(handleLogIn(username, password));
-  };
-
   render() {
+    const {
+      username, password, updateUsername, updatePassword, handleLogin,
+    } = this.props;
     return (
       <Container backgroundColor={styles.$teal}>
         <KeyboardAvoidingView style={styles.$viewStyles} behavior="padding">
           <InputNoBorder
             placeholder="Username"
-            onChangeText={userName => this.handleUpdateUserName(userName)}
+            onChangeText={val => updateUsername(val)}
             autoCapitalize="none"
           />
           <InputNoBorder
             placeholder="Password"
-            onChangeText={password => this.handleUpdatePassword(password)}
+            onChangeText={val => updatePassword(val)}
             autoCapitalize="none"
             secureTextEntry
           />
           <ButtonWithChevron
             text="Login"
             color={styles.$orange}
-            onPress={this.handleLoginRequest}
+            onPress={() => handleLogin(username, password)}
             size="small"
           />
         </KeyboardAvoidingView>
@@ -79,7 +67,7 @@ class LoginScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapState = (state) => {
   const { username, password } = state.welcome.login;
 
   return {
@@ -88,4 +76,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(LoginScreen);
+const mapDispatch = {
+  updatePassword: updateTempLoginPassword,
+  updateUsername: updateTempLoginUserName,
+  handleLogin: logIn,
+};
+
+export default connect(mapState, mapDispatch)(LoginScreen);

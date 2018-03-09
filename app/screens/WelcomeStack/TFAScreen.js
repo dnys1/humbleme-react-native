@@ -9,7 +9,7 @@ import { Subheading } from '../../components/Text';
 import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
-import { updateTempTFACode, handleConfirmSignup, handleConfirmLogin } from '../../actions/welcome';
+import { updateTempTFACode, confirmSignup, confirmLogin } from '../../actions/welcome';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
@@ -25,12 +25,14 @@ const styles = EStyleSheet.create({
 
 class TFAScreen extends Component {
   static propTypes = {
-    dispatch: PropTypes.func,
     navigation: PropTypes.object,
     username: PropTypes.string,
     password: PropTypes.string,
     TFACode: PropTypes.string,
     user: PropTypes.object,
+    handleConfirmSignup: PropTypes.func,
+    handleConfirmLogin: PropTypes.func,
+    updateTFACode: PropTypes.func,
   };
 
   static navigationOptions = {
@@ -48,23 +50,17 @@ class TFAScreen extends Component {
     gesturesEnabled: false,
   };
 
-  handleUpdateTempAuthCode = (TFACode) => {
-    this.props.dispatch(updateTempTFACode(TFACode));
-  };
-
-  confirmSignup = () => {
-    const { username, password, TFACode } = this.props;
-    const { resend } = this.props.navigation.state.params;
-    this.props.dispatch(handleConfirmSignup(username, password, TFACode, resend));
-  };
-
-  confirmLogin = () => {
-    const { user, TFACode } = this.props;
-    this.props.dispatch(handleConfirmLogin(user, TFACode));
-  };
-
   render() {
-    const { signup } = this.props.navigation.state.params;
+    const { signup, resend } = this.props.navigation.state.params;
+    const {
+      username,
+      password,
+      TFACode,
+      user,
+      updateTFACode,
+      handleConfirmLogin,
+      handleConfirmSignup,
+    } = this.props;
     return (
       <Container backgroundColor={styles.$teal}>
         <KeyboardAvoidingView behavior="padding" style={styles.$viewStyles}>
@@ -77,21 +73,21 @@ class TFAScreen extends Component {
           </View>
           <InputNoBorder
             placeholder="Authentication Code"
-            onChangeText={TFACode => this.handleUpdateTempAuthCode(TFACode)}
+            onChangeText={val => updateTFACode(val)}
             autoCapitalize="none"
           />
           {signup ? (
             <ButtonWithChevron
               text="Verify"
               color={styles.$yellow}
-              onPress={this.confirmSignup}
+              onPress={() => handleConfirmSignup(username, password, TFACode, resend)}
               size="small"
             />
           ) : (
             <ButtonWithChevron
               text="Login"
               color={styles.$orange}
-              onPress={this.confirmLogin}
+              onPress={() => handleConfirmLogin(user, TFACode)}
               size="small"
             />
           )}
@@ -101,7 +97,7 @@ class TFAScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapState = (state) => {
   const { user } = state.welcome;
   const { TFACode } = state.welcome.signup;
   const { password } = state.welcome.login; // Only pull for user logging in
@@ -120,4 +116,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(TFAScreen);
+const mapDispatch = {
+  handleConfirmSignup: confirmSignup,
+  handleConfirmLogin: confirmLogin,
+  updateTFACode: updateTempTFACode,
+};
+
+export default connect(mapState, mapDispatch)(TFAScreen);

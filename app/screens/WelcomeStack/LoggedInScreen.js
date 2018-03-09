@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Container } from '../../components/Container';
 import { Heading } from '../../components/Text';
 
-import { handleLogOut } from '../../actions/welcome';
+import { logOut } from '../../actions/welcome';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
@@ -26,7 +26,7 @@ class LoggedInScreen extends Component {
       fontSize: 80,
     },
     headerLeft: (
-      <Button title="Logout" color="white" onPress={() => navigation.dispatch(handleLogOut())} />
+      <Button title="Logout" color="white" onPress={() => navigation.dispatch(logOut())} />
     ),
   });
 
@@ -39,8 +39,12 @@ class LoggedInScreen extends Component {
   }
 }
 
-// const mapStateToProps = state => ({
-//   nav: state.nav,
-// });
+const mapState = state => ({
+  user: state.welcome.user,
+});
 
-export default connect()(LoggedInScreen);
+const mapDispatch = {
+  logOut,
+};
+
+export default connect(mapState, mapDispatch)(LoggedInScreen);
