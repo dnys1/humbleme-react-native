@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { Container } from '../../components/Container';
 import { WhiteLogo, LogoTorch } from '../../components/Logo';
-import { ButtonWithChevron } from '../../components/Button';
+import { ButtonWithChevron, WarningButton } from '../../components/Button';
 
 import { changeConnectionStatus } from '../../actions/network';
 
@@ -31,9 +31,14 @@ class WelcomeScreen extends Component {
   //   }),
   // };
 
-  static navigationOptions = {
-    header: null /* hide the header */,
-  };
+  static navigationOptions = ({ navigation }) => ({
+    headerStyle: EStyleSheet.create({
+      backgroundColor: () => EStyleSheet.value('$primaryTeal'),
+      borderBottomWidth: 0 /* https://github.com/react-navigation/react-navigation/issues/865 */,
+    }),
+    headerTitle:
+      navigation.state.params && !navigation.state.params.showWarning ? <WarningButton /> : null,
+  });
 
   componentWillMount() {
     NetInfo.addEventListener('connectionChange', this.props.changeConnectionStatus);
@@ -66,9 +71,10 @@ class WelcomeScreen extends Component {
 }
 
 const mapState = (state) => {
-  const { status } = state.network;
+  const { connected, hasCheckedStatus } = state.network;
   return {
-    status,
+    connected,
+    hasCheckedStatus,
   };
 };
 

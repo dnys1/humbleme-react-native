@@ -1,5 +1,7 @@
 import { Auth } from 'aws-amplify';
-import { take, call, put, fork, all } from 'redux-saga/effects';
+import { take, call, put, fork, all, select } from 'redux-saga/effects';
+
+import { getNetworkIsConnectedAndHasChecked } from './selectors';
 
 import {
   RESEND_SIGNUP,
@@ -27,7 +29,11 @@ import {
   NAV_LOGIN_SCREEN,
   NAV_LOGGED_IN_SCREEN,
   NAV_LOGIN_CONFIRMATION_MODAL,
+  NAV_SHOW_WARNING_ICON,
+  NAV_REMOVE_WARNING_ICON,
 } from '../actions/nav';
+
+import { CHANGE_CONNECTION_STATUS } from '../actions/network';
 
 function* logIn({ username, password }) {
   try {
@@ -114,6 +120,18 @@ function* logOut() {
 
 /* WATCHERS */
 
+function* watchNetwork() {
+  while (true) {
+    yield take(CHANGE_CONNECTION_STATUS);
+    const connected = yield select(getNetworkIsConnectedAndHasChecked);
+    if (connected) {
+      yield put({ type: NAV_REMOVE_WARNING_ICON });
+    } else {
+      yield put({ type: NAV_SHOW_WARNING_ICON });
+    }
+  }
+}
+
 function* watchLogin() {
   while (true) {
     const { payload: { username, password } } = yield take(LOG_IN);
@@ -185,6 +203,7 @@ function* watchLogout() {
 
 export default function* rootSaga() {
   yield all([
+    fork(watchNetwork),
     fork(watchLogin),
     fork(watchConfirmLogin),
     fork(watchResendSignup),

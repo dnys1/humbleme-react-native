@@ -21,4 +21,12 @@ export default EStyleSheet.create({
     paddingVertical: 20,
     paddingRight: 15,
   },
+  warningIcon: {
+    borderWidth: 1,
+    fontSize: 30,
+    borderRadius: 5,
+    padding: 2,
+    color: '$primaryYellow',
+    borderColor: '$primaryYellow',
+  },
 });

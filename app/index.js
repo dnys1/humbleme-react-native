@@ -1,13 +1,14 @@
 import React from 'react';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Provider, connect } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import PropTypes from 'prop-types';
 import Amplify from 'aws-amplify';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 import { addNavigationHelpers } from 'react-navigation';
 
 import config from './aws-exports';
-import Store from './config/store';
+import configureStore from './config/store';
 import { WelcomeStack } from './config/routes';
 
 Amplify.configure(config);
@@ -48,8 +49,24 @@ const mapStateToProps = state => ({
 
 const AppWithNavigation = connect(mapStateToProps)(App);
 
-export default () => (
-  <Provider store={Store}>
-    <AppWithNavigation />
-  </Provider>
-);
+export default class extends React.Component {
+  constructor(props) {
+    super(props);
+
+    const { store, persistor } = configureStore();
+    this.state = {
+      store,
+      persistor,
+    };
+  }
+
+  render() {
+    return (
+      <Provider store={this.state.store}>
+        <PersistGate persistor={this.state.persistor}>
+          <AppWithNavigation />
+        </PersistGate>
+      </Provider>
+    );
+  }
+}
