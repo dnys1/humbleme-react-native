@@ -94,12 +94,12 @@ class SignupScreen extends Component {
             color={styles.$yellow}
             onPress={() => {
               if (this.props.password === this.props.passwordRetype) {
-                this.props.signUp(
-                  this.props.username,
-                  this.props.email,
-                  this.props.password,
-                  this.props.phone_number,
-                );
+                this.props.signUp({
+                  username: this.props.username,
+                  password: this.props.password,
+                  email: this.props.email,
+                  phone_number: this.props.phone_number,
+                });
               } else console.log("Error: passwords don't match");
             }}
             size="small"
@@ -131,7 +131,7 @@ const mapDispatch = {
   updatePassword: updateSignupPassword,
   updatePasswordRetype: updateSignupPasswordRetype,
   updatePhoneNumber: updateSignupPhoneNumber,
-  handleSignUp: signUp,
+  signUp,
 };
 
 export default connect(mapState, mapDispatch)(SignupScreen);

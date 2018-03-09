@@ -1,6 +1,6 @@
 import * as actions from './constants';
 
-export const updateLoginUserName = username => ({
+export const updateLoginUsername = username => ({
   type: actions.UPDATE_LOGIN_USERNAME,
   username,
 });
@@ -15,7 +15,7 @@ export const updateSignupName = name => ({
   name,
 });
 
-export const updateSignupUserName = username => ({
+export const updateSignupUsername = username => ({
   type: actions.UPDATE_SIGNUP_USERNAME,
   username,
 });
@@ -50,34 +50,26 @@ export const resendSignUp = username => ({
   username,
 });
 
-export const logIn = (username, password) => ({
+export const logIn = payload => ({
   type: actions.LOG_IN,
-  username,
-  password,
+  payload,
 });
 
 export const logOut = () => ({
   type: actions.LOG_OUT,
 });
 
-export const signUp = (username, password, email, phone_number) => ({
+export const signUp = payload => ({
   type: actions.SIGN_UP,
-  username,
-  password,
-  email,
-  phone_number,
+  payload,
 });
 
-export const confirmSignup = (username, password, TFACode, resend) => ({
+export const confirmSignup = payload => ({
   type: actions.CONFIRM_SIGNUP,
-  username,
-  password,
-  TFACode,
-  resend,
+  payload,
 });
 
-export const confirmLogin = (user, TFACode) => ({
+export const confirmLogin = payload => ({
   type: actions.CONFIRM_LOGIN,
-  user,
-  TFACode,
+  payload,
 });

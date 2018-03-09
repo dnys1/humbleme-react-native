@@ -72,12 +72,12 @@ class TFAScreen extends Component {
               text="Verify"
               color={styles.$yellow}
               onPress={() =>
-                this.props.confirmSignup(
-                  this.props.username,
-                  this.props.password,
-                  this.props.TFACode,
+                this.props.confirmSignup({
+                  username: this.props.username,
+                  password: this.props.password,
+                  TFACode: this.props.TFACode,
                   resend,
-                )
+                })
               }
               size="small"
             />
@@ -85,7 +85,9 @@ class TFAScreen extends Component {
             <ButtonWithChevron
               text="Login"
               color={styles.$orange}
-              onPress={() => this.props.confirmLogin(this.props.user, this.props.TFACode)}
+              onPress={() =>
+                this.props.confirmLogin({ user: this.props.user, TFACode: this.props.TFACode })
+              }
               size="small"
             />
           )}

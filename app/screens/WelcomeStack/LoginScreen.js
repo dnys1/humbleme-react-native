@@ -8,7 +8,7 @@ import { Container } from '../../components/Container';
 import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
-import { updatePassword, updateUsername, logIn } from '../../actions/welcome';
+import { updateLoginPassword, updateLoginUsername, logIn } from '../../actions/welcome';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
@@ -55,7 +55,9 @@ class LoginScreen extends Component {
           <ButtonWithChevron
             text="Login"
             color={styles.$orange}
-            onPress={() => this.props.logIn(this.props.username, this.props.password)}
+            onPress={() =>
+              this.props.logIn({ username: this.props.username, password: this.props.password })
+            }
             size="small"
           />
         </KeyboardAvoidingView>
@@ -74,8 +76,8 @@ const mapState = (state) => {
 };
 
 const mapDispatch = {
-  updatePassword,
-  updateUsername,
+  updatePassword: updateLoginPassword,
+  updateUsername: updateLoginUsername,
   logIn,
 };
 
