@@ -1,7 +1,7 @@
 import { NavigationActions } from 'react-navigation';
 import { WelcomeStack } from '../config/routes';
 
-import * as actions from '../actions/constants';
+import * as actions from '../actions/nav';
 
 const initialState = WelcomeStack.router.getStateForAction(NavigationActions.init());
 

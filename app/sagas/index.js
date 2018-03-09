@@ -17,14 +17,17 @@ import {
   CONFIRM_SIGNUP,
   CONFIRM_SIGNUP_SUCCESS,
   CONFIRM_SIGNUP_FAILURE,
-  NAV_SIGNUP_CONFIRMATION_MODAL,
-  NAV_LOGIN_SCREEN,
   CONFIRM_LOGIN_SUCCESS,
-  NAV_LOGGED_IN_SCREEN,
   CONFIRM_LOGIN_FAILURE,
   CONFIRM_LOGIN,
+} from '../actions/welcome';
+
+import {
+  NAV_SIGNUP_CONFIRMATION_MODAL,
+  NAV_LOGIN_SCREEN,
+  NAV_LOGGED_IN_SCREEN,
   NAV_LOGIN_CONFIRMATION_MODAL,
-} from '../actions/constants';
+} from '../actions/nav';
 
 function* logIn({ username, password }) {
   try {
