@@ -10,8 +10,6 @@ import {
   UPDATE_TFA_CODE,
   LOG_IN_FAILURE,
   LOG_IN,
-  LOG_OUT,
-  LOG_OUT_FAILURE,
   SIGN_UP,
   SIGN_UP_SUCCESS,
   SIGN_UP_FAILURE,
@@ -116,8 +114,6 @@ const reducer = (state = initialState, action) => {
       };
     case LOG_IN_FAILURE:
     case LOG_IN:
-    case LOG_OUT:
-    case LOG_OUT_FAILURE:
     case SIGN_UP:
     case SIGN_UP_SUCCESS:
     case SIGN_UP_FAILURE:

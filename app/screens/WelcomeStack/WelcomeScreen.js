@@ -34,7 +34,6 @@ class WelcomeScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
-      borderBottomWidth: 0 /* https://github.com/react-navigation/react-navigation/issues/865 */,
     }),
     headerTitle:
       navigation.state.params && !navigation.state.params.showWarning ? <WarningButton /> : null,

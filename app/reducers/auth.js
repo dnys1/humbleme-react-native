@@ -1,4 +1,4 @@
-import { LOG_IN_SUCCESS, LOG_OUT_SUCCESS } from '../actions/welcome';
+import { LOG_IN_SUCCESS, LOG_OUT_SUCCESS } from '../actions/app';
 
 const initialState = {};
 

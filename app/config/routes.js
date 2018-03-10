@@ -28,6 +28,9 @@ const WelcomeStack = StackNavigator(
   },
   {
     headerMode: 'screen',
+    headerStyle: {
+      borderBottomWidth: 0 /* https://github.com/react-navigation/react-navigation/issues/865 */,
+    },
   },
 );
 

@@ -15,10 +15,6 @@ export const CONFIRM_LOGIN = 'CONFIRM_LOGIN';
 export const CONFIRM_LOGIN_SUCCESS = 'CONFIRM_LOGIN_SUCCESS';
 export const CONFIRM_LOGIN_FAILURE = 'CONFIRM_LOGIN_FAILURE';
 
-export const LOG_OUT = 'LOG_OUT';
-export const LOG_OUT_SUCCESS = 'LOGOUT_SUCCESS';
-export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
-
 export const SIGN_UP = 'SIGN_UP';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
@@ -83,10 +79,6 @@ export const resendSignUp = username => ({
 export const logIn = payload => ({
   type: LOG_IN,
   payload,
-});
-
-export const logOut = () => ({
-  type: LOG_OUT,
 });
 
 export const signUp = payload => ({

@@ -3,14 +3,12 @@ import { take, call, put, fork, all, select } from 'redux-saga/effects';
 // import { delay } from 'redux-saga';
 
 import { getNetworkIsConnectedAndHasChecked } from './selectors';
+import navSaga from './nav';
 
 import {
   RESEND_SIGNUP,
   RESEND_SIGNUP_SUCCESS,
   RESEND_SIGNUP_FAILURE,
-  LOG_OUT,
-  LOG_OUT_SUCCESS,
-  LOG_OUT_FAILURE,
   LOG_IN,
   LOG_IN_SUCCESS,
   LOG_IN_FAILURE,
@@ -24,6 +22,8 @@ import {
   CONFIRM_LOGIN_FAILURE,
   CONFIRM_LOGIN,
 } from '../actions/welcome';
+
+import { LOG_OUT, LOG_OUT_SUCCESS, LOG_OUT_FAILURE } from '../actions/app';
 
 import {
   NAV_SIGNUP_CONFIRMATION_MODAL,
@@ -209,5 +209,6 @@ export default function* rootSaga() {
     fork(watchSignup),
     fork(watchConfirmSignup),
     fork(watchLogout),
+    navSaga(),
   ]);
 }

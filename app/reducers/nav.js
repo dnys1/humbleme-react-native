@@ -2,6 +2,7 @@ import { NavigationActions } from 'react-navigation';
 import { WelcomeStack } from '../config/routes';
 
 import * as actions from '../actions/nav';
+import * as appActions from '../actions/app';
 
 const initialState = WelcomeStack.router.getStateForAction(NavigationActions.init());
 
@@ -66,7 +67,7 @@ export default (state = initialState, action) => {
         state,
       );
       break;
-    case actions.LOG_OUT_SUCCESS:
+    case appActions.LOG_OUT_SUCCESS:
       nextState = WelcomeStack.router.getStateForAction(
         NavigationActions.reset({
           index: 0,
