@@ -1,0 +1,67 @@
+Using a splash of 300dpi caused the following error:
+See (https://stackoverflow.com/questions/40835514/android-studio-canvas-drawing-too-large-bitmap)
+
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: FATAL EXCEPTION: main
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: Process: host.exp.exponent, PID: 17568
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: java.lang.RuntimeException: Canvas: trying to draw too large(210472944bytes) bitmap.
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.DisplayListCanvas.throwIfCannotDraw(DisplayListCanvas.java:260)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.graphics.Canvas.drawBitmap(Canvas.java:1420)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.graphics.drawable.BitmapDrawable.draw(BitmapDrawable.java:545)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at com.squareup.picasso.o.draw(PicassoDrawable.java:110)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.widget.ImageView.onDraw(ImageView.java:1286)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.draw(View.java:18410)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.updateDisplayListIfDirty(View.java:17388)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.draw(View.java:18172)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewGroup.drawChild(ViewGroup.java:3969)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewGroup.dispatchDraw(ViewGroup.java:3755)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.updateDisplayListIfDirty(View.java:17383)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.draw(View.java:18172)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewGroup.drawChild(ViewGroup.java:3969)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewGroup.dispatchDraw(ViewGroup.java:3755)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.draw(View.java:18413)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.updateDisplayListIfDirty(View.java:17388)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.draw(View.java:18172)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewGroup.drawChild(ViewGroup.java:3969)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewGroup.dispatchDraw(ViewGroup.java:3755)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.updateDisplayListIfDirty(View.java:17383)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.draw(View.java:18172)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewGroup.drawChild(ViewGroup.java:3969)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewGroup.dispatchDraw(ViewGroup.java:3755)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.updateDisplayListIfDirty(View.java:17383)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.draw(View.java:18172)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewGroup.drawChild(ViewGroup.java:3969)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewGroup.dispatchDraw(ViewGroup.java:3755)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.updateDisplayListIfDirty(View.java:17383)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.draw(View.java:18172)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewGroup.drawChild(ViewGroup.java:3969)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewGroup.dispatchDraw(ViewGroup.java:3755)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.draw(View.java:18413)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at com.android.internal.policy.DecorView.draw(DecorView.java:967)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.View.updateDisplayListIfDirty(View.java:17388)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ThreadedRenderer.updateViewTreeDisplayList(ThreadedRenderer.java:722)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ThreadedRenderer.updateRootDisplayList(ThreadedRenderer.java:728)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ThreadedRenderer.draw(ThreadedRenderer.java:836)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewRootImpl.draw(ViewRootImpl.java:3181)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewRootImpl.performDraw(ViewRootImpl.java:2977)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewRootImpl.performTraversals(ViewRootImpl.java:2565)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewRootImpl.doTraversal(ViewRootImpl.java:1550)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.ViewRootImpl$TraversalRunnable.run(ViewRootImpl.java:7189)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:959)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.Choreographer.doCallbacks(Choreographer.java:734)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.Choreographer.doFrame(Choreographer.java:670)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.view.Choreographer$FrameDisplayEventReceiver.run(Choreographer.java:945)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.os.Handler.handleCallback(Handler.java:751)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.os.Handler.dispatchMessage(Handler.java:95)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.os.Looper.loop(Looper.java:154)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at android.app.ActivityThread.main(ActivityThread.java:6776)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at java.lang.reflect.Method.invoke(Native Method)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:1520)
+03-09 23:20:15.900 17568 17568 E AndroidRuntime: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1410)
+03-09 23:20:15.904  1232  4885 D Debug   : !@DumpState : SHIP
+03-09 23:20:15.904  1232  4885 D Debug   : !@DumpState : debug level:0x4f4c
+03-09 23:20:15.904  1232  4885 D Debug   : !@Dumpstate : Finally, system will skip dumpstate
+03-09 23:20:15.905 17568 17626 I System.out: (HTTPLog)-Static: isSBSettingEnabled false
+03-09 23:20:15.905 17568 17626 I System.out: (HTTPLog)-Static: isSBSettingEnabled false
+03-09 23:20:15.907   756  1653 D EnterpriseController: netId is 0
+03-09 23:20:15.907   756  1653 D Netd    : getNetworkForDns: using netid 503 for uid 10201
+03-09 23:20:15.907  1232  4885 W ActivityManager:   Force finishing activity host.exp.exponent/.experience.ExperienceActivity
