@@ -8,8 +8,6 @@ import {
   UPDATE_SIGNUP_NAME,
   UPDATE_SIGNUP_PHONE_NUMBER,
   UPDATE_TFA_CODE,
-  LOG_IN_SUCCESS,
-  LOG_OUT_SUCCESS,
   LOG_IN_FAILURE,
   LOG_IN,
   LOG_OUT,
@@ -42,7 +40,6 @@ const initialSignup = {
 const initialState = {
   login: initialLogin,
   signup: initialSignup,
-  user: {},
   TFACode: '',
 };
 
@@ -116,16 +113,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         TFACode: action.TFACode,
-      };
-    case LOG_IN_SUCCESS:
-      return {
-        ...state,
-        user: action.user,
-      };
-    case LOG_OUT_SUCCESS:
-      return {
-        ...state,
-        user: {},
       };
     case LOG_IN_FAILURE:
     case LOG_IN:

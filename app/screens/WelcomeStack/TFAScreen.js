@@ -98,7 +98,7 @@ class TFAScreen extends Component {
 }
 
 const mapState = (state) => {
-  const { user, TFACode } = state.welcome;
+  const { TFACode } = state.welcome;
   const { password } = state.welcome.login; // Only pull for user logging in
 
   let username;
@@ -108,7 +108,7 @@ const mapState = (state) => {
     ({ username } = state.welcome.login);
   }
   return {
-    user,
+    user: state.auth,
     username,
     password,
     TFACode,

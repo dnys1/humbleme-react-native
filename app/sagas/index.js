@@ -1,5 +1,6 @@
 import { Auth } from 'aws-amplify';
 import { take, call, put, fork, all, select } from 'redux-saga/effects';
+// import { delay } from 'redux-saga';
 
 import { getNetworkIsConnectedAndHasChecked } from './selectors';
 
@@ -198,8 +199,6 @@ function* watchLogout() {
     yield call(logOut);
   }
 }
-
-// function* confirmLogin() {}
 
 export default function* rootSaga() {
   yield all([
