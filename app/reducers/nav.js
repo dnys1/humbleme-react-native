@@ -63,7 +63,10 @@ export default (state = initialState, action) => {
       break;
     case actions.NAV_LOGGED_IN_SCREEN:
       nextState = WelcomeStack.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'LoggedIn' }),
+        NavigationActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'LoggedIn' })],
+        }),
         state,
       );
       break;

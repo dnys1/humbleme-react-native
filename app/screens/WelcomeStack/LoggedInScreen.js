@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Button } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { connect } from 'react-redux';
 
 import { Container } from '../../components/Container';
 import { Heading } from '../../components/Text';
 
-import { logOut } from '../../actions/welcome';
+import { logOut } from '../../actions/app';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
@@ -28,11 +28,9 @@ class LoggedInScreen extends Component {
     headerLeft: (
       // TODO: 'color' property sets background color in Android
       // Style looks back... build own?
-      <Button
-        title="Logout"
-        style={{ color: 'white', backgroundColor: 'transparent' }}
-        onPress={() => navigation.dispatch(logOut())}
-      />
+      <TouchableOpacity onPress={() => navigation.dispatch(logOut())}>
+        <Text style={{ color: 'white', fontSize: 19 }}>Logout</Text>
+      </TouchableOpacity>
     ),
   });
 
@@ -45,8 +43,8 @@ class LoggedInScreen extends Component {
   }
 }
 
-const mapState = state => ({
-  user: state.welcome.user,
+const mapStateToProps = state => ({
+  user: state.auth.user,
 });
 
-export default connect(mapState)(LoggedInScreen);
+export default connect(mapStateToProps)(LoggedInScreen);

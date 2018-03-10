@@ -5,6 +5,9 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 
+import { isEmpty } from '../../utils';
+import { connectAlert } from '../../components/Alert';
+
 import { Container } from '../../components/Container';
 import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
@@ -17,6 +20,8 @@ import {
   updateSignupPhoneNumber,
   signUp,
 } from '../../actions/welcome';
+
+import { clearWarning, clearError } from '../../actions/app';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
@@ -37,6 +42,10 @@ class SignupScreen extends Component {
     updatePasswordRetype: PropTypes.func,
     updatePhoneNumber: PropTypes.func,
     signUp: PropTypes.func,
+    error: PropTypes.object,
+    alertWithType: PropTypes.func,
+    clearWarning: PropTypes.func,
+    clearError: PropTypes.func,
   };
 
   static navigationOptions = {
@@ -51,6 +60,19 @@ class SignupScreen extends Component {
       fontSize: 25,
     },
   };
+
+  componentWillReceiveProps(nextProps) {
+    const { error } = nextProps;
+    if (!isEmpty(error)) {
+      console.log(`There's a ${error.type} error: `, error);
+      this.props.alertWithType(error.alertStyle, error.title, error.msg);
+      if (error.alertStyle === 'warn') {
+        this.props.clearWarning();
+      } else if (error.alertStyle === 'error') {
+        this.props.clearError();
+      }
+    }
+  }
 
   render() {
     /* Would like to use const { props } = this; but eslint does not support */
@@ -118,10 +140,11 @@ class SignupScreen extends Component {
   }
 }
 
-const mapState = (state) => {
+const mapStateToProps = (state) => {
   const {
     name, username, email, password, passwordRetype, phone_number,
   } = state.welcome.signup;
+  const { error } = state.app;
 
   return {
     name,
@@ -130,16 +153,19 @@ const mapState = (state) => {
     password,
     passwordRetype,
     phone_number,
+    error,
   };
 };
 
-const mapDispatch = {
+const mapDispatchToProps = {
   updateEmail: updateSignupEmail,
   updateUsername: updateSignupUsername,
   updatePassword: updateSignupPassword,
   updatePasswordRetype: updateSignupPasswordRetype,
   updatePhoneNumber: updateSignupPhoneNumber,
   signUp,
+  clearWarning,
+  clearError,
 };
 
-export default connect(mapState, mapDispatch)(SignupScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(connectAlert(SignupScreen));

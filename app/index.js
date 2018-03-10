@@ -7,6 +7,8 @@ import Amplify from 'aws-amplify';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 import { addNavigationHelpers } from 'react-navigation';
 
+import { AlertProvider } from './components/Alert';
+
 import config from './aws-exports';
 import configureStore from './config/store';
 import { WelcomeStack } from './config/routes';
@@ -66,7 +68,9 @@ export default class extends React.Component {
     return (
       <Provider store={this.state.store}>
         <PersistGate persistor={this.state.persistor}>
-          <AppWithNavigation />
+          <AlertProvider>
+            <AppWithNavigation />
+          </AlertProvider>
         </PersistGate>
       </Provider>
     );
