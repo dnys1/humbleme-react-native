@@ -42,7 +42,7 @@ function* logIn({ username, password }) {
     return user;
   } catch (err) {
     if (err.code === 'UserNotConfirmedException') {
-      yield put({ type: RESEND_SIGNUP, username });
+      yield put({ type: RESEND_SIGNUP, payload: { username } });
     } else if (err.code === 'UserNotFoundException') {
       // TODO: Alert user
     }
@@ -54,7 +54,7 @@ function* logIn({ username, password }) {
 
 function* confirmLogin({ user, TFACode }) {
   try {
-    yield Auth.confirmSignIn(user, TFACode);
+    console.log(yield Auth.confirmSignIn(user, TFACode));
     yield put({ type: CONFIRM_LOGIN_SUCCESS });
     yield put({ type: NAV_LOGGED_IN_SCREEN });
   } catch (err) {
@@ -65,7 +65,7 @@ function* confirmLogin({ user, TFACode }) {
 
 function* resendSignUp({ username }) {
   try {
-    yield Auth.resendSignUp(username);
+    console.log(yield Auth.resendSignUp(username));
     yield put({ type: RESEND_SIGNUP_SUCCESS });
     yield put({ type: NAV_SIGNUP_CONFIRMATION_MODAL, resend: true });
   } catch (err) {
@@ -96,7 +96,9 @@ function* confirmSignup({
   username, password, TFACode, resend,
 }) {
   try {
-    yield Auth.confirmSignUp(username, TFACode);
+    console.log(yield Auth.confirmSignUp(username, TFACode));
+    console.log(yield Auth.currentAuthenticatedUser());
+    console.log(yield Auth.currentUserPoolUser());
     yield put({ type: CONFIRM_SIGNUP_SUCCESS });
     if (resend) {
       yield put({ type: LOG_IN, username, password });
@@ -111,7 +113,7 @@ function* confirmSignup({
 
 function* logOut() {
   try {
-    yield Auth.signOut();
+    console.log(yield Auth.signOut());
     yield put({ type: LOG_OUT_SUCCESS });
   } catch (err) {
     yield put({ type: LOG_OUT_FAILURE, err });

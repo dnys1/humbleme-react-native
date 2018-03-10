@@ -71,9 +71,9 @@ export const updateTFACode = TFACode => ({
   TFACode,
 });
 
-export const resendSignUp = username => ({
+export const resendSignUp = payload => ({
   type: RESEND_SIGNUP,
-  username,
+  payload,
 });
 
 export const logIn = payload => ({
