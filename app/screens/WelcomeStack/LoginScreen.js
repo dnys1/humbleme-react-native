@@ -4,11 +4,15 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { isEmpty } from '../../utils';
+import { connectAlert } from '../../components/Alert';
+
 import { Container } from '../../components/Container';
 import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
 import { updateLoginPassword, updateLoginUsername, logIn } from '../../actions/welcome';
+import { clearWarning, clearError } from '../../actions/app';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
@@ -23,6 +27,10 @@ class LoginScreen extends Component {
     updateUsername: PropTypes.func,
     updatePassword: PropTypes.func,
     logIn: PropTypes.func,
+    error: PropTypes.object,
+    alertWithType: PropTypes.func,
+    clearWarning: PropTypes.func,
+    clearError: PropTypes.func,
   };
 
   static navigationOptions = {
@@ -37,6 +45,19 @@ class LoginScreen extends Component {
       fontSize: 80,
     },
   };
+
+  componentWillReceiveProps(nextProps) {
+    const { error } = nextProps;
+    if (!isEmpty(error)) {
+      console.log(`There's a ${error.type} error: `, error);
+      this.props.alertWithType(error.alertStyle, error.title, error.msg);
+      if (error.alertStyle === 'warn') {
+        this.props.clearWarning();
+      } else if (error.alertStyle === 'error') {
+        this.props.clearError();
+      }
+    }
+  }
 
   render() {
     return (
@@ -67,19 +88,23 @@ class LoginScreen extends Component {
   }
 }
 
-const mapState = (state) => {
+const mapStateToProps = (state) => {
   const { username, password } = state.welcome.login;
+  const { error } = state.app;
 
   return {
     username,
     password,
+    error,
   };
 };
 
-const mapDispatch = {
+const mapDispatchToProps = {
   updatePassword: updateLoginPassword,
   updateUsername: updateLoginUsername,
   logIn,
+  clearWarning,
+  clearError,
 };
 
-export default connect(mapState, mapDispatch)(LoginScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(connectAlert(LoginScreen));

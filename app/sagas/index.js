@@ -3,7 +3,7 @@ import { take, call, put, fork, all, select } from 'redux-saga/effects';
 // import { delay } from 'redux-saga';
 
 import { getNetworkIsConnectedAndHasChecked } from './selectors';
-import navSaga from './nav';
+import navSagas from './nav';
 
 import {
   RESEND_SIGNUP,
@@ -23,15 +23,21 @@ import {
   CONFIRM_LOGIN,
 } from '../actions/welcome';
 
-import { APPLICATION_LOADED, LOG_OUT, LOG_OUT_SUCCESS, LOG_OUT_FAILURE } from '../actions/app';
+import {
+  APPLICATION_LOADED,
+  LOG_OUT,
+  LOG_OUT_SUCCESS,
+  LOG_OUT_FAILURE,
+  SHOW_WARNING,
+  SHOW_ERROR,
+  CLEAR_WARNING,
+} from '../actions/app';
 
 import {
   NAV_SIGNUP_CONFIRMATION_MODAL,
   NAV_LOGIN_SCREEN,
   NAV_LOGGED_IN_SCREEN,
   // NAV_LOGIN_CONFIRMATION_MODAL,
-  NAV_SHOW_WARNING_ICON,
-  NAV_REMOVE_WARNING_ICON,
 } from '../actions/nav';
 
 import { CHANGE_CONNECTION_STATUS } from '../actions/network';
@@ -51,7 +57,23 @@ function* logIn({ username, password }) {
     if (err.code === 'UserNotConfirmedException') {
       yield put({ type: RESEND_SIGNUP, payload: { username } });
     } else if (err.code === 'UserNotFoundException') {
-      // TODO: Alert user
+      yield put({
+        type: SHOW_ERROR,
+        payload: {
+          type: 'login',
+          title: 'Login Error',
+          msg: 'Username not found. Please try again or return to the home screen to signup.',
+        },
+      });
+    } else if (err.code === 'NotAuthorizedException') {
+      yield put({
+        type: SHOW_ERROR,
+        payload: {
+          type: 'login',
+          title: 'Login Error',
+          msg: 'Incorrect username or password.',
+        },
+      });
     }
     yield put({ type: LOG_IN_FAILURE, err });
     console.log('Login error: ', err);
@@ -90,9 +112,24 @@ function* signUp({
     yield put({ type: NAV_SIGNUP_CONFIRMATION_MODAL, resend: false });
   } catch (err) {
     if (err.code === 'InvalidPasswordException') {
-      // TODO: Alert password rules
+      yield put({
+        type: SHOW_ERROR,
+        payload: {
+          type: 'signup',
+          title: 'Password Error',
+          msg:
+            'Passwords must be 8 characters long and contain:\n\t- uppercase letters\n\t- lowercase letters\n\t- numbers',
+        },
+      });
     } else if (err.code === 'UsernameExistsException') {
-      // TODO: Alert username already exists
+      yield put({
+        type: SHOW_ERROR,
+        payload: {
+          type: 'signup',
+          title: 'Signup Error',
+          msg: 'That username already exists.',
+        },
+      });
     }
     yield put({ type: SIGN_UP_FAILURE, err });
     console.log('Signup error: ', err);
@@ -132,10 +169,18 @@ function* watchNetwork() {
   while (true) {
     yield take(CHANGE_CONNECTION_STATUS);
     const connected = yield select(getNetworkIsConnectedAndHasChecked);
-    if (connected) {
-      yield put({ type: NAV_REMOVE_WARNING_ICON });
+    if (!connected) {
+      yield put({
+        type: SHOW_WARNING,
+        payload: {
+          type: 'network',
+          title: 'Warning',
+          msg: 'No internet connection. Features will be unavailable.',
+        },
+      });
     } else {
-      yield put({ type: NAV_SHOW_WARNING_ICON });
+      // connected to Internet
+      yield put({ type: CLEAR_WARNING, payload: { type: 'network' } });
     }
   }
 }
@@ -221,6 +266,6 @@ export default function* rootSaga() {
     fork(watchSignup),
     fork(watchConfirmSignup),
     fork(watchLogout),
-    navSaga(),
+    navSagas(),
   ]);
 }

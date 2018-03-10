@@ -2,14 +2,18 @@ import React, { Component } from 'react';
 import { View, NetInfo } from 'react-native';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
+
 import { connect } from 'react-redux';
+import { connectAlert } from '../../components/Alert';
+
+import { isEmpty } from '../../utils';
 
 import { Container } from '../../components/Container';
 import { WhiteLogo, LogoTorch } from '../../components/Logo';
 import { ButtonWithChevron } from '../../components/Button';
 import { HeaderWarningNotification } from '../../components/Header';
 
-import { applicationLoaded } from '../../actions/app';
+import { applicationLoaded, clearWarning, clearError } from '../../actions/app';
 import { changeConnectionStatus } from '../../actions/network';
 
 const styles = EStyleSheet.create({
@@ -23,6 +27,10 @@ class WelcomeScreen extends Component {
     navigation: PropTypes.object,
     changeConnectionStatus: PropTypes.func,
     applicationLoaded: PropTypes.func,
+    alertWithType: PropTypes.func,
+    error: PropTypes.object,
+    clearWarning: PropTypes.func,
+    clearError: PropTypes.func,
   };
 
   /* Interesting method for incorporating stylesheet vars into header */
@@ -47,8 +55,24 @@ class WelcomeScreen extends Component {
   });
 
   componentWillMount() {
-    this.props.applicationLoaded();
     NetInfo.addEventListener('connectionChange', this.props.changeConnectionStatus);
+  }
+
+  componentDidMount() {
+    setTimeout(() => this.props.applicationLoaded(), 1000);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { error } = nextProps;
+    if (!isEmpty(error)) {
+      console.log(`There's a ${error.type} error: `, error);
+      this.props.alertWithType(error.alertStyle, error.title, error.msg);
+      if (error.alertStyle === 'warn') {
+        this.props.clearWarning();
+      } else if (error.alertStyle === 'error') {
+        this.props.clearError();
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -77,17 +101,22 @@ class WelcomeScreen extends Component {
   }
 }
 
-const mapState = (state) => {
+const mapStateToProps = (state) => {
   const { connected, hasCheckedStatus } = state.network;
+  const { error } = state.app;
+
   return {
     connected,
     hasCheckedStatus,
+    error,
   };
 };
 
-const mapDispatch = {
+const mapDispatchToProps = {
   applicationLoaded,
   changeConnectionStatus,
+  clearWarning,
+  clearError,
 };
 
-export default connect(mapState, mapDispatch)(WelcomeScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(connectAlert(WelcomeScreen));

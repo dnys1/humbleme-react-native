@@ -2,6 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
+import EStyleSheet from 'react-native-extended-stylesheet';
+
+const styles = EStyleSheet.create({
+  $warnColor: '$primaryYellow',
+  $errorColor: '$primaryOrange',
+});
 
 class AlertProvider extends Component {
   static get childContextTypes() {
@@ -32,6 +38,8 @@ class AlertProvider extends Component {
           ref={(ref) => {
             this.dropdown = ref;
           }}
+          warnColor={styles.$warnColor}
+          errorColor={styles.$errorColor}
         />
       </View>
     );

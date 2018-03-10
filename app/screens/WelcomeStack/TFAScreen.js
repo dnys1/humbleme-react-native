@@ -4,12 +4,16 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { isEmpty } from '../../utils';
+import { connectAlert } from '../../components/Alert';
+
 import { Container } from '../../components/Container';
 import { Subheading } from '../../components/Text';
 import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
 import { updateTFACode, confirmSignup, confirmLogin } from '../../actions/welcome';
+import { clearWarning, clearError } from '../../actions/app';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
@@ -33,6 +37,10 @@ class TFAScreen extends Component {
     confirmSignup: PropTypes.func,
     confirmLogin: PropTypes.func,
     updateTFACode: PropTypes.func,
+    error: PropTypes.object,
+    alertWithType: PropTypes.func,
+    clearWarning: PropTypes.func,
+    clearError: PropTypes.func,
   };
 
   static navigationOptions = {
@@ -50,6 +58,19 @@ class TFAScreen extends Component {
     headerLeft: null,
     gesturesEnabled: false,
   };
+
+  componentWillReceiveProps(nextProps) {
+    const { error } = nextProps;
+    if (!isEmpty(error)) {
+      console.log(`There's a ${error.type} error: `, error);
+      this.props.alertWithType(error.alertStyle, error.title, error.msg);
+      if (error.alertStyle === 'warn') {
+        this.props.clearWarning();
+      } else if (error.alertStyle === 'error') {
+        this.props.clearError();
+      }
+    }
+  }
 
   render() {
     const { signup, resend } = this.props.navigation.state.params;
@@ -98,10 +119,11 @@ class TFAScreen extends Component {
   }
 }
 
-const mapState = (state) => {
+const mapStateToProps = (state) => {
   const { TFACode } = state.welcome;
   const { password } = state.welcome.login; // Only pull for user logging in
   const { user } = state.auth;
+  const { error } = state.app;
 
   let username;
   if (state.welcome.signup.username) {
@@ -114,13 +136,16 @@ const mapState = (state) => {
     username,
     password,
     TFACode,
+    error,
   };
 };
 
-const mapDispatch = {
+const mapDispatchToProps = {
   confirmSignup,
   confirmLogin,
   updateTFACode,
+  clearWarning,
+  clearError,
 };
 
-export default connect(mapState, mapDispatch)(TFAScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(connectAlert(TFAScreen));

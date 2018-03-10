@@ -1,4 +1,4 @@
-import { LOG_IN_SUCCESS, SIGN_UP_SUCCESS } from '../actions/welcome';
+import { LOG_IN_SUCCESS, SIGN_UP_SUCCESS, CONFIRM_SIGNUP_SUCCESS } from '../actions/welcome';
 import { LOG_OUT_SUCCESS } from '../actions/app';
 
 const initialState = {
@@ -15,6 +15,11 @@ export default (state = initialState, action) => {
         user: action.payload.user,
         userConfirmed: action.payload.userConfirmed,
         userSub: action.payload.userSub,
+      };
+    case CONFIRM_SIGNUP_SUCCESS:
+      return {
+        ...state,
+        userConfirmed: true,
       };
     case LOG_IN_SUCCESS:
       return {
