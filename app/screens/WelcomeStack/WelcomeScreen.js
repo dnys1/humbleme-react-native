@@ -35,7 +35,9 @@ class WelcomeScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
-      borderBottomWidth: 0 /* https://github.com/react-navigation/react-navigation/issues/865 */,
+      /* https://github.com/react-navigation/react-navigation/issues/865 */
+      borderBottomWidth: 0 /* iOS fix */,
+      elevation: 0,
     }),
     headerTitle:
       navigation.state.params && navigation.state.params.showWarning ? (
