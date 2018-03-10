@@ -9,7 +9,7 @@ const initialState = WelcomeStack.router.getStateForAction(NavigationActions.ini
 export default (state = initialState, action) => {
   let nextState;
   switch (action.type) {
-    case actions.NAV_SHOW_WARNING_ICON:
+    /* case actions.NAV_SHOW_WARNING_ICON:
       nextState = WelcomeStack.router.getStateForAction(NavigationActions.setParams({
         key: 'Welcome',
         params: {
@@ -25,6 +25,7 @@ export default (state = initialState, action) => {
         },
       }));
       break;
+    */
     case actions.NAV_LOGIN_CONFIRMATION_MODAL:
       nextState = WelcomeStack.router.getStateForAction(
         NavigationActions.navigate({

@@ -29,7 +29,7 @@ import {
   NAV_SIGNUP_CONFIRMATION_MODAL,
   NAV_LOGIN_SCREEN,
   NAV_LOGGED_IN_SCREEN,
-  NAV_LOGIN_CONFIRMATION_MODAL,
+  // NAV_LOGIN_CONFIRMATION_MODAL,
   NAV_SHOW_WARNING_ICON,
   NAV_REMOVE_WARNING_ICON,
 } from '../actions/nav';
@@ -38,8 +38,15 @@ import { CHANGE_CONNECTION_STATUS } from '../actions/network';
 
 function* logIn({ username, password }) {
   try {
-    const user = yield Auth.signIn(username, password);
-    return user;
+    const payload = yield Auth.signIn(username, password);
+
+    if (payload) {
+      yield put({ type: LOG_IN_SUCCESS, payload });
+      // yield put({ type: NAV_LOGIN_CONFIRMATION_MODAL });
+      yield put({ type: NAV_LOGGED_IN_SCREEN });
+    } else {
+      console.err('User is empty');
+    }
   } catch (err) {
     if (err.code === 'UserNotConfirmedException') {
       yield put({ type: RESEND_SIGNUP, payload: { username } });
@@ -48,7 +55,6 @@ function* logIn({ username, password }) {
     }
     yield put({ type: LOG_IN_FAILURE, err });
     console.log('Login error: ', err);
-    return null;
   }
 }
 
@@ -65,6 +71,7 @@ function* confirmLogin({ user, TFACode }) {
 
 function* resendSignUp({ username }) {
   try {
+    console.log(username);
     yield Auth.resendSignUp(username);
     yield put({ type: RESEND_SIGNUP_SUCCESS });
     yield put({ type: NAV_SIGNUP_CONFIRMATION_MODAL, resend: true });
@@ -78,8 +85,8 @@ function* signUp({
   username, password, email, phone_number,
 }) {
   try {
-    yield Auth.signUp({ username, password, attributes: { phone_number, email } });
-    yield put({ type: SIGN_UP_SUCCESS });
+    const payload = yield Auth.signUp({ username, password, attributes: { phone_number, email } });
+    yield put({ type: SIGN_UP_SUCCESS, payload });
     yield put({ type: NAV_SIGNUP_CONFIRMATION_MODAL, resend: false });
   } catch (err) {
     if (err.code === 'InvalidPasswordException') {
@@ -136,14 +143,7 @@ function* watchNetwork() {
 function* watchLogin() {
   while (true) {
     const { payload: { username, password } } = yield take(LOG_IN);
-    const user = yield call(logIn, { username, password });
-
-    if (user) {
-      yield put({ type: LOG_IN_SUCCESS, user });
-      yield put({ type: NAV_LOGIN_CONFIRMATION_MODAL });
-    } else {
-      // yield put({ type: LOG_OUT });
-    }
+    yield call(logIn, { username, password });
   }
 }
 
