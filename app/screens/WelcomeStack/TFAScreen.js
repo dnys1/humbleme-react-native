@@ -39,6 +39,7 @@ class TFAScreen extends Component {
     title: 'Authentication',
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
+      borderBottomWidth: 0,
     }),
     headerTintColor: '#fff',
     headerTitleStype: {

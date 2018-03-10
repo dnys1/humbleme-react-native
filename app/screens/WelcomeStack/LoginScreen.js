@@ -29,6 +29,7 @@ class LoginScreen extends Component {
     title: 'Login',
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
+      borderBottomWidth: 0,
     }),
     headerTintColor: '#fff',
     headerTitleStype: {

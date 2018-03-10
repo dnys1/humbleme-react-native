@@ -1,30 +1,53 @@
 import React from 'react';
-import { View, TextInput } from 'react-native';
+import { View, TextInput, TouchableWithoutFeedback } from 'react-native';
 import PropTypes from 'prop-types';
 
 import styles from './styles';
 
-const InputNoBorder = ({
-  placeholder,
-  onChangeText,
-  autoCapitalize = 'sentences',
-  keyboardType = 'default',
-  secureTextEntry = false,
-  autoCorrect = false,
-}) => (
-  <View style={styles.container}>
-    <TextInput
-      placeholder={placeholder}
-      onChangeText={onChangeText}
-      style={styles.input}
-      placeholderTextColor="#fff"
-      autoCapitalize={autoCapitalize}
-      keyboardType={keyboardType}
-      secureTextEntry={secureTextEntry}
-      autoCorrect={autoCorrect}
-    />
-  </View>
-);
+class InputNoBorder extends React.Component {
+  focusTextInput = () => {
+    this.textInput.focus();
+  };
+
+  render() {
+    const {
+      placeholder,
+      onChangeText,
+      autoCapitalize,
+      keyboardType,
+      secureTextEntry,
+      autoCorrect,
+    } = this.props;
+    return (
+      <TouchableWithoutFeedback
+        onPress={this.focusTextInput}
+        hitSlop={{
+          top: 10,
+          left: 10,
+          bottom: 10,
+          right: 10,
+        }}
+      >
+        <View style={styles.container}>
+          <TextInput
+            placeholder={placeholder}
+            onChangeText={onChangeText}
+            style={styles.input}
+            placeholderTextColor="#fff"
+            autoCapitalize={autoCapitalize}
+            keyboardType={keyboardType}
+            secureTextEntry={secureTextEntry}
+            autoCorrect={autoCorrect}
+            clearButtonMode="unless-editing"
+            ref={(input) => {
+              this.textInput = input;
+            }}
+          />
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  }
+}
 
 InputNoBorder.propTypes = {
   placeholder: PropTypes.string,
@@ -47,6 +70,13 @@ InputNoBorder.propTypes = {
   ]),
   secureTextEntry: PropTypes.bool,
   autoCorrect: PropTypes.bool,
+};
+
+InputNoBorder.defaultProps = {
+  autoCapitalize: 'sentences',
+  keyboardType: 'default',
+  secureTextEntry: false,
+  autoCorrect: false,
 };
 
 export default InputNoBorder;

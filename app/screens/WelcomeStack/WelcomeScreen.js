@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 
 import { Container } from '../../components/Container';
 import { WhiteLogo, LogoTorch } from '../../components/Logo';
-import { ButtonWithChevron, WarningButton } from '../../components/Button';
+import { ButtonWithChevron } from '../../components/Button';
+import { HeaderWarningNotification } from '../../components/Header';
 
 import { changeConnectionStatus } from '../../actions/network';
 
@@ -34,9 +35,12 @@ class WelcomeScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
+      borderBottomWidth: 0 /* https://github.com/react-navigation/react-navigation/issues/865 */,
     }),
     headerTitle:
-      navigation.state.params && !navigation.state.params.showWarning ? <WarningButton /> : null,
+      navigation.state.params && navigation.state.params.showWarning ? (
+        <HeaderWarningNotification />
+      ) : null,
   });
 
   componentWillMount() {
