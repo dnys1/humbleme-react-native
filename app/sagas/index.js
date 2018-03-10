@@ -45,7 +45,7 @@ function* logIn({ username, password }) {
       // yield put({ type: NAV_LOGIN_CONFIRMATION_MODAL });
       yield put({ type: NAV_LOGGED_IN_SCREEN });
     } else {
-      console.err('User is empty');
+      console.log('User is empty');
     }
   } catch (err) {
     if (err.code === 'UserNotConfirmedException') {
@@ -202,6 +202,13 @@ function* watchLogout() {
 
 function* watchAppLoad() {
   yield take(APPLICATION_LOADED);
+  try {
+    if (yield Auth.currentSession()) {
+      yield put({ type: NAV_LOGGED_IN_SCREEN });
+    }
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 export default function* rootSaga() {

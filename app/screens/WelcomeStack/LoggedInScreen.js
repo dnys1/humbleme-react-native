@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Button } from 'react-native';
+import { TouchableHighlight, Text } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { connect } from 'react-redux';
 
 import { Container } from '../../components/Container';
 import { Heading } from '../../components/Text';
 
-import { logOut } from '../../actions/welcome';
+import { logOut } from '../../actions/app';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
@@ -28,11 +28,12 @@ class LoggedInScreen extends Component {
     headerLeft: (
       // TODO: 'color' property sets background color in Android
       // Style looks back... build own?
-      <Button
-        title="Logout"
+      <TouchableHighlight
         style={{ color: 'white', backgroundColor: 'transparent' }}
         onPress={() => navigation.dispatch(logOut())}
-      />
+      >
+        <Text>Logout</Text>
+      </TouchableHighlight>
     ),
   });
 
