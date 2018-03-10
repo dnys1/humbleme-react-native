@@ -1,13 +1,30 @@
 import { NavigationActions } from 'react-navigation';
 import { WelcomeStack } from '../config/routes';
 
-import * as actions from '../actions/constants';
+import * as actions from '../actions/nav';
+import * as appActions from '../actions/app';
 
 const initialState = WelcomeStack.router.getStateForAction(NavigationActions.init());
 
 export default (state = initialState, action) => {
   let nextState;
   switch (action.type) {
+    case actions.NAV_SHOW_WARNING_ICON:
+      nextState = WelcomeStack.router.getStateForAction(NavigationActions.setParams({
+        key: 'Welcome',
+        params: {
+          showWarning: true,
+        },
+      }));
+      break;
+    case actions.NAV_REMOVE_WARNING_ICON:
+      nextState = WelcomeStack.router.getStateForAction(NavigationActions.setParams({
+        key: 'Welcome',
+        params: {
+          showWarning: false,
+        },
+      }));
+      break;
     case actions.NAV_LOGIN_CONFIRMATION_MODAL:
       nextState = WelcomeStack.router.getStateForAction(
         NavigationActions.navigate({
@@ -50,7 +67,7 @@ export default (state = initialState, action) => {
         state,
       );
       break;
-    case actions.LOG_OUT_SUCCESS:
+    case appActions.LOG_OUT_SUCCESS:
       nextState = WelcomeStack.router.getStateForAction(
         NavigationActions.reset({
           index: 0,

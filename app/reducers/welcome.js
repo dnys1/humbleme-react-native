@@ -1,4 +1,25 @@
-import * as actions from '../actions/constants';
+import {
+  UPDATE_LOGIN_USERNAME,
+  UPDATE_LOGIN_PASSWORD,
+  UPDATE_SIGNUP_EMAIL,
+  UPDATE_SIGNUP_USERNAME,
+  UPDATE_SIGNUP_PASSWORD,
+  UPDATE_SIGNUP_PASSWORD_RETYPE,
+  UPDATE_SIGNUP_NAME,
+  UPDATE_SIGNUP_PHONE_NUMBER,
+  UPDATE_TFA_CODE,
+  LOG_IN_FAILURE,
+  LOG_IN,
+  SIGN_UP,
+  SIGN_UP_SUCCESS,
+  SIGN_UP_FAILURE,
+  CONFIRM_SIGNUP,
+  CONFIRM_SIGNUP_SUCCESS,
+  CONFIRM_SIGNUP_FAILURE,
+  CONFIRM_LOGIN,
+  CONFIRM_LOGIN_SUCCESS,
+  CONFIRM_LOGIN_FAILURE,
+} from '../actions/welcome';
 
 const initialLogin = {
   username: '',
@@ -17,13 +38,12 @@ const initialSignup = {
 const initialState = {
   login: initialLogin,
   signup: initialSignup,
-  user: {},
   TFACode: '',
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actions.UPDATE_LOGIN_USERNAME:
+    case UPDATE_LOGIN_USERNAME:
       return {
         ...state,
         login: {
@@ -31,7 +51,7 @@ const reducer = (state = initialState, action) => {
           username: action.username,
         },
       };
-    case actions.UPDATE_LOGIN_PASSWORD:
+    case UPDATE_LOGIN_PASSWORD:
       return {
         ...state,
         login: {
@@ -39,7 +59,7 @@ const reducer = (state = initialState, action) => {
           password: action.password,
         },
       };
-    case actions.UPDATE_SIGNUP_EMAIL:
+    case UPDATE_SIGNUP_EMAIL:
       return {
         ...state,
         signup: {
@@ -47,7 +67,7 @@ const reducer = (state = initialState, action) => {
           email: action.email,
         },
       };
-    case actions.UPDATE_SIGNUP_USERNAME:
+    case UPDATE_SIGNUP_USERNAME:
       return {
         ...state,
         signup: {
@@ -55,7 +75,7 @@ const reducer = (state = initialState, action) => {
           username: action.username,
         },
       };
-    case actions.UPDATE_SIGNUP_PASSWORD:
+    case UPDATE_SIGNUP_PASSWORD:
       return {
         ...state,
         signup: {
@@ -63,7 +83,7 @@ const reducer = (state = initialState, action) => {
           password: action.password,
         },
       };
-    case actions.UPDATE_SIGNUP_PASSWORD_RETYPE:
+    case UPDATE_SIGNUP_PASSWORD_RETYPE:
       return {
         ...state,
         signup: {
@@ -71,7 +91,7 @@ const reducer = (state = initialState, action) => {
           passwordRetype: action.passwordRetype,
         },
       };
-    case actions.UPDATE_SIGNUP_NAME:
+    case UPDATE_SIGNUP_NAME:
       return {
         ...state,
         signup: {
@@ -79,7 +99,7 @@ const reducer = (state = initialState, action) => {
           name: action.name,
         },
       };
-    case actions.UPDATE_SIGNUP_PHONE_NUMBER:
+    case UPDATE_SIGNUP_PHONE_NUMBER:
       return {
         ...state,
         signup: {
@@ -87,34 +107,22 @@ const reducer = (state = initialState, action) => {
           phone_number: action.phone_number,
         },
       };
-    case actions.UPDATE_TFA_CODE:
+    case UPDATE_TFA_CODE:
       return {
         ...state,
         TFACode: action.TFACode,
       };
-    case actions.LOG_IN_SUCCESS:
-      return {
-        ...state,
-        user: action.user,
-      };
-    case actions.LOG_OUT_SUCCESS:
-      return {
-        ...state,
-        user: {},
-      };
-    case actions.LOG_IN_FAILURE:
-    case actions.LOG_IN:
-    case actions.LOG_OUT:
-    case actions.LOG_OUT_FAILURE:
-    case actions.SIGN_UP:
-    case actions.SIGN_UP_SUCCESS:
-    case actions.SIGN_UP_FAILURE:
-    case actions.CONFIRM_SIGNUP:
-    case actions.CONFIRM_SIGNUP_SUCCESS:
-    case actions.CONFIRM_SIGNUP_FAILURE:
-    case actions.CONFIRM_LOGIN:
-    case actions.CONFIRM_LOGIN_SUCCESS:
-    case actions.CONFIRM_LOGIN_FAILURE:
+    case LOG_IN_FAILURE:
+    case LOG_IN:
+    case SIGN_UP:
+    case SIGN_UP_SUCCESS:
+    case SIGN_UP_FAILURE:
+    case CONFIRM_SIGNUP:
+    case CONFIRM_SIGNUP_SUCCESS:
+    case CONFIRM_SIGNUP_FAILURE:
+    case CONFIRM_LOGIN:
+    case CONFIRM_LOGIN_SUCCESS:
+    case CONFIRM_LOGIN_FAILURE:
     default:
       return state;
   }

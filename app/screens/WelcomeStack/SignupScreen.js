@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { Container } from '../../components/Container';
@@ -42,6 +43,7 @@ class SignupScreen extends Component {
     title: 'Sign Up',
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
+      borderBottomWidth: 0,
     }),
     headerTintColor: '#fff',
     headerTitleStyle: {
@@ -54,9 +56,17 @@ class SignupScreen extends Component {
     /* Would like to use const { props } = this; but eslint does not support */
     /* and throws a no-unused-props error. See git issue here: */
     /* https://github.com/yannickcr/eslint-plugin-react/issues/1393 */
+
+    /* keyboardVerticalOffset needs to be set since we're using react-navigation */
+    /* this gives it a comfortable distance. 22 = margin of input + margin of button for bottom */
+    const keyboardOffset = Header.HEIGHT + 22;
     return (
       <Container backgroundColor={styles.$teal}>
-        <KeyboardAvoidingView style={styles.$viewStyles} behavior="padding">
+        <KeyboardAvoidingView
+          style={styles.$viewStyles}
+          keyboardVerticalOffset={keyboardOffset}
+          behavior="padding"
+        >
           <InputNoBorder
             placeholder="Pick a username"
             onChangeText={username => this.props.updateUsername(username)}

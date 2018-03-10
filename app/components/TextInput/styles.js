@@ -10,7 +10,7 @@ export default EStyleSheet.create({
     justifyContent: 'center',
     width: '80%',
     height: INPUT_HEIGHT,
-    marginVertical: 11,
+    margin: 12,
     borderRadius: BORDER_RADIUS,
     paddingHorizontal: 20,
   },

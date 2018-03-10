@@ -1,13 +1,14 @@
 import { Auth } from 'aws-amplify';
-import { take, call, put, fork, all } from 'redux-saga/effects';
+import { take, call, put, fork, all, select } from 'redux-saga/effects';
+// import { delay } from 'redux-saga';
+
+import { getNetworkIsConnectedAndHasChecked } from './selectors';
+import navSaga from './nav';
 
 import {
   RESEND_SIGNUP,
   RESEND_SIGNUP_SUCCESS,
   RESEND_SIGNUP_FAILURE,
-  LOG_OUT,
-  LOG_OUT_SUCCESS,
-  LOG_OUT_FAILURE,
   LOG_IN,
   LOG_IN_SUCCESS,
   LOG_IN_FAILURE,
@@ -17,14 +18,23 @@ import {
   CONFIRM_SIGNUP,
   CONFIRM_SIGNUP_SUCCESS,
   CONFIRM_SIGNUP_FAILURE,
-  NAV_SIGNUP_CONFIRMATION_MODAL,
-  NAV_LOGIN_SCREEN,
   CONFIRM_LOGIN_SUCCESS,
-  NAV_LOGGED_IN_SCREEN,
   CONFIRM_LOGIN_FAILURE,
   CONFIRM_LOGIN,
+} from '../actions/welcome';
+
+import { LOG_OUT, LOG_OUT_SUCCESS, LOG_OUT_FAILURE } from '../actions/app';
+
+import {
+  NAV_SIGNUP_CONFIRMATION_MODAL,
+  NAV_LOGIN_SCREEN,
+  NAV_LOGGED_IN_SCREEN,
   NAV_LOGIN_CONFIRMATION_MODAL,
-} from '../actions/constants';
+  NAV_SHOW_WARNING_ICON,
+  NAV_REMOVE_WARNING_ICON,
+} from '../actions/nav';
+
+import { CHANGE_CONNECTION_STATUS } from '../actions/network';
 
 function* logIn({ username, password }) {
   try {
@@ -111,6 +121,18 @@ function* logOut() {
 
 /* WATCHERS */
 
+function* watchNetwork() {
+  while (true) {
+    yield take(CHANGE_CONNECTION_STATUS);
+    const connected = yield select(getNetworkIsConnectedAndHasChecked);
+    if (connected) {
+      yield put({ type: NAV_REMOVE_WARNING_ICON });
+    } else {
+      yield put({ type: NAV_SHOW_WARNING_ICON });
+    }
+  }
+}
+
 function* watchLogin() {
   while (true) {
     const { payload: { username, password } } = yield take(LOG_IN);
@@ -178,15 +200,15 @@ function* watchLogout() {
   }
 }
 
-// function* confirmLogin() {}
-
 export default function* rootSaga() {
   yield all([
+    fork(watchNetwork),
     fork(watchLogin),
     fork(watchConfirmLogin),
     fork(watchResendSignup),
     fork(watchSignup),
     fork(watchConfirmSignup),
     fork(watchLogout),
+    navSaga(),
   ]);
 }

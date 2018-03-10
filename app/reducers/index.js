@@ -1,9 +1,8 @@
-import { combineReducers } from 'redux';
-
 import welcome from './welcome';
 import nav from './nav';
+import network from './network';
+import auth from './auth';
 
-export default combineReducers({
-  welcome,
-  nav,
-});
+export default {
+  welcome, nav, network, auth,
+};

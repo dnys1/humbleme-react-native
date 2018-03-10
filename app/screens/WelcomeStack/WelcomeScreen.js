@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, NetInfo } from 'react-native';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import { connect } from 'react-redux';
 
 import { Container } from '../../components/Container';
 import { WhiteLogo, LogoTorch } from '../../components/Logo';
 import { ButtonWithChevron } from '../../components/Button';
+import { HeaderWarningNotification } from '../../components/Header';
+
+import { changeConnectionStatus } from '../../actions/network';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
@@ -16,6 +20,7 @@ const styles = EStyleSheet.create({
 class WelcomeScreen extends Component {
   static propTypes = {
     navigation: PropTypes.object,
+    changeConnectionStatus: PropTypes.func,
   };
 
   /* Interesting method for incorporating stylesheet vars into header */
@@ -27,9 +32,24 @@ class WelcomeScreen extends Component {
   //   }),
   // };
 
-  static navigationOptions = {
-    header: null /* hide the header */,
-  };
+  static navigationOptions = ({ navigation }) => ({
+    headerStyle: EStyleSheet.create({
+      backgroundColor: () => EStyleSheet.value('$primaryTeal'),
+      borderBottomWidth: 0 /* https://github.com/react-navigation/react-navigation/issues/865 */,
+    }),
+    headerTitle:
+      navigation.state.params && navigation.state.params.showWarning ? (
+        <HeaderWarningNotification />
+      ) : null,
+  });
+
+  componentWillMount() {
+    NetInfo.addEventListener('connectionChange', this.props.changeConnectionStatus);
+  }
+
+  componentWillUnmount() {
+    NetInfo.removeEventListener('connectionChange', this.props.changeConnectionStatus);
+  }
 
   handleLoginPress = () => {
     this.props.navigation.navigate('Login');
@@ -53,4 +73,16 @@ class WelcomeScreen extends Component {
   }
 }
 
-export default WelcomeScreen;
+const mapState = (state) => {
+  const { connected, hasCheckedStatus } = state.network;
+  return {
+    connected,
+    hasCheckedStatus,
+  };
+};
+
+const mapDispatch = {
+  changeConnectionStatus,
+};
+
+export default connect(mapState, mapDispatch)(WelcomeScreen);

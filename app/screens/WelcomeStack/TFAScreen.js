@@ -39,6 +39,7 @@ class TFAScreen extends Component {
     title: 'Authentication',
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
+      borderBottomWidth: 0,
     }),
     headerTintColor: '#fff',
     headerTitleStype: {
@@ -98,7 +99,7 @@ class TFAScreen extends Component {
 }
 
 const mapState = (state) => {
-  const { user, TFACode } = state.welcome;
+  const { TFACode } = state.welcome;
   const { password } = state.welcome.login; // Only pull for user logging in
 
   let username;
@@ -108,7 +109,7 @@ const mapState = (state) => {
     ({ username } = state.welcome.login);
   }
   return {
-    user,
+    user: state.auth,
     username,
     password,
     TFACode,
