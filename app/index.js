@@ -11,6 +11,8 @@ import config from './aws-exports';
 import configureStore from './config/store';
 import { WelcomeStack } from './config/routes';
 
+// window.LOG_LEVEL = 'DEBUG'; // If more info is needed
+
 Amplify.configure(config);
 
 EStyleSheet.build({

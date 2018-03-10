@@ -26,7 +26,13 @@ class LoggedInScreen extends Component {
       fontSize: 80,
     },
     headerLeft: (
-      <Button title="Logout" color="white" onPress={() => navigation.dispatch(logOut())} />
+      // TODO: 'color' property sets background color in Android
+      // Style looks back... build own?
+      <Button
+        title="Logout"
+        style={{ color: 'white', backgroundColor: 'transparent' }}
+        onPress={() => navigation.dispatch(logOut())}
+      />
     ),
   });
 

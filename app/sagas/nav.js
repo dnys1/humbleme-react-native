@@ -1,14 +1,12 @@
 import { Keyboard } from 'react-native';
-import { take, put, fork, race } from 'redux-saga/effects';
+import { take, put, fork } from 'redux-saga/effects';
 
+import * as actions from '../actions/nav';
 import { DISMISS_KEYBOARD } from '../actions/app';
 
 function* watchNavTransition() {
   while (true) {
-    yield race({
-      back: take('Navigation/BACK'),
-      navigate: take('Navigation/NAVIGATE'),
-    });
+    yield take(['Navigation/BACK', 'Navigation/NAVIGATE', Object.values(actions)]);
     yield put({ type: DISMISS_KEYBOARD });
     Keyboard.dismiss();
   }

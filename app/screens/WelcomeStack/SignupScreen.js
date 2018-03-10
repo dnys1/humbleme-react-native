@@ -57,8 +57,6 @@ class SignupScreen extends Component {
     /* and throws a no-unused-props error. See git issue here: */
     /* https://github.com/yannickcr/eslint-plugin-react/issues/1393 */
 
-    /* keyboardVerticalOffset needs to be set since we're using react-navigation */
-    /* this gives it a comfortable distance. 22 = margin of input + margin of button for bottom */
     const keyboardOffset = Header.HEIGHT + 22;
     return (
       <Container backgroundColor={styles.$teal}>

@@ -42,6 +42,7 @@ class InputNoBorder extends React.Component {
             ref={(input) => {
               this.textInput = input;
             }}
+            underlineColorAndroid="transparent"
           />
         </View>
       </TouchableWithoutFeedback>

@@ -23,7 +23,7 @@ import {
   CONFIRM_LOGIN,
 } from '../actions/welcome';
 
-import { LOG_OUT, LOG_OUT_SUCCESS, LOG_OUT_FAILURE } from '../actions/app';
+import { APPLICATION_LOADED, LOG_OUT, LOG_OUT_SUCCESS, LOG_OUT_FAILURE } from '../actions/app';
 
 import {
   NAV_SIGNUP_CONFIRMATION_MODAL,
@@ -42,7 +42,7 @@ function* logIn({ username, password }) {
     return user;
   } catch (err) {
     if (err.code === 'UserNotConfirmedException') {
-      yield put({ type: RESEND_SIGNUP, username });
+      yield put({ type: RESEND_SIGNUP, payload: { username } });
     } else if (err.code === 'UserNotFoundException') {
       // TODO: Alert user
     }
@@ -200,8 +200,13 @@ function* watchLogout() {
   }
 }
 
+function* watchAppLoad() {
+  yield take(APPLICATION_LOADED);
+}
+
 export default function* rootSaga() {
   yield all([
+    fork(watchAppLoad),
     fork(watchNetwork),
     fork(watchLogin),
     fork(watchConfirmLogin),

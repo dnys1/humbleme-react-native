@@ -9,7 +9,7 @@ export const UPDATE_SIGNUP_PHONE_NUMBER = 'UPDATE_SIGNUP_PHONE_NUMBER';
 export const UPDATE_TFA_CODE = 'UPDATE_TFA_CODE';
 
 export const LOG_IN = 'LOG_IN';
-export const LOG_IN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
 export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
 export const CONFIRM_LOGIN = 'CONFIRM_LOGIN';
 export const CONFIRM_LOGIN_SUCCESS = 'CONFIRM_LOGIN_SUCCESS';
@@ -71,9 +71,9 @@ export const updateTFACode = TFACode => ({
   TFACode,
 });
 
-export const resendSignUp = username => ({
+export const resendSignUp = payload => ({
   type: RESEND_SIGNUP,
-  username,
+  payload,
 });
 
 export const logIn = payload => ({
