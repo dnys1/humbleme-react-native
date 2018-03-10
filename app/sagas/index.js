@@ -23,7 +23,7 @@ import {
   CONFIRM_LOGIN,
 } from '../actions/welcome';
 
-import { LOG_OUT, LOG_OUT_SUCCESS, LOG_OUT_FAILURE } from '../actions/app';
+import { APPLICATION_LOADED, LOG_OUT, LOG_OUT_SUCCESS, LOG_OUT_FAILURE } from '../actions/app';
 
 import {
   NAV_SIGNUP_CONFIRMATION_MODAL,
@@ -54,7 +54,7 @@ function* logIn({ username, password }) {
 
 function* confirmLogin({ user, TFACode }) {
   try {
-    console.log(yield Auth.confirmSignIn(user, TFACode));
+    yield Auth.confirmSignIn(user, TFACode);
     yield put({ type: CONFIRM_LOGIN_SUCCESS });
     yield put({ type: NAV_LOGGED_IN_SCREEN });
   } catch (err) {
@@ -65,7 +65,7 @@ function* confirmLogin({ user, TFACode }) {
 
 function* resendSignUp({ username }) {
   try {
-    console.log(yield Auth.resendSignUp(username));
+    yield Auth.resendSignUp(username);
     yield put({ type: RESEND_SIGNUP_SUCCESS });
     yield put({ type: NAV_SIGNUP_CONFIRMATION_MODAL, resend: true });
   } catch (err) {
@@ -96,9 +96,7 @@ function* confirmSignup({
   username, password, TFACode, resend,
 }) {
   try {
-    console.log(yield Auth.confirmSignUp(username, TFACode));
-    console.log(yield Auth.currentAuthenticatedUser());
-    console.log(yield Auth.currentUserPoolUser());
+    yield Auth.confirmSignUp(username, TFACode);
     yield put({ type: CONFIRM_SIGNUP_SUCCESS });
     if (resend) {
       yield put({ type: LOG_IN, username, password });
@@ -113,7 +111,7 @@ function* confirmSignup({
 
 function* logOut() {
   try {
-    console.log(yield Auth.signOut());
+    yield Auth.signOut();
     yield put({ type: LOG_OUT_SUCCESS });
   } catch (err) {
     yield put({ type: LOG_OUT_FAILURE, err });
@@ -202,8 +200,13 @@ function* watchLogout() {
   }
 }
 
+function* watchAppLoad() {
+  yield take(APPLICATION_LOADED);
+}
+
 export default function* rootSaga() {
   yield all([
+    fork(watchAppLoad),
     fork(watchNetwork),
     fork(watchLogin),
     fork(watchConfirmLogin),

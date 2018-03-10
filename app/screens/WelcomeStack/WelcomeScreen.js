@@ -9,6 +9,7 @@ import { WhiteLogo, LogoTorch } from '../../components/Logo';
 import { ButtonWithChevron } from '../../components/Button';
 import { HeaderWarningNotification } from '../../components/Header';
 
+import { applicationLoaded } from '../../actions/app';
 import { changeConnectionStatus } from '../../actions/network';
 
 const styles = EStyleSheet.create({
@@ -21,6 +22,7 @@ class WelcomeScreen extends Component {
   static propTypes = {
     navigation: PropTypes.object,
     changeConnectionStatus: PropTypes.func,
+    applicationLoaded: PropTypes.func,
   };
 
   /* Interesting method for incorporating stylesheet vars into header */
@@ -45,6 +47,7 @@ class WelcomeScreen extends Component {
   });
 
   componentWillMount() {
+    this.props.applicationLoaded();
     NetInfo.addEventListener('connectionChange', this.props.changeConnectionStatus);
   }
 
@@ -83,6 +86,7 @@ const mapState = (state) => {
 };
 
 const mapDispatch = {
+  applicationLoaded,
   changeConnectionStatus,
 };
 

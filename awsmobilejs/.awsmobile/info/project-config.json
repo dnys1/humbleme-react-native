@@ -1,6 +1,6 @@
 {
 	"SourceDir": "app/",
 	"DistributionDir": "build/",
-	"BuildCommand": "yarn run build",
+	"BuildCommand": "npm run-script build",
 	"StartCommand": "yarn start"
 }
