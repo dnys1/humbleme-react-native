@@ -3,7 +3,13 @@ import { Platform } from 'react-native';
 import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 
-import { WelcomeScreen, LoginScreen, SignupScreen, TFAScreen } from '../screens/WelcomeStack';
+import {
+  WelcomeScreen,
+  LoginScreen,
+  SignupScreen,
+  TFAScreen,
+  NameScreen,
+} from '../screens/WelcomeStack';
 import { HomeScreen, ProfileScreen, SettingsScreen } from '../screens/AppStack';
 
 const AppTabNavigator = TabNavigator(
@@ -67,6 +73,9 @@ const MainStack = StackNavigator(
     },
     TFA: {
       screen: TFAScreen,
+    },
+    Name: {
+      screen: NameScreen,
     },
     App: {
       screen: AppTabNavigator,

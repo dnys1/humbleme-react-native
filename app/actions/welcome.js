@@ -22,6 +22,10 @@ export const CONFIRM_SIGNUP = 'CONFIRM_SIGNUP';
 export const CONFIRM_SIGNUP_SUCCESS = 'CONFIRM_SIGNUP_SUCCESS';
 export const CONFIRM_SIGNUP_FAILURE = 'CONFIRM_SIGNUP_FAILURE';
 
+export const UPDATE_NAME = 'UPDATE_NAME';
+export const UPDATE_NAME_SUCCESS = 'UPDATE_NAME_SUCCESS';
+export const UPDATE_NAME_FAILURE = 'UPDATE_NAME_FAILURE';
+
 export const RESEND_SIGNUP = 'RESEND_SIGNUP';
 export const RESEND_SIGNUP_SUCCESS = 'RESEND_SIGNUP_SUCCESS';
 export const RESEND_SIGNUP_FAILURE = 'RESEND_SIGNUP_FAILURE';
@@ -91,6 +95,11 @@ export const signUp = payload => ({
 
 export const confirmSignup = payload => ({
   type: CONFIRM_SIGNUP,
+  payload,
+});
+
+export const updateName = payload => ({
+  type: UPDATE_NAME,
   payload,
 });
 

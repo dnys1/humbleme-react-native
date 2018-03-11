@@ -30,6 +30,7 @@ class ProfileScreen extends Component {
   static propTypes = {
     profile: PropTypes.string,
     images: PropTypes.object,
+    name: PropTypes.string,
   };
 
   render() {
@@ -47,7 +48,7 @@ class ProfileScreen extends Component {
         backgroundColor="white"
       >
         <ProfilePicture source={{ uri: profileImage }} />
-        <ProfileName />
+        <ProfileName name={this.props.name} />
       </Container>
     );
   }
@@ -55,9 +56,14 @@ class ProfileScreen extends Component {
 
 const mapStateToProps = (state) => {
   const { profile, images } = state.auth;
+  const { given_name, family_name } = state.auth.attributes;
+  const name = `${given_name} ${family_name}`;
   return {
     profile,
     images,
+    given_name,
+    family_name,
+    name,
   };
 };
 

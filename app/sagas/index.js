@@ -22,6 +22,9 @@ import {
   CONFIRM_LOGIN_SUCCESS,
   CONFIRM_LOGIN_FAILURE,
   CONFIRM_LOGIN,
+  UPDATE_NAME,
+  UPDATE_NAME_FAILURE,
+  UPDATE_NAME_SUCCESS,
 } from '../actions/welcome';
 
 import {
@@ -38,7 +41,7 @@ import {
 
 import {
   NAV_SIGNUP_CONFIRMATION_MODAL,
-  NAV_LOGIN_SCREEN,
+  NAV_NAME_SCREEN,
   NAV_LOGGED_IN_SCREEN,
   // NAV_LOGIN_CONFIRMATION_MODAL,
 } from '../actions/nav';
@@ -47,12 +50,26 @@ import { CHANGE_CONNECTION_STATUS } from '../actions/network';
 
 function* logIn({ username, password }) {
   try {
-    const payload = yield Auth.signIn(username, password);
+    const user = yield Auth.signIn(username, password);
 
-    if (payload) {
-      yield put({ type: LOG_IN_SUCCESS, payload });
+    if (user) {
+      const { attributes, id } = yield Auth.currentUserInfo();
+      yield put({
+        type: LOG_IN_SUCCESS,
+        payload: {
+          user,
+          username,
+          attributes,
+          id,
+        },
+      });
       // yield put({ type: NAV_LOGIN_CONFIRMATION_MODAL });
-      yield put({ type: NAV_LOGGED_IN_SCREEN });
+      console.log('User attributes: ', attributes);
+      if (typeof attributes.given_name === 'undefined') {
+        yield put({ type: NAV_NAME_SCREEN });
+      } else {
+        yield put({ type: NAV_LOGGED_IN_SCREEN });
+      }
     } else {
       console.log('User is empty');
     }
@@ -147,20 +164,34 @@ function* signUp({
   }
 }
 
-function* confirmSignup({
-  username, password, TFACode, resend,
-}) {
+// TODO: Add back in resend to inputs when MFA configured
+function* confirmSignup({ username, password, TFACode }) {
   try {
     yield Auth.confirmSignUp(username, TFACode);
     yield put({ type: CONFIRM_SIGNUP_SUCCESS });
+    yield put({ type: LOG_IN, payload: { username, password } });
+    /*
     if (resend) {
-      yield put({ type: LOG_IN, payload: { username, password } });
+
     } else {
       yield put({ type: NAV_LOGIN_SCREEN });
-    }
+    } */
   } catch (err) {
     yield put({ type: CONFIRM_SIGNUP_FAILURE, err });
     console.log('Confirm signup error: ', err);
+  }
+}
+
+function* updateName({ first, last, user }) {
+  try {
+    console.log(user);
+    yield Auth.updateUserAttributes(user, { given_name: first, family_name: last });
+    const name = `${first} ${last}`;
+    yield put({ type: UPDATE_NAME_SUCCESS, name });
+    yield put({ type: NAV_LOGGED_IN_SCREEN });
+  } catch (err) {
+    console.log(err);
+    yield put({ type: UPDATE_NAME_FAILURE, err });
   }
 }
 
@@ -244,6 +275,13 @@ function* watchConfirmSignup() {
   }
 }
 
+function* watchUpdateName() {
+  while (true) {
+    const { payload: { first, last, user } } = yield take(UPDATE_NAME);
+    yield call(updateName, { first, last, user });
+  }
+}
+
 function* watchResendSignup() {
   while (true) {
     const { payload: { username } } = yield take(RESEND_SIGNUP);
@@ -278,6 +316,7 @@ export default function* rootSaga() {
     fork(watchResendSignup),
     fork(watchSignup),
     fork(watchConfirmSignup),
+    fork(watchUpdateName),
     fork(watchLogout),
     navSagas(),
     appSagas(),
