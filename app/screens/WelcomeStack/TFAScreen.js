@@ -49,11 +49,6 @@ class TFAScreen extends Component {
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
       borderBottomWidth: 0,
     }),
-    headerTintColor: '#fff',
-    headerTitleStype: {
-      fontWeight: '600',
-      fontSize: 80,
-    },
     /* To prevent user from being unable to sign up */
     headerLeft: null,
     gesturesEnabled: false,

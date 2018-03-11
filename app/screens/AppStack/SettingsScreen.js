@@ -20,11 +20,6 @@ class SettingsScreen extends Component {
       paddingHorizontal: 8,
     }),
     title: 'Settings',
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: '600',
-      fontSize: 20,
-    },
     headerLeft: (
       // TODO: 'color' property sets background color in Android
       // Style looks back... build own?

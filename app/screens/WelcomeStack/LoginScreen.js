@@ -36,11 +36,6 @@ class LoginScreen extends Component {
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
       borderBottomWidth: 0,
     }),
-    headerTintColor: '#fff',
-    headerTitleStype: {
-      fontWeight: '600',
-      fontSize: 80,
-    },
   };
 
   componentWillReceiveProps(nextProps) {

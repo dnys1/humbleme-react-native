@@ -21,12 +21,6 @@ class ProfileScreen extends Component {
       paddingHorizontal: 8,
     }),
     title: 'Profile',
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: '600',
-      fontFamily: 'Avenir-Black',
-      fontSize: 20,
-    },
     headerLeft: (
       // TODO: 'color' property sets background color in Android
       // Style looks back... build own?

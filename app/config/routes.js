@@ -83,6 +83,13 @@ const MainStack = StackNavigator(
   },
   {
     headerMode: 'screen',
+    navigationOptions: {
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: '600',
+        fontSize: 20,
+      },
+    },
   },
 );
 
