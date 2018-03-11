@@ -15,7 +15,12 @@ const ButtonWithChevron = ({
   if (borderColor) {
     containerStyles.push({ borderColor });
   }
-  if (size === 'large') {
+  if (size === 'xlarge') {
+    containerStyles.push({
+      width: '70%',
+      height: 60,
+    });
+  } else if (size === 'large') {
     containerStyles.push({
       width: '50%',
       height: 50,
@@ -42,7 +47,7 @@ ButtonWithChevron.propTypes = {
   color: PropTypes.string,
   borderColor: PropTypes.string,
   onPress: PropTypes.func,
-  size: PropTypes.oneOf(['small', 'large']),
+  size: PropTypes.oneOf(['small', 'large', 'xlarge']),
 };
 
 export default ButtonWithChevron;

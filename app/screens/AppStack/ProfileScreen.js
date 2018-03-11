@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { TouchableOpacity, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { connect } from 'react-redux';
+
+import { logOut } from '../../actions/app';
 
 import { Container } from '../../components/Container';
 import { ProfilePicture, ProfileName } from '../../components/Profile';
@@ -12,7 +15,7 @@ import { ProfilePicture, ProfileName } from '../../components/Profile';
 // });
 
 class ProfileScreen extends Component {
-  static navigationOptions = () => ({
+  static navigationOptions = ({ navigation }) => ({
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
       paddingHorizontal: 8,
@@ -24,7 +27,13 @@ class ProfileScreen extends Component {
       fontFamily: 'Avenir-Black',
       fontSize: 20,
     },
-    headerLeft: null,
+    headerLeft: (
+      // TODO: 'color' property sets background color in Android
+      // Style looks back... build own?
+      <TouchableOpacity onPress={() => navigation.dispatch(logOut())}>
+        <Text style={{ color: 'white', fontSize: 19 }}>Logout</Text>
+      </TouchableOpacity>
+    ),
   });
 
   static propTypes = {

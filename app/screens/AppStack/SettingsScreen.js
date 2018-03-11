@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { TouchableOpacity, Text } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { connect } from 'react-redux';
+
+import { logOut } from '../../actions/app';
 
 import { Container } from '../../components/Container';
 import { Heading } from '../../components/Text';
@@ -11,7 +14,7 @@ const styles = EStyleSheet.create({
 });
 
 class SettingsScreen extends Component {
-  static navigationOptions = () => ({
+  static navigationOptions = ({ navigation }) => ({
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
       paddingHorizontal: 8,
@@ -22,7 +25,13 @@ class SettingsScreen extends Component {
       fontWeight: '600',
       fontSize: 20,
     },
-    headerLeft: null,
+    headerLeft: (
+      // TODO: 'color' property sets background color in Android
+      // Style looks back... build own?
+      <TouchableOpacity onPress={() => navigation.dispatch(logOut())}>
+        <Text style={{ color: 'white', fontSize: 19 }}>Logout</Text>
+      </TouchableOpacity>
+    ),
   });
 
   render() {
