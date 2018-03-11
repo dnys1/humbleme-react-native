@@ -1,16 +1,11 @@
 import React from 'react';
-import { Text, View, Button } from 'react-native';
+import { Platform } from 'react-native';
 import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
-import { PropTypes } from 'prop-types';
 import { Ionicons } from '@expo/vector-icons';
 
-import {
-  WelcomeScreen,
-  LoginScreen,
-  SignupScreen,
-  TFAScreen,
-  LoggedInScreen,
-} from '../screens/WelcomeStack';
+import { WelcomeScreen, LoginScreen, SignupScreen, TFAScreen } from '../screens/WelcomeStack';
+
+import { HomeScreen, ProfileScreen, SettingsScreen } from '../screens/AppStack';
 
 const WelcomeStack = StackNavigator(
   {
@@ -26,73 +21,44 @@ const WelcomeStack = StackNavigator(
     TFA: {
       screen: TFAScreen,
     },
-    LoggedIn: {
-      screen: LoggedInScreen,
-    },
   },
   {
     headerMode: 'screen',
   },
 );
 
-const DetailsScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>Details!</Text>
-  </View>
-);
-
-const HomeScreen = props => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>Home!</Text>
-    <Button title="Go to Settings" onPress={() => props.navigation.navigate('Settings')} />
-    <Button title="Go to Details" onPress={() => props.navigation.navigate('Details')} />
-  </View>
-);
-
-const SettingsScreen = props => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>Settings!</Text>
-    <Button title="Go to Home" onPress={() => props.navigation.navigate('Home')} />
-    <Button title="Go to Details" onPress={() => props.navigation.navigate('Details')} />
-  </View>
-);
-
-HomeScreen.propTypes = {
-  navigation: PropTypes.func,
-};
-SettingsScreen.propTypes = {
-  navigation: PropTypes.func,
-};
-
-const HomeStack = StackNavigator({
-  Home: { screen: HomeScreen },
-  Details: { screen: DetailsScreen },
-});
-
-const SettingsStack = StackNavigator({
-  Settings: { screen: SettingsScreen },
-  Details: { screen: DetailsScreen },
-});
-
-const MainStack = TabNavigator(
+const AppNavigator = TabNavigator(
   {
-    Home: { screen: HomeStack },
-    Settings: { screen: SettingsStack },
+    Profile: {
+      screen: ProfileScreen,
+    },
+    Home: {
+      screen: HomeScreen,
+    },
+    Settings: {
+      screen: SettingsScreen,
+    },
   },
   {
     /* eslint-disable react/prop-types */
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
+        const ios = Platform.OS === 'ios';
+        const prefix = ios ? 'ios' : 'md';
         let iconName;
         if (routeName === 'Home') {
-          iconName = `ios-information-circle${focused ? '' : '-outline'}`;
+          iconName = `${prefix}-speedometer${focused || !ios ? '' : '-outline'}`;
+        } else if (routeName === 'Search') {
+          iconName = `${prefix}-search${focused || !ios ? '' : '-outline'}`;
+        } else if (routeName === 'Resources') {
+          iconName = `${prefix}-book${focused || !ios ? '' : '-outline'}`;
+        } else if (routeName === 'Profile') {
+          iconName = `${prefix}-person${focused ? '' : '-outline'}`;
         } else if (routeName === 'Settings') {
-          iconName = `ios-options${focused ? '' : '-outline'}`;
+          iconName = `${prefix}-options${focused ? '' : '-outline'}`;
         }
 
-        // You can return any component that you like here! We usually use an
-        // icon component from react-native-vector-icons
         return <Ionicons name={iconName} size={25} color={tintColor} />;
       },
     }),
@@ -108,4 +74,14 @@ const MainStack = TabNavigator(
   },
 );
 
-export { WelcomeStack, MainStack };
+const MainStack = StackNavigator(
+  {
+    Welcome: { screen: WelcomeStack },
+    App: { screen: AppNavigator },
+  },
+  {
+    headerMode: 'none',
+  },
+);
+
+export { MainStack, WelcomeStack, AppNavigator };

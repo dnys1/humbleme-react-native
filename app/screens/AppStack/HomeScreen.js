@@ -13,9 +13,9 @@ const styles = EStyleSheet.create({
   $orange: '$primaryOrange',
 });
 
-class LoggedInScreen extends Component {
+class HomeScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'Profile',
+    title: 'Home',
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
       paddingHorizontal: 8,
@@ -47,4 +47,4 @@ const mapStateToProps = state => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps)(LoggedInScreen);
+export default connect(mapStateToProps)(HomeScreen);

@@ -11,7 +11,7 @@ import { AlertProvider } from './components/Alert';
 
 import config from './aws-exports';
 import configureStore from './config/store';
-import { WelcomeStack } from './config/routes';
+import { MainStack } from './config/routes';
 
 // window.LOG_LEVEL = 'DEBUG'; // If more info is needed
 
@@ -33,7 +33,7 @@ EStyleSheet.build({
 const addListener = createReduxBoundAddListener('root');
 
 const App = ({ dispatch, nav }) => (
-  <WelcomeStack
+  <MainStack
     navigation={addNavigationHelpers({
       dispatch,
       state: nav,
