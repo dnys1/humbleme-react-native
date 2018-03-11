@@ -4,15 +4,10 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import { connect } from 'react-redux';
 
 import { Container } from '../../components/Container';
-import { Heading } from '../../components/Text';
 import { WhiteLogo } from '../../components/Logo';
+import { ScorePanel } from '../../components/Score';
 
 import { logOut } from '../../actions/app';
-
-const styles = EStyleSheet.create({
-  $teal: '$primaryTeal',
-  $orange: '$primaryOrange',
-});
 
 class HomeScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -32,8 +27,11 @@ class HomeScreen extends Component {
 
   render() {
     return (
-      <Container backgroundColor="white">
-        <Heading color={styles.$orange} text="Logged In" />
+      <Container
+        style={{ justifyContent: 'flex-start', alignItems: 'stretch' }}
+        backgroundColor="white"
+      >
+        <ScorePanel />
       </Container>
     );
   }

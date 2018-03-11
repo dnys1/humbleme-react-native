@@ -14,7 +14,7 @@ import config from './aws-exports';
 import configureStore from './config/store';
 import MainStack from './config/routes';
 
-window.LOG_LEVEL = 'DEBUG'; // If more info is needed
+// window.LOG_LEVEL = 'DEBUG'; // If more info is needed
 
 Amplify.configure(config);
 Storage.configure({ track: true });
@@ -73,6 +73,8 @@ export default class AppComplete extends React.Component {
       require('./assets/logo_white.png'),
       require('./assets/torch.png'),
       require('./assets/default.jpg'),
+      require('./assets/scorebar.png'),
+      require('./assets/scorewheel.png'),
     ];
 
     const cacheImages = images.map(image => Asset.fromModule(image).downloadAsync());
