@@ -6,7 +6,13 @@ import { Ionicons } from '@expo/vector-icons';
 import styles from './styles';
 
 const ButtonWithChevron = ({
-  text, color, borderColor, onPress, size = 'large',
+  text,
+  color,
+  borderColor,
+  onPress,
+  size = 'large',
+  style,
+  textStyle,
 }) => {
   const containerStyles = [styles.container];
   if (color) {
@@ -25,17 +31,30 @@ const ButtonWithChevron = ({
       width: '50%',
       height: 50,
     });
+  } else if (size === 'medium') {
+    containerStyles.push({
+      width: '42%',
+      height: 40,
+    });
   } else if (size === 'small') {
     containerStyles.push({
       width: '35%',
-      height: 40,
+      height: 50,
     });
+  }
+  if (style) {
+    containerStyles.push(style);
+  }
+
+  const textStyles = [styles.text];
+  if (textStyle) {
+    textStyles.push(textStyle);
   }
 
   return (
     <TouchableOpacity style={containerStyles} onPress={onPress}>
       <View style={styles.wrapper}>
-        <Text style={styles.text}>{text}</Text>
+        <Text style={textStyles}>{text}</Text>
         <Ionicons name="ios-arrow-forward" size={20} color="white" />
       </View>
     </TouchableOpacity>
@@ -48,6 +67,8 @@ ButtonWithChevron.propTypes = {
   borderColor: PropTypes.string,
   onPress: PropTypes.func,
   size: PropTypes.oneOf(['small', 'large', 'xlarge']),
+  style: PropTypes.object,
+  textStyle: PropTypes.object,
 };
 
 export default ButtonWithChevron;

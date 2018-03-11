@@ -12,12 +12,13 @@ import { Subheading } from '../../components/Text';
 import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
-import { updateTFACode, confirmSignup, confirmLogin } from '../../actions/welcome';
+import { updateTFACode, confirmSignup, confirmLogin, resendSignUp } from '../../actions/welcome';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
   $yellow: '$primaryYellow',
   $orange: '$primaryOrange',
+  $green: '$primaryGreen',
   $viewStyles: '$keyboardAvoidingView',
   $textViewStyles: {
     justifyContent: 'center',
@@ -33,9 +34,11 @@ class TFAScreen extends Component {
     password: PropTypes.string,
     TFACode: PropTypes.string,
     user: PropTypes.object,
+    email: PropTypes.string,
     confirmSignup: PropTypes.func,
     confirmLogin: PropTypes.func,
     updateTFACode: PropTypes.func,
+    resendSignUp: PropTypes.func,
     error: PropTypes.object,
     alertWithType: PropTypes.func,
   };
@@ -71,7 +74,8 @@ class TFAScreen extends Component {
           <View style={styles.$textViewStyles}>
             <Subheading color="white" text={signup ? 'Complete Signup' : 'Complete Login'} />
             <Text style={{ color: 'white', width: '80%', marginBottom: 10 }}>
-              Please enter the 5-digit verification code sent to your e-mail to continue.
+              Please enter the 5-digit verification code sent to{' '}
+              {`${this.props.email || 'your email'}`} to continue.
             </Text>
           </View>
           <InputNoBorder
@@ -82,7 +86,7 @@ class TFAScreen extends Component {
           {signup ? (
             <ButtonWithChevron
               text="Verify"
-              color={styles.$yellow}
+              color={styles.$green}
               onPress={() =>
                 this.props.confirmSignup({
                   username: this.props.username,
@@ -103,6 +107,17 @@ class TFAScreen extends Component {
               size="small"
             />
           )}
+          <ButtonWithChevron
+            text="Resend Code"
+            color={styles.$yellow}
+            onPress={() =>
+              this.props.resendSignUp({
+                username: this.props.username,
+              })
+            }
+            size="large"
+            style={{ marginVertical: 8 }}
+          />
         </KeyboardAvoidingView>
       </Container>
     );
@@ -113,6 +128,13 @@ const mapStateToProps = (state) => {
   const { TFACode, error } = state.welcome;
   const { password } = state.welcome.login; // Only pull for user logging in
   const { user } = state.auth;
+
+  let email;
+  if (user.signInUserSession) {
+    ({ email } = state.auth.attributes);
+  } else {
+    ({ email } = state.welcome.signup);
+  }
 
   let username;
   if (state.welcome.signup.username) {
@@ -126,6 +148,7 @@ const mapStateToProps = (state) => {
     password,
     TFACode,
     error,
+    email,
   };
 };
 
@@ -133,6 +156,7 @@ const mapDispatchToProps = {
   confirmSignup,
   confirmLogin,
   updateTFACode,
+  resendSignUp,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(connectAlert(TFAScreen));

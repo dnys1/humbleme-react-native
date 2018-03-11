@@ -48,8 +48,9 @@ import {
 
 import { CHANGE_CONNECTION_STATUS } from '../actions/network';
 
-function* logIn({ username, password }) {
+function* logIn({ username, password, resend }) {
   try {
+    console.log('resend: ', resend);
     const user = yield Auth.signIn(username, password);
 
     if (user) {
@@ -88,6 +89,11 @@ function* logIn({ username, password }) {
       yield call(delay, 200);
       yield put({ type: CLEAR_ERROR, payload: { type: 'login' } });
     } else if (err.code === 'NotAuthorizedException') {
+      console.log(resend, 'here');
+      if (resend) {
+        yield put({ type: 'Navigation/BACK' });
+        yield take('Navigation/COMPLETE_TRANSITION');
+      }
       yield put({
         type: SHOW_ERROR,
         payload: {
@@ -164,12 +170,14 @@ function* signUp({
   }
 }
 
-// TODO: Add back in resend to inputs when MFA configured
-function* confirmSignup({ username, password, TFACode }) {
+function* confirmSignup({
+  username, password, TFACode, resend,
+}) {
   try {
+    console.log('cs resend : ', resend);
     yield Auth.confirmSignUp(username, TFACode);
     yield put({ type: CONFIRM_SIGNUP_SUCCESS });
-    yield put({ type: LOG_IN, payload: { username, password } });
+    yield put({ type: LOG_IN, payload: { username, password, resend } });
     /*
     if (resend) {
 
@@ -177,6 +185,18 @@ function* confirmSignup({ username, password, TFACode }) {
       yield put({ type: NAV_LOGIN_SCREEN });
     } */
   } catch (err) {
+    if (err.code === 'CodeMismatchError') {
+      yield put({
+        type: SHOW_ERROR,
+        payload: {
+          type: 'confirm',
+          title: 'Verificaton Error',
+          msg: 'Invalid verification code provided. Please try again.',
+        },
+      });
+      yield call(delay, 200);
+      yield put({ type: CLEAR_ERROR, payload: { type: 'confirm' } });
+    }
     yield put({ type: CONFIRM_SIGNUP_FAILURE, err });
     console.log('Confirm signup error: ', err);
   }
@@ -231,8 +251,8 @@ function* watchNetwork() {
 
 function* watchLogin() {
   while (true) {
-    const { payload: { username, password } } = yield take(LOG_IN);
-    yield call(logIn, { username, password });
+    const { payload: { username, password, resend } } = yield take(LOG_IN);
+    yield call(logIn, { username, password, resend });
   }
 }
 

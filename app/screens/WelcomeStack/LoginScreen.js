@@ -69,7 +69,11 @@ class LoginScreen extends Component {
             text="Login"
             color={styles.$orange}
             onPress={() =>
-              this.props.logIn({ username: this.props.username, password: this.props.password })
+              this.props.logIn({
+                username: this.props.username,
+                password: this.props.password,
+                resend: false,
+              })
             }
             size="small"
           />
