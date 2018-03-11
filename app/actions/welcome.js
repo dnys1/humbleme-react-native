@@ -26,6 +26,9 @@ export const RESEND_SIGNUP = 'RESEND_SIGNUP';
 export const RESEND_SIGNUP_SUCCESS = 'RESEND_SIGNUP_SUCCESS';
 export const RESEND_SIGNUP_FAILURE = 'RESEND_SIGNUP_FAILURE';
 
+export const CLEAR_LOGIN_DATA = 'CLEAR_LOGIN_DATA';
+export const CLEAR_SIGNUP_DATA = 'CLEAR_SIGNUP_DATA';
+
 export const updateLoginUsername = username => ({
   type: UPDATE_LOGIN_USERNAME,
   username,

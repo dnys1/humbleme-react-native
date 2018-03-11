@@ -12,7 +12,6 @@ import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
 import { updateLoginPassword, updateLoginUsername, logIn } from '../../actions/welcome';
-import { clearWarning, clearError } from '../../actions/app';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
@@ -29,8 +28,6 @@ class LoginScreen extends Component {
     logIn: PropTypes.func,
     error: PropTypes.object,
     alertWithType: PropTypes.func,
-    clearWarning: PropTypes.func,
-    clearError: PropTypes.func,
   };
 
   static navigationOptions = {
@@ -48,14 +45,8 @@ class LoginScreen extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { error } = nextProps;
-    if (!isEmpty(error)) {
-      console.log(`There's a ${error.type} error: `, error);
-      this.props.alertWithType(error.alertStyle, error.title, error.msg);
-      if (error.alertStyle === 'warn') {
-        this.props.clearWarning();
-      } else if (error.alertStyle === 'error') {
-        this.props.clearError();
-      }
+    if (!isEmpty(error.login) && error.login !== this.props.error.login) {
+      this.props.alertWithType(error.login.alertStyle, error.login.title, error.login.msg);
     }
   }
 
@@ -90,7 +81,7 @@ class LoginScreen extends Component {
 
 const mapStateToProps = (state) => {
   const { username, password } = state.welcome.login;
-  const { error } = state.app;
+  const { error } = state.welcome;
 
   return {
     username,
@@ -103,8 +94,6 @@ const mapDispatchToProps = {
   updatePassword: updateLoginPassword,
   updateUsername: updateLoginUsername,
   logIn,
-  clearWarning,
-  clearError,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(connectAlert(LoginScreen));

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, NetInfo } from 'react-native';
+import { NetInfo } from 'react-native';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
@@ -11,9 +11,9 @@ import { isEmpty } from '../../utils';
 import { Container } from '../../components/Container';
 import { WhiteLogo, LogoTorch } from '../../components/Logo';
 import { ButtonWithChevron } from '../../components/Button';
-import { HeaderWarningNotification } from '../../components/Header';
+// import { HeaderWarningNotification } from '../../components/Header';
 
-import { applicationLoaded, clearWarning, clearError } from '../../actions/app';
+import { applicationLoaded } from '../../actions/app';
 import { changeConnectionStatus } from '../../actions/network';
 
 const styles = EStyleSheet.create({
@@ -29,8 +29,6 @@ class WelcomeScreen extends Component {
     applicationLoaded: PropTypes.func,
     alertWithType: PropTypes.func,
     error: PropTypes.object,
-    clearWarning: PropTypes.func,
-    clearError: PropTypes.func,
   };
 
   /* Interesting method for incorporating stylesheet vars into header */
@@ -42,16 +40,16 @@ class WelcomeScreen extends Component {
   //   }),
   // };
 
-  static navigationOptions = ({ navigation }) => ({
+  static navigationOptions = () => ({
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
       borderBottomWidth: 0 /* iOS fix */,
       elevation: 0 /* Android fix */,
     }),
-    headerTitle:
-      navigation.state.params && navigation.state.params.showWarning ? (
-        <HeaderWarningNotification />
-      ) : null,
+    // headerTitle:
+    //   navigation.state.params && navigation.state.params.showWarning ? (
+    //     <HeaderWarningNotification />
+    //   ) : null,
   });
 
   componentWillMount() {
@@ -64,14 +62,8 @@ class WelcomeScreen extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { error } = nextProps;
-    if (!isEmpty(error)) {
-      console.log(`There's a ${error.type} error: `, error);
+    if (!isEmpty(error) && error !== this.props.error) {
       this.props.alertWithType(error.alertStyle, error.title, error.msg);
-      if (error.alertStyle === 'warn') {
-        this.props.clearWarning();
-      } else if (error.alertStyle === 'error') {
-        this.props.clearError();
-      }
     }
   }
 
@@ -90,9 +82,7 @@ class WelcomeScreen extends Component {
   render() {
     return (
       <Container backgroundColor={styles.$teal}>
-        <View style={{ paddingBottom: 50 }}>
-          <WhiteLogo scale={0.9} />
-        </View>
+        <WhiteLogo scale={0.9} style={{ paddingBottom: 50 }} />
         <ButtonWithChevron text="Login" color={styles.$orange} onPress={this.handleLoginPress} />
         <ButtonWithChevron text="Sign Up" color={styles.$yellow} onPress={this.handleSignupPress} />
         <LogoTorch scale={0.18} />
@@ -102,8 +92,7 @@ class WelcomeScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { connected, hasCheckedStatus } = state.network;
-  const { error } = state.app;
+  const { connected, hasCheckedStatus, error } = state.network;
 
   return {
     connected,
@@ -115,8 +104,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   applicationLoaded,
   changeConnectionStatus,
-  clearWarning,
-  clearError,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(connectAlert(WelcomeScreen));

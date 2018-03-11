@@ -13,7 +13,6 @@ import { InputNoBorder } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
 import { updateTFACode, confirmSignup, confirmLogin } from '../../actions/welcome';
-import { clearWarning, clearError } from '../../actions/app';
 
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
@@ -39,8 +38,6 @@ class TFAScreen extends Component {
     updateTFACode: PropTypes.func,
     error: PropTypes.object,
     alertWithType: PropTypes.func,
-    clearWarning: PropTypes.func,
-    clearError: PropTypes.func,
   };
 
   static navigationOptions = {
@@ -61,14 +58,8 @@ class TFAScreen extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { error } = nextProps;
-    if (!isEmpty(error)) {
-      console.log(`There's a ${error.type} error: `, error);
-      this.props.alertWithType(error.alertStyle, error.title, error.msg);
-      if (error.alertStyle === 'warn') {
-        this.props.clearWarning();
-      } else if (error.alertStyle === 'error') {
-        this.props.clearError();
-      }
+    if (!isEmpty(error.confirm) && error.confirm !== this.props.error.confirm) {
+      this.props.alertWithType(error.confirm.alertStyle, error.confirm.title, error.confirm.msg);
     }
   }
 
@@ -80,8 +71,7 @@ class TFAScreen extends Component {
           <View style={styles.$textViewStyles}>
             <Subheading color="white" text={signup ? 'Complete Signup' : 'Complete Login'} />
             <Text style={{ color: 'white', width: '80%', marginBottom: 10 }}>
-              Please enter the 6-digit verification code sent to your phone number in order to
-              continue.
+              Please enter the 5-digit verification code sent to your e-mail to continue.
             </Text>
           </View>
           <InputNoBorder
@@ -120,10 +110,9 @@ class TFAScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { TFACode } = state.welcome;
+  const { TFACode, error } = state.welcome;
   const { password } = state.welcome.login; // Only pull for user logging in
   const { user } = state.auth;
-  const { error } = state.app;
 
   let username;
   if (state.welcome.signup.username) {
@@ -144,8 +133,6 @@ const mapDispatchToProps = {
   confirmSignup,
   confirmLogin,
   updateTFACode,
-  clearWarning,
-  clearError,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(connectAlert(TFAScreen));
