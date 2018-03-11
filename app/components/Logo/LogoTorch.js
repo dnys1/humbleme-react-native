@@ -13,7 +13,7 @@ const LogoTorch = ({ scale = 0.1 }) => {
 
   return (
     <View style={styles.torchContainer}>
-      <Image source={require('./img/torch.png')} style={torchStyles} />
+      <Image source={require('../../assets/torch.png')} style={torchStyles} />
     </View>
   );
 };
