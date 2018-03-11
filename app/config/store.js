@@ -21,6 +21,7 @@ if (process.env.NODE_ENV === 'development') {
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['nav', 'network', 'welcome', 'app'],
 };
 
 const persistReducer = persistCombineReducers(persistConfig, reducers);
@@ -29,7 +30,7 @@ const configureStore = () => {
   const store = createStore(persistReducer, applyMiddleware(...middleware));
   sagaMiddleware.run(rootSaga);
   const persistor = persistStore(store);
-  persistor.purge();
+  // persistor.purge();
 
   return { store, persistor };
 };
