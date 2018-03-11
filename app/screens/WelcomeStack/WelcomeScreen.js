@@ -54,10 +54,12 @@ class WelcomeScreen extends Component {
 
   componentWillMount() {
     NetInfo.addEventListener('connectionChange', this.props.changeConnectionStatus);
+    this.loading = true;
   }
 
   componentDidMount() {
     setTimeout(() => this.props.applicationLoaded(), 1000);
+    this.loading = false;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -83,8 +85,18 @@ class WelcomeScreen extends Component {
     return (
       <Container backgroundColor={styles.$teal}>
         <WhiteLogo scale={0.9} style={{ paddingBottom: 50 }} />
-        <ButtonWithChevron text="Login" color={styles.$orange} onPress={this.handleLoginPress} />
-        <ButtonWithChevron text="Sign Up" color={styles.$yellow} onPress={this.handleSignupPress} />
+        <ButtonWithChevron
+          text="Login"
+          color={styles.$orange}
+          onPress={this.handleLoginPress}
+          disabled={this.loading}
+        />
+        <ButtonWithChevron
+          text="Sign Up"
+          color={styles.$yellow}
+          onPress={this.handleSignupPress}
+          disabled={this.loading}
+        />
         <LogoTorch scale={0.18} />
       </Container>
     );
