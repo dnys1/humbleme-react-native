@@ -21,8 +21,6 @@ import {
   signUp,
 } from '../../actions/welcome';
 
-import { clearWarning, clearError } from '../../actions/app';
-
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
   $yellow: '$primaryYellow',
@@ -44,8 +42,6 @@ class SignupScreen extends Component {
     signUp: PropTypes.func,
     error: PropTypes.object,
     alertWithType: PropTypes.func,
-    clearWarning: PropTypes.func,
-    clearError: PropTypes.func,
   };
 
   static navigationOptions = {
@@ -63,14 +59,8 @@ class SignupScreen extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { error } = nextProps;
-    if (!isEmpty(error)) {
-      console.log(`There's a ${error.type} error: `, error);
-      this.props.alertWithType(error.alertStyle, error.title, error.msg);
-      if (error.alertStyle === 'warn') {
-        this.props.clearWarning();
-      } else if (error.alertStyle === 'error') {
-        this.props.clearError();
-      }
+    if (!isEmpty(error.signup) && error.signup !== this.props.error.signup) {
+      this.props.alertWithType(error.signup.alertStyle, error.signup.title, error.signup.msg);
     }
   }
 
@@ -144,7 +134,7 @@ const mapStateToProps = (state) => {
   const {
     name, username, email, password, passwordRetype, phone_number,
   } = state.welcome.signup;
-  const { error } = state.app;
+  const { error } = state.welcome;
 
   return {
     name,
@@ -164,8 +154,6 @@ const mapDispatchToProps = {
   updatePasswordRetype: updateSignupPasswordRetype,
   updatePhoneNumber: updateSignupPhoneNumber,
   signUp,
-  clearWarning,
-  clearError,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(connectAlert(SignupScreen));

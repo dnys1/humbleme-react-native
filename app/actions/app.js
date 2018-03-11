@@ -19,11 +19,3 @@ export const logOut = () => ({
 export const applicationLoaded = () => ({
   type: APPLICATION_LOADED,
 });
-
-export const clearWarning = () => ({
-  type: CLEAR_WARNING,
-});
-
-export const clearError = () => ({
-  type: CLEAR_ERROR,
-});

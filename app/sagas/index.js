@@ -1,6 +1,6 @@
 import { Auth } from 'aws-amplify';
 import { take, call, put, fork, all, select } from 'redux-saga/effects';
-// import { delay } from 'redux-saga';
+import { delay } from 'redux-saga';
 
 import { getNetworkIsConnectedAndHasChecked } from './selectors';
 import navSagas from './nav';
@@ -31,6 +31,8 @@ import {
   SHOW_WARNING,
   SHOW_ERROR,
   CLEAR_WARNING,
+  CLEAR_ERROR,
+  CLEAR_TEMPORARY_DATA,
 } from '../actions/app';
 
 import {
@@ -65,6 +67,8 @@ function* logIn({ username, password }) {
           msg: 'Username not found. Please try again or return to the home screen to signup.',
         },
       });
+      yield call(delay, 200);
+      yield put({ type: CLEAR_ERROR, payload: { type: 'login' } });
     } else if (err.code === 'NotAuthorizedException') {
       yield put({
         type: SHOW_ERROR,
@@ -74,6 +78,8 @@ function* logIn({ username, password }) {
           msg: 'Incorrect username or password.',
         },
       });
+      yield call(delay, 200);
+      yield put({ type: CLEAR_ERROR, payload: { type: 'login' } });
     }
     yield put({ type: LOG_IN_FAILURE, err });
     console.log('Login error: ', err);
@@ -121,6 +127,8 @@ function* signUp({
             'Passwords must be 8 characters long and contain:\n\t- uppercase letters\n\t- lowercase letters\n\t- numbers',
         },
       });
+      yield call(delay, 200);
+      yield put({ type: CLEAR_ERROR, payload: { type: 'signup' } });
     } else if (err.code === 'UsernameExistsException') {
       yield put({
         type: SHOW_ERROR,
@@ -130,6 +138,8 @@ function* signUp({
           msg: 'That username already exists.',
         },
       });
+      yield call(delay, 200);
+      yield put({ type: CLEAR_ERROR, payload: { type: 'signup' } });
     }
     yield put({ type: SIGN_UP_FAILURE, err });
     console.log('Signup error: ', err);
@@ -143,7 +153,7 @@ function* confirmSignup({
     yield Auth.confirmSignUp(username, TFACode);
     yield put({ type: CONFIRM_SIGNUP_SUCCESS });
     if (resend) {
-      yield put({ type: LOG_IN, username, password });
+      yield put({ type: LOG_IN, payload: { username, password } });
     } else {
       yield put({ type: NAV_LOGIN_SCREEN });
     }
@@ -157,6 +167,7 @@ function* logOut() {
   try {
     yield Auth.signOut();
     yield put({ type: LOG_OUT_SUCCESS });
+    yield put({ type: CLEAR_TEMPORARY_DATA });
   } catch (err) {
     yield put({ type: LOG_OUT_FAILURE, err });
     console.log('Logout error: ', err);
@@ -178,9 +189,10 @@ function* watchNetwork() {
           msg: 'No internet connection. Features will be unavailable.',
         },
       });
+      yield call(delay, 200);
+      yield put({ type: CLEAR_WARNING, payload: { type: 'network' } });
     } else {
       // connected to Internet
-      yield put({ type: CLEAR_WARNING, payload: { type: 'network' } });
     }
   }
 }
