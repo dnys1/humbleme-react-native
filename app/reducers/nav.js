@@ -1,5 +1,5 @@
 import { NavigationActions } from 'react-navigation';
-import { MainStack } from '../config/routes';
+import MainStack from '../config/routes';
 
 import * as actions from '../actions/nav';
 import * as appActions from '../actions/app';
@@ -63,7 +63,7 @@ export default (state = initialState, action) => {
       break;
     case actions.NAV_LOGGED_IN_SCREEN:
       nextState = MainStack.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'Home' }),
+        NavigationActions.navigate({ routeName: 'App' }),
         state,
       );
       break;

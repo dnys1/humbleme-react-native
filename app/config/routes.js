@@ -4,35 +4,14 @@ import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 
 import { WelcomeScreen, LoginScreen, SignupScreen, TFAScreen } from '../screens/WelcomeStack';
-
 import { HomeScreen, ProfileScreen, SettingsScreen } from '../screens/AppStack';
 
-const WelcomeStack = StackNavigator(
-  {
-    Welcome: {
-      screen: WelcomeScreen,
-    },
-    Login: {
-      screen: LoginScreen,
-    },
-    Signup: {
-      screen: SignupScreen,
-    },
-    TFA: {
-      screen: TFAScreen,
-    },
-  },
-  {
-    headerMode: 'screen',
-  },
-);
-
-const AppNavigator = TabNavigator(
+const AppTabNavigator = TabNavigator(
   {
     Profile: {
       screen: ProfileScreen,
     },
-    Home: {
+    Dashboard: {
       screen: HomeScreen,
     },
     Settings: {
@@ -47,7 +26,7 @@ const AppNavigator = TabNavigator(
         const ios = Platform.OS === 'ios';
         const prefix = ios ? 'ios' : 'md';
         let iconName;
-        if (routeName === 'Home') {
+        if (routeName === 'Dashboard') {
           iconName = `${prefix}-speedometer${focused || !ios ? '' : '-outline'}`;
         } else if (routeName === 'Search') {
           iconName = `${prefix}-search${focused || !ios ? '' : '-outline'}`;
@@ -62,6 +41,7 @@ const AppNavigator = TabNavigator(
         return <Ionicons name={iconName} size={25} color={tintColor} />;
       },
     }),
+    initialRouteName: 'Dashboard',
     /* eslint-enable react/prop-types */
     tabBarOptions: {
       activeTintColor: 'tomato',
@@ -76,12 +56,25 @@ const AppNavigator = TabNavigator(
 
 const MainStack = StackNavigator(
   {
-    Welcome: { screen: WelcomeStack },
-    App: { screen: AppNavigator },
+    Welcome: {
+      screen: WelcomeScreen,
+    },
+    Login: {
+      screen: LoginScreen,
+    },
+    Signup: {
+      screen: SignupScreen,
+    },
+    TFA: {
+      screen: TFAScreen,
+    },
+    App: {
+      screen: AppTabNavigator,
+    },
   },
   {
-    headerMode: 'none',
+    headerMode: 'screen',
   },
 );
 
-export { MainStack, WelcomeStack, AppNavigator };
+export default MainStack;

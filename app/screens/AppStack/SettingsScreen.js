@@ -12,22 +12,22 @@ const styles = EStyleSheet.create({
 
 class SettingsScreen extends Component {
   static navigationOptions = () => ({
-    title: 'Settings',
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
       paddingHorizontal: 8,
     }),
+    title: 'Settings',
     headerTintColor: '#fff',
-    headerTitleStype: {
+    headerTitleStyle: {
       fontWeight: '600',
-      fontSize: 80,
+      fontSize: 20,
     },
     headerLeft: null,
   });
 
   render() {
     return (
-      <Container backgroundColor={styles.$teal}>
+      <Container backgroundColor="white">
         <Heading color={styles.$orange} text="Settings" />
       </Container>
     );

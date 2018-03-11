@@ -11,7 +11,7 @@ import { AlertProvider } from './components/Alert';
 
 import config from './aws-exports';
 import configureStore from './config/store';
-import { MainStack } from './config/routes';
+import MainStack from './config/routes';
 
 // window.LOG_LEVEL = 'DEBUG'; // If more info is needed
 

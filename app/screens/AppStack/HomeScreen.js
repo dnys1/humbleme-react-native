@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { Container } from '../../components/Container';
 import { Heading } from '../../components/Text';
+import { WhiteLogo } from '../../components/Logo';
 
 import { logOut } from '../../actions/app';
 
@@ -15,16 +16,11 @@ const styles = EStyleSheet.create({
 
 class HomeScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'Home',
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
       paddingHorizontal: 8,
     }),
-    headerTintColor: '#fff',
-    headerTitleStype: {
-      fontWeight: '600',
-      fontSize: 80,
-    },
+    headerTitle: <WhiteLogo scale={0.34} />,
     headerLeft: (
       // TODO: 'color' property sets background color in Android
       // Style looks back... build own?
@@ -36,7 +32,7 @@ class HomeScreen extends Component {
 
   render() {
     return (
-      <Container backgroundColor={styles.$teal}>
+      <Container backgroundColor="white">
         <Heading color={styles.$orange} text="Logged In" />
       </Container>
     );
