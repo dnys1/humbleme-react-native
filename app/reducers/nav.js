@@ -1,16 +1,16 @@
 import { NavigationActions } from 'react-navigation';
-import { WelcomeStack } from '../config/routes';
+import MainStack from '../config/routes';
 
 import * as actions from '../actions/nav';
 import * as appActions from '../actions/app';
 
-const initialState = WelcomeStack.router.getStateForAction(NavigationActions.init());
+const initialState = MainStack.router.getStateForAction(NavigationActions.init());
 
 export default (state = initialState, action) => {
   let nextState;
   switch (action.type) {
     case actions.NAV_SHOW_WARNING_ICON:
-      nextState = WelcomeStack.router.getStateForAction(NavigationActions.setParams({
+      nextState = MainStack.router.getStateForAction(NavigationActions.setParams({
         key: 'Welcome',
         params: {
           showWarning: true,
@@ -18,7 +18,7 @@ export default (state = initialState, action) => {
       }));
       break;
     case actions.NAV_REMOVE_WARNING_ICON:
-      nextState = WelcomeStack.router.getStateForAction(NavigationActions.setParams({
+      nextState = MainStack.router.getStateForAction(NavigationActions.setParams({
         key: 'Welcome',
         params: {
           showWarning: false,
@@ -26,7 +26,7 @@ export default (state = initialState, action) => {
       }));
       break;
     case actions.NAV_LOGIN_CONFIRMATION_MODAL:
-      nextState = WelcomeStack.router.getStateForAction(
+      nextState = MainStack.router.getStateForAction(
         NavigationActions.navigate({
           routeName: 'TFA',
           params: {
@@ -38,7 +38,7 @@ export default (state = initialState, action) => {
       );
       break;
     case actions.NAV_SIGNUP_CONFIRMATION_MODAL:
-      nextState = WelcomeStack.router.getStateForAction(
+      nextState = MainStack.router.getStateForAction(
         NavigationActions.navigate({
           routeName: 'TFA',
           params: {
@@ -50,7 +50,7 @@ export default (state = initialState, action) => {
       );
       break;
     case actions.NAV_LOGIN_SCREEN:
-      nextState = WelcomeStack.router.getStateForAction(
+      nextState = MainStack.router.getStateForAction(
         NavigationActions.reset({
           index: 1,
           actions: [
@@ -62,16 +62,13 @@ export default (state = initialState, action) => {
       );
       break;
     case actions.NAV_LOGGED_IN_SCREEN:
-      nextState = WelcomeStack.router.getStateForAction(
-        NavigationActions.reset({
-          index: 0,
-          actions: [NavigationActions.navigate({ routeName: 'LoggedIn' })],
-        }),
+      nextState = MainStack.router.getStateForAction(
+        NavigationActions.navigate({ routeName: 'App' }),
         state,
       );
       break;
     case appActions.LOG_OUT_SUCCESS:
-      nextState = WelcomeStack.router.getStateForAction(
+      nextState = MainStack.router.getStateForAction(
         NavigationActions.reset({
           index: 0,
           actions: [NavigationActions.navigate({ routeName: 'Welcome' })],
@@ -80,7 +77,7 @@ export default (state = initialState, action) => {
       );
       break;
     default:
-      nextState = WelcomeStack.router.getStateForAction(action, state);
+      nextState = MainStack.router.getStateForAction(action, state);
   }
   return nextState || state;
 };
