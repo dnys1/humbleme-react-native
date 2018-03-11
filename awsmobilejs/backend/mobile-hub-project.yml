@@ -27,5 +27,9 @@ features:
             require-numbers: true
             require-symbols: false
             require-upper-case: true
+  user-files: !com.amazonaws.mobilehub.v0.UserFiles 
+    attributes:
+      enabled: true
+      wildcard-cors-policy: true
 name: HumbleMe-RN
 region: us-west-2

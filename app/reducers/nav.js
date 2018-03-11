@@ -49,6 +49,14 @@ export default (state = initialState, action) => {
         state,
       );
       break;
+    case actions.NAV_NAME_SCREEN:
+      nextState = MainStack.router.getStateForAction(
+        NavigationActions.navigate({
+          routeName: 'Name',
+        }),
+        state,
+      );
+      break;
     case actions.NAV_LOGIN_SCREEN:
       nextState = MainStack.router.getStateForAction(
         NavigationActions.reset({
@@ -63,7 +71,10 @@ export default (state = initialState, action) => {
       break;
     case actions.NAV_LOGGED_IN_SCREEN:
       nextState = MainStack.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'App' }),
+        NavigationActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'App' })],
+        }),
         state,
       );
       break;

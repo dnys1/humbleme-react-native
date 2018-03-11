@@ -2,13 +2,15 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 
 export default EStyleSheet.create({
   heading: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginVertical: 11,
+    fontSize: 33,
+    fontFamily: 'Avenir-Black',
+    marginTop: 5,
+    marginBottom: 31,
   },
   subheading: {
     fontSize: 25,
-    fontWeight: 'bold',
-    marginVertical: 10,
+    fontFamily: 'Avenir-Medium',
+    marginTop: 4,
+    marginBottom: 15,
   },
 });

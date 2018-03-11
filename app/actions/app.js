@@ -12,10 +12,19 @@ export const SHOW_ERROR = 'SHOW_ERROR';
 export const CLEAR_WARNING = 'CLEAR_WARNING';
 export const CLEAR_ERROR = 'CLEAR_ERROR';
 
+export const IMAGE_UPLOAD = 'IMAGE_UPLOAD';
+export const IMAGE_UPLOAD_SUCCESS = 'IMAGE_UPLOAD_SUCCESS';
+export const IMAGE_UPLOAD_FAILURE = 'IMAGE_UPLOAD_FAILURE';
+
 export const logOut = () => ({
   type: LOG_OUT,
 });
 
 export const applicationLoaded = () => ({
   type: APPLICATION_LOADED,
+});
+
+export const uploadImage = payload => ({
+  type: IMAGE_UPLOAD,
+  payload,
 });
