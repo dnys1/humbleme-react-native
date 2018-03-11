@@ -1,10 +1,12 @@
 import { LOG_IN_SUCCESS, SIGN_UP_SUCCESS, CONFIRM_SIGNUP_SUCCESS } from '../actions/welcome';
-import { LOG_OUT_SUCCESS } from '../actions/app';
+import { LOG_OUT_SUCCESS, IMAGE_UPLOAD_SUCCESS } from '../actions/app';
 
 const initialState = {
   user: {},
   userConfirmed: false,
   userSub: '',
+  images: {},
+  profile: '',
 };
 
 export default (state = initialState, action) => {
@@ -28,6 +30,17 @@ export default (state = initialState, action) => {
       };
     case LOG_OUT_SUCCESS:
       return initialState;
+    case IMAGE_UPLOAD_SUCCESS:
+      return {
+        ...state,
+        images: {
+          [action.payload.key]: {
+            type: action.payload.type,
+            imageURL: action.payload.imageURL,
+          },
+        },
+        profile: (action.payload.type === 'profile' && action.payload.key) || state.profile,
+      };
     default:
       return state;
   }

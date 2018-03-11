@@ -4,7 +4,7 @@ import { Provider, connect } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import PropTypes from 'prop-types';
-import Amplify from 'aws-amplify';
+import Amplify, { Storage } from 'aws-amplify';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 import { addNavigationHelpers } from 'react-navigation';
 
@@ -14,9 +14,10 @@ import config from './aws-exports';
 import configureStore from './config/store';
 import MainStack from './config/routes';
 
-// window.LOG_LEVEL = 'DEBUG'; // If more info is needed
+window.LOG_LEVEL = 'DEBUG'; // If more info is needed
 
 Amplify.configure(config);
+Storage.configure({ track: true });
 
 EStyleSheet.build({
   $white: '#ffffff',

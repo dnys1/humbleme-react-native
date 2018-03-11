@@ -4,6 +4,7 @@ import { delay } from 'redux-saga';
 
 import { getNetworkIsConnectedAndHasChecked } from './selectors';
 import navSagas from './nav';
+import appSagas from './app';
 
 import {
   RESEND_SIGNUP,
@@ -279,5 +280,6 @@ export default function* rootSaga() {
     fork(watchConfirmSignup),
     fork(watchLogout),
     navSagas(),
+    appSagas(),
   ]);
 }
