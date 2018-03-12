@@ -1,6 +1,6 @@
 import React from 'react';
-import { Image } from 'react-native';
 import { Asset, AppLoading } from 'expo';
+import AssetUtils from 'expo-asset-utils';
 import { Provider, connect } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import EStyleSheet from 'react-native-extended-stylesheet';
@@ -15,7 +15,7 @@ import config from './aws-exports';
 import configureStore from './config/store';
 import MainStack from './config/routes';
 
-window.LOG_LEVEL = 'DEBUG'; // If more info is needed
+// window.LOG_LEVEL = 'DEBUG'; // If more info is needed
 
 Amplify.configure(config);
 Storage.configure({ track: true });
@@ -66,13 +66,13 @@ export default class AppComplete extends React.Component {
       store,
       persistor,
       isReady: false,
-      userLoggedIn: false,
     };
   }
 
+  // TODO: Rewrite with componentWillMount so we can better inspect promises
   /* eslint-disable class-methods-use-this */
   async cacheResourcesAsync() {
-    const images = [
+    const localAssets = [
       require('./assets/logo_white.png'),
       require('./assets/torch.png'),
       require('./assets/default.jpg'),
@@ -80,27 +80,30 @@ export default class AppComplete extends React.Component {
       require('./assets/scorewheel.png'),
     ];
 
-    let photos;
+    const now = Date.now();
+    const tenDays = 10 * 24 * 60 * 60 * 1000;
+    let remotePhotos;
+    const remoteURIs = [];
     try {
-      photos = await Storage.list('photos/', { level: 'protected' });
-      if (photos) {
-        photos.forEach(async (photo) => {
-          const url = await Storage.get(photo.key, { level: 'protected' });
-          images.push(url);
+      remotePhotos = await Storage.list('photos/', { level: 'protected' });
+      if (remotePhotos) {
+        remotePhotos.forEach(async (photo) => {
+          // If image older than 10 days, don't cache
+          if (photo.key.includes('profile') || now - photo.lastModified < tenDays) {
+            const url = await Storage.get(photo.key, { level: 'protected' });
+            remoteURIs.push(url);
+          }
         });
       }
     } catch (err) {
       console.log('Error retrieving Storage data: ', err);
     }
 
-    const cacheImages = images.map((image) => {
-      if (typeof image === 'string') {
-        return Image.prefetch(image);
-      }
-      return Asset.fromModule(image).downloadAsync();
-    });
+    console.log(remoteURIs);
+    const cacheRemoteImages = remoteURIs.map(photoURI => AssetUtils.resolveAsync(photoURI));
+    const cacheLocalImages = localAssets.map(image => Asset.fromModule(image).downloadAsync());
 
-    return Promise.all(cacheImages);
+    return Promise.all([...cacheRemoteImages, ...cacheLocalImages]);
   }
   /* eslint-enable class-methods-use-this */
 
@@ -111,7 +114,7 @@ export default class AppComplete extends React.Component {
           startAsync={this.cacheResourcesAsync}
           onFinish={() => {
             console.log('Async resources cached');
-            this.setState({ isReady: true, userLoggedIn: true });
+            this.setState({ isReady: true });
           }}
           onError={console.warn}
         />
