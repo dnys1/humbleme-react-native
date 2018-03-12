@@ -54,12 +54,12 @@ class WelcomeScreen extends Component {
 
   componentWillMount() {
     NetInfo.addEventListener('connectionChange', this.props.changeConnectionStatus);
-    this.loading = true;
+    this.buttonsEnabled = false;
   }
 
   componentDidMount() {
     setTimeout(() => this.props.applicationLoaded(), 1000);
-    this.loading = false;
+    this.buttonsEnabled = true;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -74,11 +74,15 @@ class WelcomeScreen extends Component {
   }
 
   handleLoginPress = () => {
+    this.buttonsEnabled = false;
     this.props.navigation.navigate('Login');
+    this.buttonsEnabled = true;
   };
 
   handleSignupPress = () => {
+    this.buttonsEnabled = false;
     this.props.navigation.navigate('Signup');
+    this.buttonsEnabled = true;
   };
 
   render() {
@@ -89,13 +93,13 @@ class WelcomeScreen extends Component {
           text="Login"
           color={styles.$orange}
           onPress={this.handleLoginPress}
-          disabled={this.loading}
+          disabled={!this.buttonsEnabled}
         />
         <ButtonWithChevron
           text="Sign Up"
           color={styles.$yellow}
           onPress={this.handleSignupPress}
-          disabled={this.loading}
+          disabled={!this.buttonsEnabled}
         />
         <LogoTorch scale={0.18} />
       </Container>
