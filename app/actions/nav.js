@@ -6,3 +6,7 @@ export const NAV_LOGGED_IN_SCREEN = 'NAV_LOGGED_IN_SCREEN';
 
 export const NAV_REMOVE_WARNING_ICON = 'NAV_REMOVE_WARNING_ICON';
 export const NAV_SHOW_WARNING_ICON = 'NAV_SHOW_WARNING_ICON';
+
+export const navLoggedInScreen = () => ({
+  type: NAV_LOGGED_IN_SCREEN,
+});
