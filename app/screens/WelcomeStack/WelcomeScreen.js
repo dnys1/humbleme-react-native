@@ -23,6 +23,8 @@ const styles = EStyleSheet.create({
   $yellow: '$primaryYellow',
 });
 
+const SHOULD_ANIMATE = true; // process.env.NODE_ENV !== 'development';
+
 const bounceInLeftCustom = {
   0: {
     opacity: 0,
@@ -63,9 +65,9 @@ class WelcomeScreen extends Component {
   static propTypes = {
     navigation: PropTypes.object,
     changeConnectionStatus: PropTypes.func,
-    applicationLoaded: PropTypes.func,
     alertWithType: PropTypes.func,
     error: PropTypes.object,
+    applicationLoaded: PropTypes.func,
   };
 
   /* Interesting method for incorporating stylesheet vars into header */
@@ -109,10 +111,6 @@ class WelcomeScreen extends Component {
     NetInfo.removeEventListener('connectionChange', this.props.changeConnectionStatus);
   }
 
-  handleEndAnimation = () => {
-    this.props.applicationLoaded();
-  };
-
   handleLoginPress = () => {
     this.props.navigation.navigate('Login');
   };
@@ -125,24 +123,33 @@ class WelcomeScreen extends Component {
     const ANIMATION_DURATION = 1300;
     return (
       <Container backgroundColor={styles.$teal}>
-        <Animatable.View animation="fadeInDown" duration={ANIMATION_DURATION}>
+        <Animatable.View
+          animation={(SHOULD_ANIMATE && 'fadeInDown') || null}
+          duration={ANIMATION_DURATION}
+          onAnimationEnd={() => setTimeout(() => this.props.applicationLoaded(), 400)}
+        >
           <WhiteLogo scale={0.9} style={{ paddingBottom: 50 }} />
         </Animatable.View>
         <Animatable.View
-          animation="bounceInLeftCustom"
-          onAnimationEnd={this.handleEndAnimation}
+          animation={(SHOULD_ANIMATE && 'bounceInLeftCustom') || null}
           duration={ANIMATION_DURATION}
         >
           <ButtonWithChevron text="Login" color={styles.$orange} onPress={this.handleLoginPress} />
         </Animatable.View>
-        <Animatable.View animation="bounceInRightCustom" duration={ANIMATION_DURATION}>
+        <Animatable.View
+          animation={(SHOULD_ANIMATE && 'bounceInRightCustom') || null}
+          duration={ANIMATION_DURATION}
+        >
           <ButtonWithChevron
             text="Sign Up"
             color={styles.$yellow}
             onPress={this.handleSignupPress}
           />
         </Animatable.View>
-        <Animatable.View animation="fadeInUp" duration={ANIMATION_DURATION}>
+        <Animatable.View
+          animation={(SHOULD_ANIMATE && 'fadeInUp') || null}
+          duration={ANIMATION_DURATION}
+        >
           <LogoTorch scale={0.18} />
         </Animatable.View>
       </Container>
