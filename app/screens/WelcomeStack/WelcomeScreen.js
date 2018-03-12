@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NetInfo } from 'react-native';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import * as Animatable from 'react-native-animatable';
 
 import { connect } from 'react-redux';
 import { connectAlert } from '../../components/Alert';
@@ -21,6 +22,42 @@ const styles = EStyleSheet.create({
   $orange: '$primaryOrange',
   $yellow: '$primaryYellow',
 });
+
+const bounceInLeftCustom = {
+  0: {
+    opacity: 0,
+    translateX: -600,
+  },
+  0.6: {
+    opacity: 1,
+    translateX: 20,
+  },
+  0.9: {
+    translateX: -8,
+  },
+  1: {
+    translateX: 0,
+  },
+};
+
+const bounceInRightCustom = {
+  0: {
+    opacity: 0,
+    translateX: 600,
+  },
+  0.6: {
+    opacity: 1,
+    translateX: -20,
+  },
+  0.9: {
+    translateX: 8,
+  },
+  1: {
+    translateX: 0,
+  },
+};
+
+Animatable.initializeRegistryWithDefinitions({ bounceInRightCustom, bounceInLeftCustom });
 
 class WelcomeScreen extends Component {
   static propTypes = {
@@ -52,14 +89,13 @@ class WelcomeScreen extends Component {
     //   ) : null,
   });
 
-  componentWillMount() {
-    NetInfo.addEventListener('connectionChange', this.props.changeConnectionStatus);
+  constructor(props) {
+    super(props);
     this.buttonsEnabled = false;
   }
 
-  componentDidMount() {
-    setTimeout(() => this.props.applicationLoaded(), 1000);
-    this.buttonsEnabled = true;
+  componentWillMount() {
+    NetInfo.addEventListener('connectionChange', this.props.changeConnectionStatus);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -73,35 +109,42 @@ class WelcomeScreen extends Component {
     NetInfo.removeEventListener('connectionChange', this.props.changeConnectionStatus);
   }
 
+  handleEndAnimation = () => {
+    this.props.applicationLoaded();
+  };
+
   handleLoginPress = () => {
-    this.buttonsEnabled = false;
     this.props.navigation.navigate('Login');
-    this.buttonsEnabled = true;
   };
 
   handleSignupPress = () => {
-    this.buttonsEnabled = false;
     this.props.navigation.navigate('Signup');
-    this.buttonsEnabled = true;
   };
 
   render() {
+    const ANIMATION_DURATION = 1300;
     return (
       <Container backgroundColor={styles.$teal}>
-        <WhiteLogo scale={0.9} style={{ paddingBottom: 50 }} />
-        <ButtonWithChevron
-          text="Login"
-          color={styles.$orange}
-          onPress={this.handleLoginPress}
-          disabled={!this.buttonsEnabled}
-        />
-        <ButtonWithChevron
-          text="Sign Up"
-          color={styles.$yellow}
-          onPress={this.handleSignupPress}
-          disabled={!this.buttonsEnabled}
-        />
-        <LogoTorch scale={0.18} />
+        <Animatable.View animation="fadeInDown" duration={ANIMATION_DURATION}>
+          <WhiteLogo scale={0.9} style={{ paddingBottom: 50 }} />
+        </Animatable.View>
+        <Animatable.View
+          animation="bounceInLeftCustom"
+          onAnimationEnd={this.handleEndAnimation}
+          duration={ANIMATION_DURATION}
+        >
+          <ButtonWithChevron text="Login" color={styles.$orange} onPress={this.handleLoginPress} />
+        </Animatable.View>
+        <Animatable.View animation="bounceInRightCustom" duration={ANIMATION_DURATION}>
+          <ButtonWithChevron
+            text="Sign Up"
+            color={styles.$yellow}
+            onPress={this.handleSignupPress}
+          />
+        </Animatable.View>
+        <Animatable.View animation="fadeInUp" duration={ANIMATION_DURATION}>
+          <LogoTorch scale={0.18} />
+        </Animatable.View>
       </Container>
     );
   }
