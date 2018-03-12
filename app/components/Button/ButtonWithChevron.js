@@ -13,6 +13,7 @@ const ButtonWithChevron = ({
   size = 'large',
   style,
   textStyle,
+  disabled = false,
 }) => {
   const containerStyles = [styles.container];
   if (color) {
@@ -52,7 +53,7 @@ const ButtonWithChevron = ({
   }
 
   return (
-    <TouchableOpacity style={containerStyles} onPress={onPress}>
+    <TouchableOpacity style={containerStyles} onPress={onPress} disabled={disabled}>
       <View style={styles.wrapper}>
         <Text style={textStyles}>{text}</Text>
         <Ionicons name="ios-arrow-forward" size={20} color="white" />
@@ -69,6 +70,7 @@ ButtonWithChevron.propTypes = {
   size: PropTypes.oneOf(['small', 'large', 'xlarge']),
   style: PropTypes.object,
   textStyle: PropTypes.object,
+  disabled: PropTypes.bool,
 };
 
 export default ButtonWithChevron;
