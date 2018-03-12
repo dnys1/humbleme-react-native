@@ -3,8 +3,9 @@ import { TouchableOpacity, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { connect } from 'react-redux';
+import { Storage } from 'aws-amplify';
 
-import { logOut } from '../../actions/app';
+import { setProfileURL, logOut } from '../../actions/app';
 
 import { Container } from '../../components/Container';
 import { ProfilePicture, ProfileName } from '../../components/Profile';
@@ -34,7 +35,15 @@ class ProfileScreen extends Component {
     profile: PropTypes.string,
     images: PropTypes.object,
     name: PropTypes.string,
+    setProfileURL: PropTypes.func,
   };
+
+  async componentWillMount() {
+    if (this.props.profile) {
+      const imageURL = await Storage.get(this.props.profile, { level: 'protected' });
+      this.props.setProfileURL({ imageURL });
+    }
+  }
 
   render() {
     let profileImage;
@@ -44,7 +53,6 @@ class ProfileScreen extends Component {
       profileImage =
         'https://s3-us-west-2.amazonaws.com/humblemern-hosting-mobilehub-1610310657/default.jpg';
     }
-    console.log(profileImage);
     return (
       <Container
         style={{ justifyContent: 'flex-start', alignItems: 'stretch' }}
@@ -70,4 +78,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ProfileScreen);
+const mapDispatchToProps = {
+  setProfileURL,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);

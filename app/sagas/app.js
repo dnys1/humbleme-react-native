@@ -10,14 +10,22 @@ function* uploadImage() {
   const { payload: { image, type } } = yield take(IMAGE_UPLOAD);
   // get mime-type
   const filename = path.basename(image.uri);
-  const contentType = mime.lookup(path.extname(image.uri));
+  const extname = path.extname(image.uri);
+  const contentType = mime.lookup(extname);
   const imageBuffer = Buffer.from(image.base64, 'base64');
   const level = 'protected';
   try {
-    const response = yield Storage.put(filename, imageBuffer, { level, contentType });
+    try {
+      yield Storage.remove(`photos/profile${extname}`, { level });
+    } catch (err) {
+      console.log('Error removing old profile pic: ', err);
+    }
+    yield Storage.put(`photos/${filename}`, imageBuffer, { level, contentType });
+    const response = yield Storage.put(`photos/profile${extname}`, imageBuffer, {
+      level,
+      contentType,
+    });
     const imageURL = yield Storage.get(response.key, { level });
-    console.log(imageURL);
-    console.log(response, imageURL);
     yield put({ type: IMAGE_UPLOAD_SUCCESS, payload: { ...response, type, imageURL } });
   } catch (err) {
     console.log(err);
