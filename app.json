@@ -3,10 +3,16 @@
     "sdkVersion": "25.0.0",
     "orientation": "portrait",
     "privacy": "unlisted",
+    "primaryColor": "#38CECA",
+    "androidStatusBar": {
+      "backgroundColor": "#38CECA",
+      "barStyle": "light-content"
+    },
     "splash": {
       "image": "./app/assets/splash.png",
       "backgroundColor": "#38CECA",
       "resizeMode": "contain"
-    }
+    },
+    "icon": "./app/assets/icon.png"
   }
 }
