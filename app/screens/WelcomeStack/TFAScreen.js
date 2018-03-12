@@ -121,7 +121,7 @@ class TFAScreen extends Component {
 
 const mapStateToProps = (state) => {
   const { TFACode, error } = state.welcome;
-  const { password } = state.welcome.login; // Only pull for user logging in
+  const { password } = state.welcome.login || state.welcome.signup;
   const { user } = state.auth;
 
   let email;
