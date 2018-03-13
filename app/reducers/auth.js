@@ -4,7 +4,7 @@ import {
   CONFIRM_SIGNUP_SUCCESS,
   UPDATE_NAME_SUCCESS,
 } from '../actions/welcome';
-import { LOG_OUT_SUCCESS, IMAGE_UPLOAD_SUCCESS, SET_PROFILE_URL } from '../actions/app';
+import { LOG_OUT_SUCCESS, IMAGE_UPLOAD_SUCCESS } from '../actions/app';
 
 const initialState = {
   user: {},
@@ -51,16 +51,6 @@ export default (state = initialState, action) => {
           },
         },
         profile: (action.payload.type === 'profile' && action.payload.key) || state.profile,
-      };
-    case SET_PROFILE_URL:
-      return {
-        ...state,
-        images: {
-          [state.profile]: {
-            imageURL: action.payload.imageURL,
-            ...state.images[state.profile],
-          },
-        },
       };
     case UPDATE_NAME_SUCCESS:
     default:

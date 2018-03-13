@@ -32,7 +32,7 @@ const configureStore = () => {
   const persistor = persistStore(store);
   // persistor.purge();
 
-  return { store, persistor };
+  return { store, persistor, runSaga: sagaMiddleware.run };
 };
 
 export default configureStore;

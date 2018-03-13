@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, Text } from 'react-native';
+import { Asset } from 'expo';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { connect } from 'react-redux';
-import { Storage } from 'aws-amplify';
 
-import { setProfileURL, logOut } from '../../actions/app';
+import { logOut } from '../../actions/app';
 
 import { Container } from '../../components/Container';
 import { ProfilePicture, ProfileName } from '../../components/Profile';
@@ -32,27 +32,14 @@ class ProfileScreen extends Component {
   });
 
   static propTypes = {
-    profile: PropTypes.string,
-    images: PropTypes.object,
+    profile: PropTypes.instanceOf(Asset),
     name: PropTypes.string,
-    setProfileURL: PropTypes.func,
   };
 
-  async componentWillMount() {
-    if (this.props.profile) {
-      const imageURL = await Storage.get(this.props.profile, { level: 'protected' });
-      this.props.setProfileURL({ imageURL });
-    }
-  }
-
   render() {
-    let profileImage;
-    if (this.props.profile) {
-      profileImage = this.props.images[this.props.profile].imageURL;
-    } else {
-      profileImage =
-        'https://s3-us-west-2.amazonaws.com/humblemern-hosting-mobilehub-1610310657/default.jpg';
-    }
+    const profileImage = this.props.profile
+      ? this.props.profile.uri
+      : 'https://s3-us-west-2.amazonaws.com/humblemern-hosting-mobilehub-1610310657/default.jpg';
     return (
       <Container
         style={{ justifyContent: 'flex-start', alignItems: 'stretch' }}
@@ -66,20 +53,15 @@ class ProfileScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { profile, images } = state.auth;
+  const { profile } = state.app;
   const { given_name, family_name } = state.auth.attributes;
   const name = `${given_name} ${family_name}`;
   return {
     profile,
-    images,
     given_name,
     family_name,
     name,
   };
 };
 
-const mapDispatchToProps = {
-  setProfileURL,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
+export default connect(mapStateToProps)(ProfileScreen);
