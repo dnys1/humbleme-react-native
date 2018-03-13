@@ -15,6 +15,7 @@ import { ButtonWithChevron } from '../../components/Button';
 // import { HeaderWarningNotification } from '../../components/Header';
 
 import { applicationLoaded } from '../../actions/app';
+import { navLoginScreen, navSignupScreen } from '../../actions/nav';
 import { changeConnectionStatus } from '../../actions/network';
 
 const styles = EStyleSheet.create({
@@ -23,7 +24,7 @@ const styles = EStyleSheet.create({
   $yellow: '$primaryYellow',
 });
 
-const SHOULD_ANIMATE = true; // process.env.NODE_ENV !== 'development';
+const SHOULD_ANIMATE = process.env.NODE_ENV !== 'development';
 
 const bounceInLeftCustom = {
   0: {
@@ -63,11 +64,13 @@ Animatable.initializeRegistryWithDefinitions({ bounceInRightCustom, bounceInLeft
 
 class WelcomeScreen extends Component {
   static propTypes = {
-    navigation: PropTypes.object,
     changeConnectionStatus: PropTypes.func,
     alertWithType: PropTypes.func,
     error: PropTypes.object,
     applicationLoaded: PropTypes.func,
+    navLoginScreen: PropTypes.func,
+    navSignupScreen: PropTypes.func,
+    isTransitioning: PropTypes.bool,
   };
 
   /* Interesting method for incorporating stylesheet vars into header */
@@ -91,11 +94,6 @@ class WelcomeScreen extends Component {
     //   ) : null,
   });
 
-  constructor(props) {
-    super(props);
-    this.buttonsEnabled = false;
-  }
-
   componentWillMount() {
     NetInfo.addEventListener('connectionChange', this.props.changeConnectionStatus);
   }
@@ -110,14 +108,6 @@ class WelcomeScreen extends Component {
   componentWillUnmount() {
     NetInfo.removeEventListener('connectionChange', this.props.changeConnectionStatus);
   }
-
-  handleLoginPress = () => {
-    this.props.navigation.navigate('Login');
-  };
-
-  handleSignupPress = () => {
-    this.props.navigation.navigate('Signup');
-  };
 
   render() {
     const ANIMATION_DURATION = 1300;
@@ -134,7 +124,12 @@ class WelcomeScreen extends Component {
           animation={(SHOULD_ANIMATE && 'bounceInLeftCustom') || null}
           duration={ANIMATION_DURATION}
         >
-          <ButtonWithChevron text="Login" color={styles.$orange} onPress={this.handleLoginPress} />
+          <ButtonWithChevron
+            text="Login"
+            color={styles.$orange}
+            onPress={this.props.navLoginScreen}
+            disabled={this.props.isTransitioning}
+          />
         </Animatable.View>
         <Animatable.View
           animation={(SHOULD_ANIMATE && 'bounceInRightCustom') || null}
@@ -143,7 +138,8 @@ class WelcomeScreen extends Component {
           <ButtonWithChevron
             text="Sign Up"
             color={styles.$yellow}
-            onPress={this.handleSignupPress}
+            onPress={this.props.navSignupScreen}
+            disabled={this.props.isTransitioning}
           />
         </Animatable.View>
         <Animatable.View
@@ -159,17 +155,21 @@ class WelcomeScreen extends Component {
 
 const mapStateToProps = (state) => {
   const { connected, hasCheckedStatus, error } = state.network;
+  const { isTransitioning } = state.nav;
 
   return {
     connected,
     hasCheckedStatus,
     error,
+    isTransitioning,
   };
 };
 
 const mapDispatchToProps = {
   applicationLoaded,
   changeConnectionStatus,
+  navLoginScreen,
+  navSignupScreen,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(connectAlert(WelcomeScreen));
