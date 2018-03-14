@@ -76,8 +76,6 @@ export default class AppComplete extends React.Component {
     };
   }
 
-  // TODO: Rewrite with componentWillMount so we can better inspect promises
-  /* eslint-disable class-methods-use-this */
   cacheResourcesAsync = async () => {
     const localAssets = [
       require('./assets/logo_white.png'),
@@ -132,7 +130,6 @@ export default class AppComplete extends React.Component {
 
     return Promise.all([...cacheRemoteImages, ...cacheLocalImages, cacheProfileImage]);
   };
-  /* eslint-enable class-methods-use-this */
 
   render() {
     if (!this.state.isReady) {
@@ -140,7 +137,6 @@ export default class AppComplete extends React.Component {
         <AppLoading
           startAsync={this.cacheResourcesAsync}
           onFinish={() => {
-            console.log('Async resources cached');
             this.state.runSaga(function* appLoaded() {
               yield put({ type: APPLICATION_LOADED });
             });
