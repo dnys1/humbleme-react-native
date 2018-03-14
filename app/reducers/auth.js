@@ -53,6 +53,14 @@ export default (state = initialState, action) => {
         profile: (action.payload.type === 'profile' && action.payload.key) || state.profile,
       };
     case UPDATE_NAME_SUCCESS:
+      return {
+        ...state,
+        attributes: {
+          ...state.attributes,
+          given_name: action.name.split(' ')[0],
+          family_name: action.name.split(' ')[1],
+        },
+      };
     default:
       return state;
   }

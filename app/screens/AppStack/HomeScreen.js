@@ -51,7 +51,7 @@ class HomeScreen extends Component {
           small
           rounded
           icon={{ name: 'user' }}
-          onPress={() => console.log('Works!')}
+          onPress={() => navigation.navigate('Profile')}
           activeOpacity={0.7}
         />
       ),
