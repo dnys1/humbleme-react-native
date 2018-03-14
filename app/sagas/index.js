@@ -28,7 +28,6 @@ import {
 } from '../actions/welcome';
 
 import {
-  APPLICATION_LOADED,
   LOG_OUT,
   LOG_OUT_SUCCESS,
   LOG_OUT_FAILURE,
@@ -315,20 +314,8 @@ function* watchLogout() {
   }
 }
 
-function* watchAppLoad() {
-  yield take(APPLICATION_LOADED);
-  try {
-    if (yield Auth.currentSession()) {
-      yield put({ type: NAV_LOGGED_IN_SCREEN });
-    }
-  } catch (err) {
-    console.log(err);
-  }
-}
-
 export default function* rootSaga() {
   yield all([
-    fork(watchAppLoad),
     fork(watchNetwork),
     fork(watchLogin),
     fork(watchConfirmLogin),

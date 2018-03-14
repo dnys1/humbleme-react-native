@@ -79,13 +79,19 @@ export default (state = initialState, action) => {
       );
       break;
     case actions.NAV_LOGGED_IN_SCREEN:
-      nextState = MainStack.router.getStateForAction(NavigationActions.navigate({ routeName: 'App' }));
+      nextState = MainStack.router.getStateForAction(
+        NavigationActions.reset({
+          index: 0,
+          actions: [NavigationActions.init({ routeName: 'App' })],
+        }),
+        state,
+      );
       break;
     case appActions.LOG_OUT_SUCCESS:
       nextState = MainStack.router.getStateForAction(
         NavigationActions.reset({
           index: 0,
-          actions: [NavigationActions.navigate({ routeName: 'Welcome' })],
+          actions: [NavigationActions.navigate({ routeName: 'Auth' })],
         }),
         state,
       );

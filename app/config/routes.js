@@ -4,6 +4,7 @@ import { TabNavigator, TabBarBottom, StackNavigator, SwitchNavigator } from 'rea
 import { Ionicons } from '@expo/vector-icons';
 
 import {
+  AuthLoadingScreen,
   WelcomeScreen,
   LoginScreen,
   SignupScreen,
@@ -108,13 +109,15 @@ const AuthStack = StackNavigator(
   },
 );
 
-const MainStack = SwitchNavigator({
-  App: {
-    screen: AppStack,
+const MainStack = SwitchNavigator(
+  {
+    AuthLoading: AuthLoadingScreen,
+    App: AppStack,
+    Auth: AuthStack,
   },
-  Auth: {
-    screen: AuthStack,
+  {
+    initialRouteName: 'AuthLoading',
   },
-});
+);
 
 export default MainStack;
