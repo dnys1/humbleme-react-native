@@ -22,6 +22,8 @@ const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
   $orange: '$primaryOrange',
   $yellow: '$primaryYellow',
+  $navy: '$primaryNavy',
+  $lightOrange: '$primaryCarrotOrange',
 });
 
 const SHOULD_ANIMATE = process.env.NODE_ENV !== 'development';
@@ -137,7 +139,7 @@ class WelcomeScreen extends Component {
         >
           <ButtonWithChevron
             text="Sign Up"
-            color={styles.$yellow}
+            color={styles.$lightOrange}
             onPress={this.props.navSignupScreen}
             disabled={this.props.isTransitioning}
           />

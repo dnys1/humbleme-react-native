@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { connect } from 'react-redux';
@@ -8,8 +8,7 @@ import { Container } from '../../components/Container';
 import { WhiteLogo } from '../../components/Logo';
 import { ScorePanel } from '../../components/Score';
 
-import { logOut } from '../../actions/app';
-import { ButtonWithChevron } from '../../components/Button';
+import { ButtonWithChevron, LogOutButton } from '../../components/Button';
 import { Heading } from '../../components/Text';
 
 const styles = EStyleSheet.create({
@@ -23,19 +22,13 @@ class HomeScreen extends Component {
     firstName: PropTypes.string,
   };
 
-  static navigationOptions = ({ navigation }) => ({
+  static navigationOptions = () => ({
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
       paddingHorizontal: 8,
     }),
     headerTitle: <WhiteLogo scale={0.34} />,
-    headerLeft: (
-      // TODO: 'color' property sets background color in Android
-      // Style looks back... build own?
-      <TouchableOpacity onPress={() => navigation.dispatch(logOut())}>
-        <Text style={{ color: 'white', fontSize: 19 }}>Logout</Text>
-      </TouchableOpacity>
-    ),
+    headerLeft: <LogOutButton />,
   });
 
   render() {

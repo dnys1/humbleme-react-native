@@ -10,7 +10,7 @@ import { connectAlert } from '../../components/Alert';
 import { Container } from '../../components/Container';
 import { Subheading } from '../../components/Text';
 import { InputNoBorder } from '../../components/TextInput';
-import { ButtonWithChevron } from '../../components/Button';
+import { ButtonWithChevron, LogOutButton } from '../../components/Button';
 
 import { updateTFACode, confirmSignup, confirmLogin, resendSignUp } from '../../actions/welcome';
 
@@ -19,6 +19,7 @@ const styles = EStyleSheet.create({
   $yellow: '$primaryYellow',
   $orange: '$primaryOrange',
   $green: '$primaryGreen',
+  $lightOrange: '$primaryCarrotOrange',
   $viewStyles: '$keyboardAvoidingView',
   $textViewStyles: {
     justifyContent: 'center',
@@ -51,7 +52,7 @@ class TFAScreen extends Component {
       borderBottomWidth: 0,
     }),
     /* To prevent user from being unable to sign up */
-    headerLeft: null,
+    headerLeft: <LogOutButton />,
     gesturesEnabled: false,
   };
 
@@ -107,7 +108,7 @@ class TFAScreen extends Component {
           )}
           <ButtonWithChevron
             text="Resend Code"
-            color={styles.$yellow}
+            color={styles.$lightOrange}
             onPress={() =>
               this.props.resendSignUp({
                 username: this.props.username,
@@ -125,7 +126,6 @@ class TFAScreen extends Component {
 
 const mapStateToProps = (state) => {
   const { TFACode, error } = state.welcome;
-  const { password } = state.welcome.login || state.welcome.signup;
   const { user } = state.auth;
   const { isTransitioning } = state.nav;
 
@@ -137,10 +137,11 @@ const mapStateToProps = (state) => {
   }
 
   let username;
+  let password;
   if (state.welcome.signup.username) {
-    ({ username } = state.welcome.signup);
+    ({ username, password } = state.welcome.signup);
   } else {
-    ({ username } = state.welcome.login);
+    ({ username, password } = state.welcome.login);
   }
   return {
     user,

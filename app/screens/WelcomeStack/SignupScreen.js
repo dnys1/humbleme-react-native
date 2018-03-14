@@ -24,6 +24,7 @@ import {
 const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
   $yellow: '$primaryYellow',
+  $lightOrange: '$primaryCarrotOrange',
   $viewStyles: '$keyboardAvoidingView',
 });
 
@@ -107,7 +108,7 @@ class SignupScreen extends Component {
           />
           <ButtonWithChevron
             text="Sign Up"
-            color={styles.$yellow}
+            color={styles.$lightOrange}
             onPress={() => {
               if (this.props.password === this.props.passwordRetype) {
                 this.props.signUp({

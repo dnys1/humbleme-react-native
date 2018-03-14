@@ -27,7 +27,11 @@ EStyleSheet.build({
   $primaryTeal: '#38CECA',
   $primaryOrange: '#f15a24',
   $primaryYellow: '#efb402',
+  $primaryCarrotOrange: '#f7931e',
   $primaryGreen: '#12B336',
+  $primaryPink: '#ff8372',
+  $primaryNavy: '#0C2F6D',
+
   $keyboardAvoidingView: {
     flex: 1,
     justifyContent: 'center',

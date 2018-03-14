@@ -41,6 +41,7 @@ class NameScreen extends Component {
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
       borderBottomWidth: 0,
     }),
+    headerLeft: null,
   };
 
   render() {
