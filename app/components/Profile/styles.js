@@ -5,7 +5,7 @@ export default EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     // height: 200,
-    paddingVertical: 20,
+    paddingTop: 30,
   },
   textContainer: {
     alignItems: 'center',

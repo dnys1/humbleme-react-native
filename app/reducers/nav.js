@@ -57,15 +57,24 @@ export default (state = initialState, action) => {
         state,
       );
       break;
+    case actions.NAV_RESET_WELCOME:
+      nextState = MainStack.router.getStateForAction(NavigationActions.reset(
+        {
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'Welcome' })],
+        },
+        state,
+      ));
+      break;
     case actions.NAV_LOGIN_SCREEN:
       nextState = MainStack.router.getStateForAction(
-        NavigationActions.reset({
-          index: 1,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Welcome' }),
-            NavigationActions.navigate({ routeName: 'Login' }),
-          ],
-        }),
+        NavigationActions.navigate({ routeName: 'Login' }),
+        state,
+      );
+      break;
+    case actions.NAV_SIGNUP_SCREEN:
+      nextState = MainStack.router.getStateForAction(
+        NavigationActions.navigate({ routeName: 'Signup' }),
         state,
       );
       break;

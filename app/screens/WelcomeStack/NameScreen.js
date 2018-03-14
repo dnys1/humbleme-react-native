@@ -32,6 +32,7 @@ class NameScreen extends Component {
     updateName: PropTypes.func,
     updateSignupName: PropTypes.func,
     alertWithType: PropTypes.func,
+    isTransitioning: PropTypes.bool,
   };
 
   static navigationOptions = {
@@ -81,6 +82,7 @@ class NameScreen extends Component {
                 );
               }
             }}
+            disabled={this.props.isTransitioning}
             size="small"
           />
         </KeyboardAvoidingView>
@@ -92,9 +94,11 @@ class NameScreen extends Component {
 const mapStateToProps = (state) => {
   const { user } = state.auth;
   const { name } = state.welcome.signup;
+  const { isTransitioning } = state.nav;
   return {
     user,
     name,
+    isTransitioning,
   };
 };
 

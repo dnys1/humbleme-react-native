@@ -41,6 +41,7 @@ class TFAScreen extends Component {
     resendSignUp: PropTypes.func,
     error: PropTypes.object,
     alertWithType: PropTypes.func,
+    isTransitioning: PropTypes.bool,
   };
 
   static navigationOptions = {
@@ -90,6 +91,7 @@ class TFAScreen extends Component {
                   resend,
                 })
               }
+              disabled={this.props.isTransitioning}
               size="small"
             />
           ) : (
@@ -99,6 +101,7 @@ class TFAScreen extends Component {
               onPress={() =>
                 this.props.confirmLogin({ user: this.props.user, TFACode: this.props.TFACode })
               }
+              disabled={this.props.isTransitioning}
               size="small"
             />
           )}
@@ -111,6 +114,7 @@ class TFAScreen extends Component {
               })
             }
             size="large"
+            disabled={this.props.isTransitioning}
             style={{ marginVertical: 8 }}
           />
         </KeyboardAvoidingView>
@@ -121,8 +125,9 @@ class TFAScreen extends Component {
 
 const mapStateToProps = (state) => {
   const { TFACode, error } = state.welcome;
-  const { password } = state.welcome.login; // Only pull for user logging in
+  const { password } = state.welcome.login || state.welcome.signup;
   const { user } = state.auth;
+  const { isTransitioning } = state.nav;
 
   let email;
   if (user.signInUserSession) {
@@ -144,6 +149,7 @@ const mapStateToProps = (state) => {
     TFACode,
     error,
     email,
+    isTransitioning,
   };
 };
 

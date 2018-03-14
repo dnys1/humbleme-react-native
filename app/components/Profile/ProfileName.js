@@ -1,13 +1,14 @@
 import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { Text } from 'react-native-elements';
+
+import { Heading } from '../Text';
 
 import styles from './styles';
 
 const ProfileName = ({ name = 'John Doe' }) => (
   <View style={styles.textContainer}>
-    <Text h3>{name}</Text>
+    <Heading text={name} />
   </View>
 );
 

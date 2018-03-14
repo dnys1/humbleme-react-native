@@ -174,7 +174,6 @@ function* confirmSignup({
   username, password, TFACode, resend,
 }) {
   try {
-    console.log('cs resend : ', resend);
     yield Auth.confirmSignUp(username, TFACode);
     yield put({ type: CONFIRM_SIGNUP_SUCCESS });
     yield put({ type: LOG_IN, payload: { username, password, resend } });

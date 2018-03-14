@@ -4,6 +4,7 @@ import {
   SHOW_ERROR,
   CLEAR_ERROR,
   CLEAR_TEMPORARY_DATA,
+  SET_PROFILE,
 } from '../actions/app';
 
 const initialState = {
@@ -15,6 +16,11 @@ const errorCodes = ['app'];
 export default (state = initialState, action) => {
   let nextState;
   switch (action.type) {
+    case SET_PROFILE:
+      return {
+        ...state,
+        profile: action.payload,
+      };
     case SHOW_ERROR:
       nextState = errorCodes.includes(action.payload.type) && {
         ...state,

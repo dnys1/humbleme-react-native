@@ -28,6 +28,7 @@ class LoginScreen extends Component {
     logIn: PropTypes.func,
     error: PropTypes.object,
     alertWithType: PropTypes.func,
+    isTransitioning: PropTypes.bool,
   };
 
   static navigationOptions = {
@@ -70,6 +71,7 @@ class LoginScreen extends Component {
                 resend: false,
               })
             }
+            disabled={this.props.isTransitioning}
             size="small"
           />
         </KeyboardAvoidingView>
@@ -81,11 +83,13 @@ class LoginScreen extends Component {
 const mapStateToProps = (state) => {
   const { username, password } = state.welcome.login;
   const { error } = state.welcome;
+  const { isTransitioning } = state.nav;
 
   return {
     username,
     password,
     error,
+    isTransitioning,
   };
 };
 

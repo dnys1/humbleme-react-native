@@ -16,6 +16,8 @@ export const IMAGE_UPLOAD = 'IMAGE_UPLOAD';
 export const IMAGE_UPLOAD_SUCCESS = 'IMAGE_UPLOAD_SUCCESS';
 export const IMAGE_UPLOAD_FAILURE = 'IMAGE_UPLOAD_FAILURE';
 
+export const SET_PROFILE = 'SET_PROFILE';
+
 export const logOut = () => ({
   type: LOG_OUT,
 });
@@ -26,5 +28,10 @@ export const applicationLoaded = () => ({
 
 export const uploadImage = payload => ({
   type: IMAGE_UPLOAD,
+  payload,
+});
+
+export const setProfileURL = payload => ({
+  type: SET_PROFILE,
   payload,
 });

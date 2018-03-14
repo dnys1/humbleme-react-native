@@ -42,6 +42,7 @@ class SignupScreen extends Component {
     signUp: PropTypes.func,
     error: PropTypes.object,
     alertWithType: PropTypes.func,
+    isTransitioning: PropTypes.bool,
   };
 
   static navigationOptions = {
@@ -117,6 +118,7 @@ class SignupScreen extends Component {
                 });
               } else console.log("Error: passwords don't match");
             }}
+            disabled={this.props.isTransitioning}
             size="small"
           />
         </KeyboardAvoidingView>
@@ -130,6 +132,7 @@ const mapStateToProps = (state) => {
     name, username, email, password, passwordRetype, phone_number,
   } = state.welcome.signup;
   const { error } = state.welcome;
+  const { isTransitioning } = state.nav;
 
   return {
     name,
@@ -139,6 +142,7 @@ const mapStateToProps = (state) => {
     passwordRetype,
     phone_number,
     error,
+    isTransitioning,
   };
 };
 

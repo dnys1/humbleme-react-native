@@ -36,6 +36,7 @@
     "aws-amplify-react-native": "^0.2.5",
     "color": "^3.0.0",
     "expo": "^25.0.0",
+    "expo-asset-utils": "^0.0.4-alpha.2",
     "hoist-non-react-statics": "^2.5.0",
     "mime-types": "^2.1.18",
     "path": "^0.12.7",
