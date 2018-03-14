@@ -136,40 +136,46 @@ const reducer = (state = initialState, action) => {
       };
       break;
     case SHOW_ERROR:
-      nextState = errorCodes.includes(action.payload.type) && {
-        ...state,
-        error: {
-          ...state.error,
-          [action.payload.type]: {
-            alertStyle: 'error',
-            title: action.payload.title,
-            msg: action.payload.msg,
+      nextState = errorCodes.includes(action.payload.type)
+        ? {
+          ...state,
+          error: {
+            ...state.error,
+            [action.payload.type]: {
+              alertStyle: 'error',
+              title: action.payload.title,
+              msg: action.payload.msg,
+            },
           },
-        },
-      };
+        }
+        : state;
       break;
     case SHOW_WARNING:
-      nextState = errorCodes.includes(action.payload.type) && {
-        ...state,
-        error: {
-          ...state.error,
-          [action.payload.type]: {
-            alertStyle: 'warn',
-            title: action.payload.title,
-            msg: action.payload.msg,
+      nextState = errorCodes.includes(action.payload.type)
+        ? {
+          ...state,
+          error: {
+            ...state.error,
+            [action.payload.type]: {
+              alertStyle: 'warn',
+              title: action.payload.title,
+              msg: action.payload.msg,
+            },
           },
-        },
-      };
+        }
+        : state;
       break;
     case CLEAR_WARNING:
     case CLEAR_ERROR:
-      nextState = errorCodes.includes(action.payload.type) && {
-        ...state,
-        error: {
-          ...state.error,
-          [action.payload.type]: {},
-        },
-      };
+      nextState = errorCodes.includes(action.payload.type)
+        ? {
+          ...state,
+          error: {
+            ...state.error,
+            [action.payload.type]: {},
+          },
+        }
+        : state;
       break;
     case LOG_IN_FAILURE:
     case SIGN_UP_FAILURE:
