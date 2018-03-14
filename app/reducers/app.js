@@ -9,6 +9,7 @@ import {
 
 const initialState = {
   error: {},
+  profile: null,
 };
 
 const errorCodes = ['app'];

@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 
 import { Container } from '../../components/Container';
 import { ProfilePicture, ProfileName } from '../../components/Profile';
-import { LogOutButton } from '../../components/Button';
 
 // const styles = EStyleSheet.create({
 //   $teal: '$primaryTeal',
@@ -20,7 +19,6 @@ class ProfileScreen extends Component {
       paddingHorizontal: 8,
     }),
     title: 'Profile',
-    headerLeft: <LogOutButton />,
   });
 
   static propTypes = {

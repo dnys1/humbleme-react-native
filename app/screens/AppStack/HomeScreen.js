@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
+import { Asset } from 'expo';
+import { Avatar } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { connect } from 'react-redux';
@@ -20,16 +22,44 @@ const styles = EStyleSheet.create({
 class HomeScreen extends Component {
   static propTypes = {
     firstName: PropTypes.string,
+    profile: PropTypes.instanceOf(Asset),
+    navigation: PropTypes.object,
   };
 
-  static navigationOptions = () => ({
+  static navigationOptions = ({ navigation }) => ({
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
       paddingHorizontal: 8,
+      paddingBottom: 8,
     }),
     headerTitle: <WhiteLogo scale={0.34} />,
+    headerTitleStyle: {
+      margin: -8,
+    },
     headerLeft: <LogOutButton />,
+    headerRight:
+      navigation.state.params && navigation.state.params.profile ? (
+        <Avatar
+          small
+          rounded
+          source={{ uri: navigation.state.params.profile.uri }}
+          onPress={() => navigation.navigate('Profile')}
+          activeOpacity={0.7}
+        />
+      ) : (
+        <Avatar
+          small
+          rounded
+          icon={{ name: 'user' }}
+          onPress={() => console.log('Works!')}
+          activeOpacity={0.7}
+        />
+      ),
   });
+
+  componentWillMount() {
+    this.props.navigation.setParams({ profile: this.props.profile });
+  }
 
   render() {
     return (
@@ -61,6 +91,7 @@ class HomeScreen extends Component {
 const mapStateToProps = state => ({
   user: state.auth.user,
   firstName: state.auth.attributes.given_name,
+  profile: state.app.profile,
 });
 
 export default connect(mapStateToProps)(HomeScreen);
