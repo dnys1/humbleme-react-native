@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Text } from 'react-native';
 import { Asset } from 'expo';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { connect } from 'react-redux';
 
-import { logOut } from '../../actions/app';
-
 import { Container } from '../../components/Container';
 import { ProfilePicture, ProfileName } from '../../components/Profile';
+import { LogOutButton } from '../../components/Button';
 
 // const styles = EStyleSheet.create({
 //   $teal: '$primaryTeal',
@@ -16,19 +14,13 @@ import { ProfilePicture, ProfileName } from '../../components/Profile';
 // });
 
 class ProfileScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
+  static navigationOptions = () => ({
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
       paddingHorizontal: 8,
     }),
     title: 'Profile',
-    headerLeft: (
-      // TODO: 'color' property sets background color in Android
-      // Style looks back... build own?
-      <TouchableOpacity onPress={() => navigation.dispatch(logOut())}>
-        <Text style={{ color: 'white', fontSize: 19 }}>Logout</Text>
-      </TouchableOpacity>
-    ),
+    headerLeft: <LogOutButton />,
   });
 
   static propTypes = {
