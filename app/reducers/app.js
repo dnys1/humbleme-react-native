@@ -50,8 +50,6 @@ export default (state = initialState, action) => {
       };
       break;
     case CLEAR_TEMPORARY_DATA:
-      nextState = initialState;
-      break;
     default:
       nextState = state;
       break;
