@@ -70,7 +70,7 @@ class TFAScreen extends Component {
           <View style={styles.$textViewStyles}>
             <Subheading color="white" text={signup ? 'Complete Signup' : 'Complete Login'} />
             <Text style={{ color: 'white', width: '80%', marginBottom: 10 }}>
-              Please enter the 5-digit verification code sent to{' '}
+              Please enter the 6-digit verification code sent to
               {`${this.props.email || 'your email'}`} to continue.
             </Text>
           </View>
