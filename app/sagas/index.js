@@ -295,8 +295,22 @@ function* watchConfirmSignup() {
 
 function* watchUpdateName() {
   while (true) {
-    const { payload: { first, last, user } } = yield take(UPDATE_NAME);
-    yield call(updateName, { first, last, user });
+    const { payload: { name, user } } = yield take(UPDATE_NAME);
+    const fullName = name.split(' ');
+    if (fullName.length !== 2) {
+      yield put({
+        type: SHOW_ERROR,
+        payload: {
+          type: 'confirm',
+          title: 'Signup Error',
+          msg: 'Please enter your first and last name.',
+        },
+      });
+      yield call(delay, 400);
+      yield put({ type: CLEAR_ERROR });
+    } else {
+      yield call(updateName, { first: fullName[0], last: fullName[1], user });
+    }
   }
 }
 

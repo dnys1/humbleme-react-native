@@ -27,7 +27,9 @@ class AuthLoadingScreen extends Component {
     const navApp = () => this.props.navigation.navigate('App');
     const navAuth = () => this.props.navigation.navigate('Auth');
 
-    await Auth.currentSession().then(navApp, navAuth);
+    await Auth.currentAuthenticatedUser()
+      .then(navApp, navAuth)
+      .catch(navAuth);
   };
 
   render() {
