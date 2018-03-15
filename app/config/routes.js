@@ -109,14 +109,31 @@ const AuthStack = StackNavigator(
   },
 );
 
-const MainStack = SwitchNavigator(
+const LoadingStack = StackNavigator(
   {
-    AuthLoading: AuthLoadingScreen,
-    App: AppStack,
-    Auth: AuthStack,
+    AuthLoading: {
+      screen: AuthLoadingScreen,
+    },
   },
   {
-    initialRouteName: 'AuthLoading',
+    headerMode: 'none',
+  },
+);
+
+const MainStack = SwitchNavigator(
+  {
+    Loading: {
+      screen: LoadingStack,
+    },
+    App: {
+      screen: AppStack,
+    },
+    Auth: {
+      screen: AuthStack,
+    },
+  },
+  {
+    initialRouteName: 'Loading',
   },
 );
 
