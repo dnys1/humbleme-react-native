@@ -12,7 +12,7 @@ import { isEmpty } from '../../utils';
 import { Container } from '../../components/Container';
 import { WhiteLogo, LogoTorch } from '../../components/Logo';
 import { ButtonWithChevron } from '../../components/Button';
-// import { HeaderWarningNotification } from '../../components/Header';
+import { HeaderWarningNotification } from '../../components/Header';
 
 import { applicationLoaded } from '../../actions/app';
 import { navLoginScreen, navSignupScreen } from '../../actions/nav';
@@ -84,16 +84,16 @@ class WelcomeScreen extends Component {
   //   }),
   // };
 
-  static navigationOptions = () => ({
+  static navigationOptions = ({ navigation }) => ({
     headerStyle: EStyleSheet.create({
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
       borderBottomWidth: 0 /* iOS fix */,
       elevation: 0 /* Android fix */,
     }),
-    // headerTitle:
-    //   navigation.state.params && navigation.state.params.showWarning ? (
-    //     <HeaderWarningNotification />
-    //   ) : null,
+    headerTitle:
+      navigation.state.params && navigation.state.params.showWarning ? (
+        <HeaderWarningNotification />
+      ) : null,
   });
 
   componentWillMount() {

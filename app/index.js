@@ -1,5 +1,4 @@
 import React from 'react';
-import { AppLoading } from 'expo';
 import AssetUtils from 'expo-asset-utils';
 import { Provider, connect } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -11,6 +10,7 @@ import { addNavigationHelpers } from 'react-navigation';
 import { put } from 'redux-saga/effects';
 
 import { AlertProvider } from './components/Alert';
+import AppLoadingAlert from './screens/AppLoadingAlert';
 
 import config from './aws-exports';
 import configureStore from './config/store';
@@ -132,18 +132,22 @@ export default class AppComplete extends React.Component {
   };
 
   render() {
+    // Not sure if AlertProvider needed, was encountering error where it would
+    // hang on splash screen (AppLoading) when there was an error with one of
+    // the above promises... then it just stopped doing it.
     if (!this.state.isReady) {
       return (
-        <AppLoading
-          startAsync={this.cacheResourcesAsync}
-          onFinish={() => {
-            this.state.runSaga(function* appLoaded() {
-              yield put({ type: APPLICATION_LOADED });
-            });
-            this.setState({ isReady: true });
-          }}
-          onError={console.warn}
-        />
+        <AlertProvider>
+          <AppLoadingAlert
+            startAsync={this.cacheResourcesAsync}
+            onFinish={() => {
+              this.state.runSaga(function* appLoaded() {
+                yield put({ type: APPLICATION_LOADED });
+              });
+              this.setState({ isReady: true });
+            }}
+          />
+        </AlertProvider>
       );
     }
 
