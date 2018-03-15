@@ -1,6 +1,7 @@
-import { Auth } from 'aws-amplify';
+import { Auth, Storage } from 'aws-amplify';
 import { take, call, put, fork, all, select } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
+import AssetUtils from 'expo-asset-utils';
 
 import { getNetworkIsConnectedAndHasChecked } from './selectors';
 import navSagas from './nav';
@@ -36,6 +37,7 @@ import {
   CLEAR_WARNING,
   CLEAR_ERROR,
   CLEAR_TEMPORARY_DATA,
+  SET_PROFILE,
 } from '../actions/app';
 
 import {
@@ -68,6 +70,15 @@ function* logIn({ username, password, resend }) {
       if (typeof attributes.given_name === 'undefined') {
         yield put({ type: NAV_NAME_SCREEN });
       } else {
+        // TODO: Make this more dynamic by caching a list of old profile pics
+        // and setting a key to the current one.
+        try {
+          const profile = yield Storage.get('photos/profile.jpg', { level: 'protected' });
+          const profileAsset = yield AssetUtils.resolveAsync(profile);
+          yield put({ type: SET_PROFILE, payload: profileAsset });
+        } catch (err) {
+          console.log('Error retrieiving profile pic: ', err);
+        }
         yield put({ type: NAV_LOGGED_IN_SCREEN });
       }
     } else {
