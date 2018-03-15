@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { connect } from 'react-redux';
 
-import { Container } from '../../components/Container';
+// import { Container } from '../../components/Container';
 import { WhiteLogo } from '../../components/Logo';
 import { ScorePanel } from '../../components/Score';
 
@@ -63,12 +63,23 @@ class HomeScreen extends Component {
 
   render() {
     return (
-      <Container
-        style={{ justifyContent: 'flex-start', alignItems: 'stretch' }}
-        backgroundColor="white"
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          backgroundColor: 'white',
+        }}
       >
         <ScorePanel />
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            paddingBottom: 80,
+          }}
+        >
           <Heading text={`Welcome, ${this.props.firstName}!`} />
           <ButtonWithChevron
             text="Score Details"
@@ -83,7 +94,7 @@ class HomeScreen extends Component {
             size="xlarge"
           />
         </View>
-      </Container>
+      </View>
     );
   }
 }
