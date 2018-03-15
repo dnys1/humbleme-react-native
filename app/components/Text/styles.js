@@ -5,14 +5,12 @@ export default EStyleSheet.create({
     fontSize: 33,
     // fontFamily: 'Avenir-Black',
     fontWeight: '600',
-    marginTop: 5,
-    marginBottom: 31,
+    marginVertical: 20,
   },
   subheading: {
     fontSize: 25,
     // fontFamily: 'Avenir-Medium',
     fontWeight: '500',
-    marginTop: 4,
-    marginBottom: 15,
+    marginVertical: 18,
   },
 });

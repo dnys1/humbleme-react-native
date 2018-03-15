@@ -12,7 +12,6 @@ export default EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 340,
-    paddingVertical: 20,
   },
   scorewheelContainer: {
     width: 300,
@@ -29,15 +28,11 @@ export default EStyleSheet.create({
     fontFamily: 'Avenir-Light',
     fontSize: 85,
     color: 'black',
-    marginVertical: 0,
-    paddingVertical: 0,
   },
   smallText: {
     fontFamily: 'Avenir-Light',
     fontSize: 20,
     color: 'black',
-    marginVertical: 0,
-    paddingVertical: 0,
   },
   textView: {
     width: 300,
