@@ -6,6 +6,7 @@ import { Header } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { connectAlert } from '../../components/Alert';
+import { isEmpty } from '../../utils';
 
 import { Container } from '../../components/Container';
 import { Subheading } from '../../components/Text';
@@ -33,6 +34,7 @@ class NameScreen extends Component {
     updateSignupName: PropTypes.func,
     alertWithType: PropTypes.func,
     isTransitioning: PropTypes.bool,
+    error: PropTypes.object,
   };
 
   static navigationOptions = {
@@ -41,7 +43,15 @@ class NameScreen extends Component {
       backgroundColor: () => EStyleSheet.value('$primaryTeal'),
       borderBottomWidth: 0,
     }),
+    headerLeft: null,
   };
+
+  componentWillReceiveProps(nextProps) {
+    const { error } = nextProps;
+    if (!isEmpty(error.confirm) && error.confirm !== this.props.error.confirm) {
+      this.props.alertWithType(error.confirm.alertStyle, error.confirm.title, error.confirm.msg);
+    }
+  }
 
   render() {
     const keyboardOffset = Header.HEIGHT + 22;
@@ -67,20 +77,10 @@ class NameScreen extends Component {
             text="Submit"
             color={styles.$yellow}
             onPress={() => {
-              const fullName = this.props.name.split(' ');
-              if (fullName.length === 2 && this.props.user) {
-                this.props.updateName({
-                  first: fullName[0],
-                  last: fullName[1],
-                  user: this.props.user,
-                });
-              } else {
-                this.props.alertWithType(
-                  'error',
-                  'Signup Error',
-                  'Please enter your first and last name',
-                );
-              }
+              this.props.updateName({
+                name: this.props.name,
+                user: this.props.user,
+              });
             }}
             disabled={this.props.isTransitioning}
             size="small"
@@ -93,12 +93,14 @@ class NameScreen extends Component {
 
 const mapStateToProps = (state) => {
   const { user } = state.auth;
+  const { error } = state.welcome;
   const { name } = state.welcome.signup;
   const { isTransitioning } = state.nav;
   return {
     user,
     name,
     isTransitioning,
+    error,
   };
 };
 

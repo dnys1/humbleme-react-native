@@ -1,5 +1,4 @@
 import React from 'react';
-import { AppLoading } from 'expo';
 import AssetUtils from 'expo-asset-utils';
 import { Provider, connect } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -11,6 +10,7 @@ import { addNavigationHelpers } from 'react-navigation';
 import { put } from 'redux-saga/effects';
 
 import { AlertProvider } from './components/Alert';
+import AppLoadingAlert from './screens/AppLoadingAlert';
 
 import config from './aws-exports';
 import configureStore from './config/store';
@@ -27,7 +27,11 @@ EStyleSheet.build({
   $primaryTeal: '#38CECA',
   $primaryOrange: '#f15a24',
   $primaryYellow: '#efb402',
+  $primaryCarrotOrange: '#f7931e',
   $primaryGreen: '#12B336',
+  $primaryPink: '#ff8372',
+  $primaryNavy: '#0C2F6D',
+
   $keyboardAvoidingView: {
     flex: 1,
     justifyContent: 'center',
@@ -72,8 +76,6 @@ export default class AppComplete extends React.Component {
     };
   }
 
-  // TODO: Rewrite with componentWillMount so we can better inspect promises
-  /* eslint-disable class-methods-use-this */
   cacheResourcesAsync = async () => {
     const localAssets = [
       require('./assets/logo_white.png'),
@@ -128,22 +130,24 @@ export default class AppComplete extends React.Component {
 
     return Promise.all([...cacheRemoteImages, ...cacheLocalImages, cacheProfileImage]);
   };
-  /* eslint-enable class-methods-use-this */
 
   render() {
+    // Not sure if AlertProvider needed, was encountering error where it would
+    // hang on splash screen (AppLoading) when there was an error with one of
+    // the above promises... then it just stopped doing it.
     if (!this.state.isReady) {
       return (
-        <AppLoading
-          startAsync={this.cacheResourcesAsync}
-          onFinish={() => {
-            console.log('Async resources cached');
-            this.state.runSaga(function* appLoaded() {
-              yield put({ type: APPLICATION_LOADED });
-            });
-            this.setState({ isReady: true });
-          }}
-          onError={console.warn}
-        />
+        <AlertProvider>
+          <AppLoadingAlert
+            startAsync={this.cacheResourcesAsync}
+            onFinish={() => {
+              this.state.runSaga(function* appLoaded() {
+                yield put({ type: APPLICATION_LOADED });
+              });
+              this.setState({ isReady: true });
+            }}
+          />
+        </AlertProvider>
       );
     }
 

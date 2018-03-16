@@ -14,6 +14,7 @@ function* uploadImage() {
   const contentType = mime.lookup(extname);
   const imageBuffer = Buffer.from(image.base64, 'base64');
   const level = 'protected';
+  // const profile = yield Cache.get('profile');
   try {
     try {
       yield Storage.remove(`photos/profile${extname}`, { level });

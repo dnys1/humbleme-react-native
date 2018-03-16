@@ -1,6 +1,7 @@
-import { Auth } from 'aws-amplify';
+import { Auth, Storage } from 'aws-amplify';
 import { take, call, put, fork, all, select } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
+import AssetUtils from 'expo-asset-utils';
 
 import { getNetworkIsConnectedAndHasChecked } from './selectors';
 import navSagas from './nav';
@@ -28,7 +29,6 @@ import {
 } from '../actions/welcome';
 
 import {
-  APPLICATION_LOADED,
   LOG_OUT,
   LOG_OUT_SUCCESS,
   LOG_OUT_FAILURE,
@@ -37,6 +37,7 @@ import {
   CLEAR_WARNING,
   CLEAR_ERROR,
   CLEAR_TEMPORARY_DATA,
+  SET_PROFILE,
 } from '../actions/app';
 
 import {
@@ -69,6 +70,15 @@ function* logIn({ username, password, resend }) {
       if (typeof attributes.given_name === 'undefined') {
         yield put({ type: NAV_NAME_SCREEN });
       } else {
+        // TODO: Make this more dynamic by caching a list of old profile pics
+        // and setting a key to the current one.
+        try {
+          const profile = yield Storage.get('photos/profile.jpg', { level: 'protected' });
+          const profileAsset = yield AssetUtils.resolveAsync(profile);
+          yield put({ type: SET_PROFILE, payload: profileAsset });
+        } catch (err) {
+          console.log('Error retrieiving profile pic: ', err);
+        }
         yield put({ type: NAV_LOGGED_IN_SCREEN });
       }
     } else {
@@ -296,8 +306,22 @@ function* watchConfirmSignup() {
 
 function* watchUpdateName() {
   while (true) {
-    const { payload: { first, last, user } } = yield take(UPDATE_NAME);
-    yield call(updateName, { first, last, user });
+    const { payload: { name, user } } = yield take(UPDATE_NAME);
+    const fullName = name.split(' ');
+    if (fullName.length !== 2) {
+      yield put({
+        type: SHOW_ERROR,
+        payload: {
+          type: 'confirm',
+          title: 'Signup Error',
+          msg: 'Please enter your first and last name.',
+        },
+      });
+      yield call(delay, 400);
+      yield put({ type: CLEAR_ERROR });
+    } else {
+      yield call(updateName, { first: fullName[0], last: fullName[1], user });
+    }
   }
 }
 
@@ -315,20 +339,8 @@ function* watchLogout() {
   }
 }
 
-function* watchAppLoad() {
-  yield take(APPLICATION_LOADED);
-  try {
-    if (yield Auth.currentSession()) {
-      yield put({ type: NAV_LOGGED_IN_SCREEN });
-    }
-  } catch (err) {
-    console.log(err);
-  }
-}
-
 export default function* rootSaga() {
   yield all([
-    fork(watchAppLoad),
     fork(watchNetwork),
     fork(watchLogin),
     fork(watchConfirmLogin),
