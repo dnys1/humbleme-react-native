@@ -9,7 +9,7 @@ import { isEmpty } from '../../utils';
 import { connectAlert } from '../../components/Alert';
 
 import { Container } from '../../components/Container';
-import { InputNoBorder } from '../../components/TextInput';
+import { InputNoBorder, styles as inputStyles } from '../../components/TextInput';
 import { ButtonWithChevron } from '../../components/Button';
 
 import {
@@ -17,7 +17,6 @@ import {
   updateSignupUsername,
   updateSignupPassword,
   updateSignupPasswordRetype,
-  updateSignupPhoneNumber,
   signUp,
 } from '../../actions/welcome';
 
@@ -26,6 +25,7 @@ const styles = EStyleSheet.create({
   $yellow: '$primaryYellow',
   $lightOrange: '$primaryCarrotOrange',
   $viewStyles: '$keyboardAvoidingView',
+  $inputStyles: inputStyles,
 });
 
 class SignupScreen extends Component {
@@ -39,7 +39,6 @@ class SignupScreen extends Component {
     updateEmail: PropTypes.func,
     updatePassword: PropTypes.func,
     updatePasswordRetype: PropTypes.func,
-    updatePhoneNumber: PropTypes.func,
     signUp: PropTypes.func,
     error: PropTypes.object,
     alertWithType: PropTypes.func,
@@ -65,7 +64,6 @@ class SignupScreen extends Component {
     /* Would like to use const { props } = this; but eslint does not support */
     /* and throws a no-unused-props error. See git issue here: */
     /* https://github.com/yannickcr/eslint-plugin-react/issues/1393 */
-
     const keyboardOffset = Header.HEIGHT + 22;
     return (
       <Container backgroundColor={styles.$teal}>
@@ -97,7 +95,7 @@ class SignupScreen extends Component {
             autoCapitalize="none"
             secureTextEntry
           />
-          <InputNoBorder
+          {/* <InputNoBorder
             placeholder="Phone Number"
             onChangeText={(phone_number) => {
               if (phone_number.substring(0, 2) === '+1') this.props.updatePhoneNumber(phone_number);
@@ -105,7 +103,7 @@ class SignupScreen extends Component {
             }}
             autoCapitalize="none"
             keyboardType="phone-pad"
-          />
+          /> */}
           <ButtonWithChevron
             text="Sign Up"
             color={styles.$lightOrange}
@@ -152,7 +150,6 @@ const mapDispatchToProps = {
   updateUsername: updateSignupUsername,
   updatePassword: updateSignupPassword,
   updatePasswordRetype: updateSignupPasswordRetype,
-  updatePhoneNumber: updateSignupPhoneNumber,
   signUp,
 };
 
