@@ -1,4 +1,5 @@
 import React from 'react';
+import { Util } from 'expo';
 import AssetUtils from 'expo-asset-utils';
 import { Provider, connect } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -73,7 +74,17 @@ export default class AppComplete extends React.Component {
       persistor,
       runSaga,
       isReady: false,
+      updated: false,
     };
+  }
+
+  // Android only, will reload app when there's
+  // a new version.
+  componentWillMount() {
+    Util.addNewVersionListenerExperimental(() => {
+      this.setState({ updated: true });
+      setTimeout(() => Util.reload(), 2000);
+    });
   }
 
   cacheResourcesAsync = async () => {
@@ -135,7 +146,7 @@ export default class AppComplete extends React.Component {
     // Not sure if AlertProvider needed, was encountering error where it would
     // hang on splash screen (AppLoading) when there was an error with one of
     // the above promises... then it just stopped doing it.
-    if (!this.state.isReady) {
+    if (!this.state.isReady || this.state.updated) {
       return (
         <AlertProvider>
           <AppLoadingAlert
