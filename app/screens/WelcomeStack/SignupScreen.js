@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { KeyboardAvoidingView } from 'react-native';
+import { KeyboardAvoidingView, View } from 'react-native';
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Header } from 'react-navigation';
@@ -24,9 +24,13 @@ const styles = EStyleSheet.create({
   $teal: '$primaryTeal',
   $yellow: '$primaryYellow',
   $lightOrange: '$primaryCarrotOrange',
+  $navy: '$primaryNavy',
   $viewStyles: '$keyboardAvoidingView',
   $inputStyles: inputStyles,
 });
+
+/* eslint-disable no-useless-escape */
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 class SignupScreen extends Component {
   static propTypes = {
@@ -104,22 +108,29 @@ class SignupScreen extends Component {
             autoCapitalize="none"
             keyboardType="phone-pad"
           /> */}
-          <ButtonWithChevron
-            text="Sign Up"
-            color={styles.$lightOrange}
-            onPress={() => {
-              if (this.props.password === this.props.passwordRetype) {
-                this.props.signUp({
-                  username: this.props.username,
-                  password: this.props.password,
-                  email: this.props.email,
-                  phone_number: this.props.phone_number,
-                });
-              } else console.log("Error: passwords don't match");
-            }}
-            disabled={this.props.isTransitioning}
-            size="small"
-          />
+          <View style={{}}>
+            <ButtonWithChevron
+              text="Sign Up"
+              color="transparent"
+              textStyle={{ color: styles.$navy }}
+              onPress={() => {
+                if (this.props.password === this.props.passwordRetype) {
+                  if (!EMAIL_REGEX.test(this.props.email)) {
+                    console.log('Email not in correct format');
+                    return;
+                  }
+                  this.props.signUp({
+                    username: this.props.username,
+                    password: this.props.password,
+                    email: this.props.email,
+                    phone_number: this.props.phone_number,
+                  });
+                } else console.log("Error: passwords don't match");
+              }}
+              disabled={this.props.isTransitioning}
+              size="small"
+            />
+          </View>
         </KeyboardAvoidingView>
       </Container>
     );

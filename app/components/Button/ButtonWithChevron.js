@@ -56,7 +56,11 @@ const ButtonWithChevron = ({
     <TouchableOpacity style={containerStyles} onPress={onPress} disabled={disabled}>
       <View style={styles.wrapper}>
         <Text style={textStyles}>{text}</Text>
-        <Ionicons name="ios-arrow-forward" size={20} color="white" />
+        <Ionicons
+          name="ios-arrow-forward"
+          size={16}
+          color={textStyle && textStyle.color ? textStyle.color : 'white'}
+        />
       </View>
     </TouchableOpacity>
   );

@@ -1,21 +1,28 @@
-import Color from 'color';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 const INPUT_HEIGHT = 48;
-const BORDER_RADIUS = 4;
 
 export default EStyleSheet.create({
   container: {
-    backgroundColor: Color('#333').alpha(0.5),
+    backgroundColor: 'rgba(0,0,0,0)',
     justifyContent: 'center',
-    width: '80%',
+    width: '75%',
     height: INPUT_HEIGHT,
     margin: 12,
-    borderRadius: BORDER_RADIUS,
-    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '$white',
   },
   input: {
     fontSize: 20,
     color: '$white',
+  },
+  inputLayout: {
+    margin: 8,
+  },
+  textInput: {
+    fontSize: 16,
+    color: '$white',
+    height: 40,
+    width: '75%',
   },
 });

@@ -1,8 +1,14 @@
 import React from 'react';
-import { View, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { View, TextInput } from 'react-native';
+import { TextInputLayout } from 'rn-textinputlayout';
 import PropTypes from 'prop-types';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 import styles from './styles';
+
+const estyles = EStyleSheet.create({
+  $blue: '$primaryNavy',
+});
 
 class InputNoBorder extends React.Component {
   focusTextInput = () => {
@@ -19,20 +25,12 @@ class InputNoBorder extends React.Component {
       autoCorrect,
     } = this.props;
     return (
-      <TouchableWithoutFeedback
-        onPress={this.focusTextInput}
-        hitSlop={{
-          top: 10,
-          left: 10,
-          bottom: 10,
-          right: 10,
-        }}
-      >
-        <View style={styles.container}>
+      <View style={{ width: '80%' }}>
+        <TextInputLayout style={styles.inputLayout} hintColor="white" focusColor={estyles.$blue}>
           <TextInput
             placeholder={placeholder}
             onChangeText={onChangeText}
-            style={styles.input}
+            style={styles.textInput}
             placeholderTextColor="#fff"
             autoCapitalize={autoCapitalize}
             keyboardType={keyboardType}
@@ -44,8 +42,8 @@ class InputNoBorder extends React.Component {
             }}
             underlineColorAndroid="transparent"
           />
-        </View>
-      </TouchableWithoutFeedback>
+        </TextInputLayout>
+      </View>
     );
   }
 }

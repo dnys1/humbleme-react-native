@@ -1,6 +1,6 @@
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-const BORDER_RADIUS = 4;
+const BORDER_RADIUS = 3;
 
 export default EStyleSheet.create({
   container: {
